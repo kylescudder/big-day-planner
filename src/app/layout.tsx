@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 import '@/styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 
@@ -34,6 +35,7 @@ export default function RootLayout({
               className={`font-sans ${inter.variable} justify-center h-screen`}
             >
               {children}
+              <Toaster />
             </main>
           </ClerkProvider>
         </ThemeProvider>
