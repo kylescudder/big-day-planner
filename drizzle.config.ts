@@ -7,6 +7,6 @@ export default {
   driver: 'pg',
   dbCredentials: {
     connectionString: env.DATABASE_URL
-  },
-  tablesFilter: ['big-day-planner_*']
+  }
+  // tablesFilter: ['big-day-planner_*']
 } satisfies Config
