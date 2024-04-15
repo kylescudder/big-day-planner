@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@/components/theme-provider'
-import TopBar from '@/components/top-bar'
 import '@/styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 
@@ -34,13 +33,7 @@ export default function RootLayout({
             <main
               className={`font-sans ${inter.variable} justify-center h-screen`}
             >
-              <TopBar authed={true} />
-              <div className="flex items-center justify-center">
-                <div className="w-full h-full p-6 md:max-w-7xl">
-                  {children}
-                  {/* <Toaster /> */}
-                </div>
-              </div>
+              {children}
             </main>
           </ClerkProvider>
         </ThemeProvider>
