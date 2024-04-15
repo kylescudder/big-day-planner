@@ -40,6 +40,7 @@ export const guests = createTable(
     emailIndex: index('guest_email_idx').on(example.email)
   })
 )
+export type Guest = typeof guests.$inferSelect
 
 export const starters = createTable(
   'starter',
@@ -53,6 +54,8 @@ export const starters = createTable(
   })
 )
 
+export type Starter = typeof starters.$inferSelect
+
 export const mains = createTable(
   'main',
   {
@@ -65,6 +68,8 @@ export const mains = createTable(
   })
 )
 
+export type Main = typeof mains.$inferSelect
+
 export const puddings = createTable(
   'pudding',
   {
@@ -76,3 +81,5 @@ export const puddings = createTable(
     textIndex: index('pudding_text_idx').on(example.text)
   })
 )
+
+export type Pudding = typeof puddings.$inferSelect

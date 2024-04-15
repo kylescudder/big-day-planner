@@ -1,3 +1,5 @@
+'use client'
+
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { type Table } from '@tanstack/react-table'
 

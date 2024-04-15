@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import {
   type ColumnDef,
@@ -21,8 +23,8 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { Input } from '@/components/ui/input'
-import { DataTablePagination } from '@/components/data-table/data-table-pagination'
-import { DataTableViewOptions } from '@/components/data-table/data-table-column-toggle'
+import { DataTablePagination } from '@/components/ui/data-table/data-table-pagination'
+import { DataTableViewOptions } from '@/components/ui/data-table/data-table-column-toggle'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
