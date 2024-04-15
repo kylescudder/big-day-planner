@@ -1,3 +1,5 @@
+import { ThemeProvider } from '@/components/theme-provider'
+import TopBar from '@/components/top-bar'
 import '@/styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 
@@ -20,10 +22,29 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`font-sans ${inter.variable}`}>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`font-sans ${inter.variable}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ClerkProvider>
+            <main
+              className={`font-sans ${inter.variable} justify-center h-screen`}
+            >
+              <TopBar authed={true} />
+              <div className="flex items-center justify-center">
+                <div className="w-full h-full p-6 md:max-w-7xl">
+                  {children}
+                  {/* <Toaster /> */}
+                </div>
+              </div>
+            </main>
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   )
 }
