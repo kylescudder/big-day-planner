@@ -61,7 +61,7 @@ export const DataTable = <TData, TValue>({
       rowSelection
     }
   })
-  console.log('table: ', table)
+
   return (
     <div>
       <div className="flex items-center py-4">
