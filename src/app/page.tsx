@@ -9,7 +9,7 @@ export default function HomePage() {
         hello guest & guest hello guest & guest hello guest & guest hello guest
         & guest hello guest & guest
       </Section>
-      <Section id="rsvp" className="bg-primary">
+      <Section id="rsvp" className="bg-primary text-background">
         rsvp
       </Section>
       <Section id="menu" className="bg-background">
@@ -21,7 +21,7 @@ export default function HomePage() {
       <Section id="timings" className="bg-background">
         timings
       </Section>
-      <Section id="details" className="bg-primary h-46">
+      <Section id="details" className="bg-primary h-46 text-background">
         details
       </Section>
     </main>
