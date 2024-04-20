@@ -10,6 +10,9 @@ const config = {
   ],
   prefix: '',
   theme: {
+    borderRadius: {
+      '4xl': '30px'
+    },
     container: {
       center: true,
       padding: '2rem',
@@ -18,6 +21,10 @@ const config = {
       }
     },
     extend: {
+      spacing: {
+        '46': '11.5rem',
+        '62': '15.5rem'
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

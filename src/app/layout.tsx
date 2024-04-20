@@ -1,14 +1,12 @@
 import { ThemeProvider } from '@/components/theme-provider'
+import TopBar from '@/components/top-bar'
 import { Toaster } from '@/components/ui/sonner'
 import '@/styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
+import localFont from 'next/font/local'
 
-import { Inter } from 'next/font/google'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans'
-})
+// Font files can be colocated inside of `pages`
+const cooperBlack = localFont({ src: '../styles/fonts/COOPBL.woff' })
 
 export const metadata = {
   title: 'Create T3 App',
@@ -23,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+      <body className={`${cooperBlack.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -32,8 +30,9 @@ export default function RootLayout({
         >
           <ClerkProvider>
             <main
-              className={`font-sans ${inter.variable} justify-center h-screen`}
+              className={`${cooperBlack.className} justify-center h-screen`}
             >
+              <TopBar />
               {children}
               <Toaster />
             </main>

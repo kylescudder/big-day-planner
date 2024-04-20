@@ -1,25 +1,40 @@
 import React from 'react'
-import SignOut from '@/components/sign-out'
-import SiteTitle from '@/components/site-title'
-import { ModeToggle } from '@/components/ui/dark-mode-toggle'
-import { Separator } from '@/components/ui/separator'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import ListItem from '@/components/ui/list-item'
+import { PAGES } from '@/consts/pages'
+import Image from 'next/image'
+import { IconMenu2 } from '@tabler/icons-react'
 
-const TopBar = (props: { authed?: boolean }) => {
+const TopBar = () => {
   return (
-    <section className="border-zinc-400 p-4 w-full flex justify-between">
-      <div className="flex-row items-center">
-        <SiteTitle />
+    <div className="flex justify-between py-6 px-6 h-24 w-full">
+      <div>
+        <Image alt="K&R Logo" src="/logo.svg" height={60} width={60} />
       </div>
-      <div className="flex items-center">
-        <ModeToggle />
-        {props.authed && (
-          <>
-            <Separator orientation="vertical" />
-            <SignOut />
-          </>
-        )}
+      <div>
+        <Sheet key="right">
+          <SheetTrigger asChild>
+            <IconMenu2 className="text-primary" width={30} height={30} />
+          </SheetTrigger>
+          <SheetContent side="right">
+            <div className="flex h-full">
+              <ul className="w-full">
+                {PAGES.map((page) => (
+                  <ListItem key={page.id}>
+                    <a
+                      className="flex items-center w-full h-full text-5xl"
+                      href={page.id}
+                    >
+                      {page.text}
+                    </a>
+                  </ListItem>
+                ))}
+              </ul>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
-    </section>
+    </div>
   )
 }
 

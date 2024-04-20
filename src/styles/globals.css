@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 350 100% 95%;
+    --background: 27, 53%, 97%;
     --foreground: 350 5% 0%;
     --card: 350 50% 90%;
     --card-foreground: 350 5% 10%;
@@ -12,7 +12,7 @@
     --popover-foreground: 350 100% 0%;
     --primary: 350 83.7% 38.4%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 350 30% 70%;
+    --secondary: 340 82% 82%;
     --secondary-foreground: 0 0% 0%;
     --muted: 312 30% 85%;
     --muted-foreground: 350 5% 35%;
@@ -34,7 +34,7 @@
     --popover-foreground: 350 5% 90%;
     --primary: 350 83.7% 38.4%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 350 30% 10%;
+    --secondary: 340, 82%, 82%;
     --secondary-foreground: 0 0% 100%;
     --muted: 312 30% 15%;
     --muted-foreground: 350 5% 60%;
