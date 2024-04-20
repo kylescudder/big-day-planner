@@ -9,11 +9,11 @@ export async function getGuests() {
   return await db.query.guests.findMany({})
 }
 
-export async function createGuest(guest: Guest): Promise<Guest[]> {
+export async function createGuest(guest: Guest) {
   return await db.insert(guests).values(guest).execute()
 }
 
-export async function deleteGuest(id: string): Promise<void> {
+export async function deleteGuest(id: string) {
   await db.delete(guests).where(eq(guests.id, id))
 }
 
@@ -27,7 +27,7 @@ export const getAddressList = async (
   return data
 }
 
-export const getAddress = async (addressUrl: string): Promise<AddressData> => {
+export const getAddress = async (addressUrl: string) => {
   const response = await fetch(
     `${env.GETADDRESS_URL}/${addressUrl}?api-key=${env.GETADDRESS_API_KEY}`
   )
@@ -35,7 +35,7 @@ export const getAddress = async (addressUrl: string): Promise<AddressData> => {
   return data
 }
 
-export async function getRsvp(id: string): Promise<string> {
+export async function getRsvp(id: string) {
   return await db.query.guests.findFirst({
     with: {
       id: id
