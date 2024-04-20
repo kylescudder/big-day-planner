@@ -9,6 +9,22 @@ export async function getGuests() {
   return await db.query.guests.findMany({})
 }
 
+export async function getGuestAndLinkedGuest(id: string) {
+  return await db.query.guests.findMany({
+    where(fields, operators) {
+      return operators.and(eq(fields.id, id))
+    }
+  })
+}
+
+export async function getGuest(id: string) {
+  return await db.query.guests.findFirst({
+    where(fields, operators) {
+      return operators.and(eq(fields.id, id))
+    }
+  })
+}
+
 export async function createGuest(guest: Guest) {
   return await db.insert(guests).values(guest).execute()
 }
@@ -33,15 +49,4 @@ export const getAddress = async (addressUrl: string) => {
   )
   const data = (await response.json()) as AddressData
   return data
-}
-
-export async function getRsvp(id: string) {
-  return await db.query.guests.findFirst({
-    with: {
-      id: id
-    },
-    columns: {
-      rsvp: true
-    }
-  })
 }

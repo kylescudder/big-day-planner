@@ -5,7 +5,9 @@ import {
   getGuests,
   getAddressList,
   getAddress,
-  createGuest
+  createGuest,
+  getGuest,
+  getGuestAndLinkedGuest
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import { type Guest } from './db/schema'
@@ -16,6 +18,24 @@ export async function getGuestRecords() {
   if (!user.userId) throw new Error('Unauthorized')
 
   return await getGuests()
+}
+
+export async function getGuestAndLinkedGuestRecord(id: string) {
+  console.log('id: ', id)
+  const user = auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await getGuestAndLinkedGuest(id)
+}
+
+export async function getGuestRecord(id: string) {
+  console.log('id: ', id)
+  const user = auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await getGuest(id)
 }
 
 export async function createGuestRecord(guest: Guest) {

@@ -9,7 +9,10 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { AddGuestForm } from './form'
 import { type Guest } from '@/server/db/schema'
 
-export function AddGuest(props: { onNewGuest: (newGuest: Guest) => void }) {
+export function AddGuest(props: {
+  guests: Guest[]
+  onNewGuest: (newGuest: Guest) => void
+}) {
   const [open, setOpen] = useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -19,17 +22,12 @@ export function AddGuest(props: { onNewGuest: (newGuest: Guest) => void }) {
 
   const onNewGuest = (newGuest: Guest) => {
     props.onNewGuest(newGuest)
+    setOpen(false)
   }
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        {/* <DialogTrigger asChild>
-          <Button variant="outline">
-            <IconUserPlus />
-            Add Guest
-          </Button>
-        </DialogTrigger> */}
         <DialogTrigger asChild>
           <Button variant="outline">
             <IconUserPlus className="pr-2" />
@@ -37,7 +35,11 @@ export function AddGuest(props: { onNewGuest: (newGuest: Guest) => void }) {
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-          <AddGuestForm onNewGuest={onNewGuest} onFormSubmit={onFormSubmit} />
+          <AddGuestForm
+            guestList={props.guests}
+            onNewGuest={onNewGuest}
+            onFormSubmit={onFormSubmit}
+          />
         </DialogContent>
       </Dialog>
     )
@@ -52,7 +54,11 @@ export function AddGuest(props: { onNewGuest: (newGuest: Guest) => void }) {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <AddGuestForm onNewGuest={onNewGuest} onFormSubmit={onFormSubmit} />
+        <AddGuestForm
+          guestList={props.guests}
+          onNewGuest={onNewGuest}
+          onFormSubmit={onFormSubmit}
+        />
       </DrawerContent>
     </Drawer>
   )

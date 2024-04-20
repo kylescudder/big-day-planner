@@ -9,9 +9,7 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { useForm, type FieldValues } from 'react-hook-form'
-import { useState } from 'react'
-import { toast } from 'sonner'
-import LoadingSpinner from '@/components/ui/loading/loading-spinner'
+import { useEffect, useState } from 'react'
 import {
   DrawerClose,
   DrawerDescription,
@@ -32,16 +30,22 @@ import { type Guest } from '@/server/db/schema'
 import {
   getAddressRecords,
   getAddressListRecords,
-  createGuestRecord
+  createGuestRecord,
+  getGuestRecord
 } from '@/server/service'
-// import { getAddressList, getAddress } from '@/server/queries'
 
 export function AddGuestForm(props: {
+  guestList: Guest[]
   onNewGuest: (newGuest: Guest) => void
   onFormSubmit: (open: boolean) => void
 }) {
   const [addressSearched, setAddressSearched] = useState(false)
   const [addressList, setAddressList] = useState<Address[]>([])
+  const [guestList, setGuestList] = useState<Guest[]>([])
+
+  useEffect(() => {
+    setGuestList(props.guestList)
+  }, [props.guestList])
 
   const form = useForm({
     defaultValues: {
@@ -56,52 +60,10 @@ export function AddGuestForm(props: {
       county: '',
       postcode: '',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      parentId: ''
     }
   })
-  // const postcode = form.getValues('postcode')
-  // const { data: addressListData, isLoading: addressListLoading } =
-  //   api.address.getAddressList.useQuery(
-  //     { postcode },
-  //     { enabled: postcodeShouldFetch } // The query will not run until shouldFetch is true
-  //   )
-  // const { data: addressData, isLoading: addressDataLoading } =
-  //   api.address.getAddress.useQuery(
-  //     { addressUrl },
-  //     { enabled: addressShouldFetch } // The query will not run until shouldFetch is true
-  //   )
-
-  // const createMutation = api.guest.create.useMutation({
-  //   onSuccess: () => {
-  //     toast({
-  //       description: 'Guest added!'
-  //     })
-  //     props.onFormSubmit(false)
-  //   },
-  //   onError: () => {
-  //     toast({
-  //       variant: 'destructive',
-  //       title: 'Uh oh! Something went wrong!',
-  //       description: 'There was a problem with your request.'
-  //     })
-  //   }
-  // })
-
-  // const mutate = api.guest.create.useMutation({
-  //   onSuccess: () => {
-  //     toast({
-  //       description: 'Guest added!'
-  //     })
-  //     props.onFormSubmit(false)
-  //   },
-  //   onError: () => {
-  //     toast({
-  //       variant: 'destructive',
-  //       title: 'Uh oh! Something went wrong!',
-  //       description: 'There was a problem with your request.'
-  //     })
-  //   }
-  // })
 
   const handlePostcodeLookup = async () => {
     const postcode = form.getValues('postcode')
@@ -121,12 +83,19 @@ export function AddGuestForm(props: {
     form.setValue('county', addressData?.county ?? '')
   }
 
+  const handleLinkSelection = async (id: string) => {
+    const guestData = await getGuestRecord(id)
+    form.setValue('parentId', guestData?.id ?? '')
+    form.setValue('address1', guestData?.address1 ?? '')
+    form.setValue('address2', guestData?.address2 ?? '')
+    form.setValue('address3', guestData?.address3 ?? '')
+    form.setValue('town', guestData?.town ?? '')
+    form.setValue('county', guestData?.county ?? '')
+  }
+
   async function onSubmit(values: Guest) {
     const newGuest = {
       ...values,
-      starterId: '',
-      mainId: '',
-      puddingId: '',
       songChoice: '',
       rsvp: false,
       rsvpAnswer: false,
@@ -136,7 +105,7 @@ export function AddGuestForm(props: {
     await createGuestRecord(newGuest)
     setAddressList([])
     setAddressSearched(false)
-    // props.onNewGuest(newGuest)
+    props.onNewGuest(newGuest)
   }
 
   return (
@@ -175,6 +144,33 @@ export function AddGuestForm(props: {
                     <Input {...field} id="surname" className="text-base" />
                   </div>
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="parent"
+            render={() => (
+              <FormItem>
+                <FormLabel>Going with</FormLabel>
+                <Select
+                  onValueChange={(parentId) => {
+                    void handleLinkSelection(parentId)
+                  }}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select an guest to link" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {guestList.map((guest, index) => (
+                      <SelectItem key={index} value={guest.id}>
+                        {guest.forename} {guest.surname}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

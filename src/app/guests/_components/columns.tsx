@@ -66,14 +66,14 @@ export const getGuestColumns = (props: {
     )
   },
   {
-    accessorKey: 'rsvp',
+    accessorKey: 'rsvpd',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="RSVP" />
+      <DataTableColumnHeader column={column} title="RSVP'd" />
     ),
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium">
-          {row.getValue('rsvp') ? 'Yes' : 'No'}
+          {row.getValue('rsvpd') ? 'Yes' : 'No'}
         </div>
       )
     }

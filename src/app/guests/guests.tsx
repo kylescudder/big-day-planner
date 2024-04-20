@@ -39,7 +39,7 @@ export default function Guests(props: { data: Guest[] }) {
 
   return (
     <div>
-      <AddGuest onNewGuest={onNewGuest} />
+      <AddGuest guests={guests} onNewGuest={onNewGuest} />
       <div className="flex flex-col">
         <DataTable columns={columns} data={guests || []} />
       </div>
