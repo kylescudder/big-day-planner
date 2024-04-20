@@ -1,5 +1,3 @@
-import { ThemeProvider } from '@/components/theme-provider'
-import TopBar from '@/components/top-bar'
 import { Toaster } from '@/components/ui/sonner'
 import '@/styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
@@ -22,22 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${cooperBlack.className}`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ClerkProvider>
-            <main
-              className={`${cooperBlack.className} justify-center h-screen`}
-            >
-              <TopBar />
-              {children}
-              <Toaster />
-            </main>
-          </ClerkProvider>
-        </ThemeProvider>
+        <ClerkProvider>
+          <main className={`${cooperBlack.className} justify-center h-screen`}>
+            {children}
+            <Toaster />
+          </main>
+        </ClerkProvider>
       </body>
     </html>
   )
