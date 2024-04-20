@@ -1,4 +1,4 @@
-import TopBar from '@/components/top-bar'
+import TopBar from '@/app/guests/_components/top-bar'
 import { Toaster } from '@/components/ui/sonner'
 
 export const metadata = {

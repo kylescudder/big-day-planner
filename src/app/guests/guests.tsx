@@ -3,16 +3,17 @@
 import { DataTable } from '@/components/ui/data-table/data-table'
 import LoadingPage from '@/components/ui/loading/loading-page'
 import { type Guest } from '@/server/db/schema'
-import { getGuestColumns } from './columns'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
+import { getGuestColumns } from './_components/columns'
+import { AddGuest } from './_components/add-guest'
+import { deleteGuestRecord } from '@/server/service'
 
 export default function Guests(props: { data: Guest[] }) {
   const [guests, setGuests] = useState<Guest[]>([])
 
-  const onDelete = (guest: Guest) => {
-    console.log(guest)
-    // await deleteGuest(guest.id)
+  const onDelete = async (guest: Guest) => {
+    await deleteGuestRecord(guest.id)
     toast('Guest deleted!', {
       duration: 2000,
       id: guest.id
@@ -20,8 +21,7 @@ export default function Guests(props: { data: Guest[] }) {
     setGuests((prevGuests) => prevGuests.filter((g) => g.id !== guest.id))
   }
 
-  // const columns = useMemo(() => getGuestColumns({ onDelete }), [])
-  const columns = getGuestColumns({ onDelete })
+  const columns = useMemo(() => getGuestColumns({ onDelete }), [])
 
   console.log(props.data)
 
@@ -39,7 +39,7 @@ export default function Guests(props: { data: Guest[] }) {
 
   return (
     <div>
-      {/* <AddGuest onNewGuest={onNewGuest} /> */}
+      <AddGuest onNewGuest={onNewGuest} />
       <div className="flex flex-col">
         <DataTable columns={columns} data={guests || []} />
       </div>

@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto'
 import { sql } from 'drizzle-orm'
 import {
   index,
@@ -12,7 +13,9 @@ export const createTable = pgTableCreator((name) => `${name}`)
 export const guests = createTable(
   'guest',
   {
-    id: varchar('id', { length: 36 }).primaryKey(),
+    id: varchar('id', { length: 36 })
+      .primaryKey()
+      .$defaultFn(() => randomUUID()),
     forename: varchar('forename').notNull(),
     surname: varchar('surname').notNull(),
     email: varchar('email').notNull(),
@@ -27,7 +30,7 @@ export const guests = createTable(
     mainId: varchar('main_id', { length: 36 }).notNull(),
     puddingId: varchar('pudding_id', { length: 36 }).notNull(),
     songChoice: varchar('song_choice').notNull(),
-    rsvpd: boolean('rsvpd').default(false),
+    rsvp: boolean('rsvp').default(false),
     rsvpAnswer: boolean('rsvp_answer').default(false),
     createdAt: timestamp('created_at')
       .default(sql`CURRENT_TIMESTAMP`)

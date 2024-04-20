@@ -15,7 +15,7 @@ import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-col
 import { type Guest } from '@/server/db/schema'
 
 export const getGuestColumns = (props: {
-  onDelete: (guest: Guest) => void
+  onDelete: (guest: Guest) => Promise<void>
 }): ColumnDef<Guest>[] => [
   {
     id: 'select',
@@ -66,14 +66,14 @@ export const getGuestColumns = (props: {
     )
   },
   {
-    accessorKey: 'rsvpd',
+    accessorKey: 'rsvp',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="RSVP'd" />
+      <DataTableColumnHeader column={column} title="RSVP" />
     ),
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium">
-          {row.getValue('rsvpd') ? 'Yes' : 'No'}
+          {row.getValue('rsvp') ? 'Yes' : 'No'}
         </div>
       )
     }
