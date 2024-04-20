@@ -1,11 +1,13 @@
-import { randomUUID } from 'crypto'
+import { uuidv4 } from '@/lib/utils'
 import { sql } from 'drizzle-orm'
 import {
   index,
   pgTableCreator,
   timestamp,
   varchar,
-  boolean
+  boolean,
+  serial,
+  uuid
 } from 'drizzle-orm/pg-core'
 
 export const createTable = pgTableCreator((name) => `${name}`)
@@ -13,9 +15,9 @@ export const createTable = pgTableCreator((name) => `${name}`)
 export const guests = createTable(
   'guest',
   {
-    id: varchar('id', { length: 36 })
+    id: uuid('id')
       .primaryKey()
-      .$defaultFn(() => randomUUID()),
+      .$defaultFn(() => uuidv4()),
     forename: varchar('forename').notNull(),
     surname: varchar('surname').notNull(),
     email: varchar('email').notNull(),
@@ -26,12 +28,13 @@ export const guests = createTable(
     town: varchar('town'),
     county: varchar('county'),
     postcode: varchar('postcode'),
-    starterId: varchar('starter_id', { length: 36 }).notNull(),
-    mainId: varchar('main_id', { length: 36 }).notNull(),
-    puddingId: varchar('pudding_id', { length: 36 }).notNull(),
+    starterId: uuid('starterId').references(() => starters.id),
+    mainId: uuid('mainId').references(() => mains.id),
+    puddingId: uuid('puddingId').references(() => puddings.id),
     songChoice: varchar('song_choice').notNull(),
-    rsvp: boolean('rsvp').default(false),
-    rsvpAnswer: boolean('rsvp_answer').default(false),
+    rsvp: boolean('rsvp'),
+    rsvpAnswer: boolean('rsvp_answer'),
+    partnerId: serial('partnerId'),
     createdAt: timestamp('created_at')
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -48,7 +51,9 @@ export type Guest = typeof guests.$inferSelect
 export const starters = createTable(
   'starter',
   {
-    id: varchar('id', { length: 36 }).primaryKey(),
+    id: uuid('id')
+      .primaryKey()
+      .$defaultFn(() => uuidv4()),
     text: varchar('text', { length: 256 })
   },
   (example) => ({
@@ -62,7 +67,9 @@ export type Starter = typeof starters.$inferSelect
 export const mains = createTable(
   'main',
   {
-    id: varchar('id', { length: 36 }).primaryKey(),
+    id: uuid('id')
+      .primaryKey()
+      .$defaultFn(() => uuidv4()),
     text: varchar('text', { length: 256 })
   },
   (example) => ({
@@ -76,7 +83,9 @@ export type Main = typeof mains.$inferSelect
 export const puddings = createTable(
   'pudding',
   {
-    id: varchar('id', { length: 36 }).primaryKey(),
+    id: uuid('id')
+      .primaryKey()
+      .$defaultFn(() => uuidv4()),
     text: varchar('text', { length: 256 })
   },
   (example) => ({
