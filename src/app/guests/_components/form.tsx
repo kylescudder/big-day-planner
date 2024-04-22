@@ -61,7 +61,7 @@ export function AddGuestForm(props: {
       postcode: '',
       createdAt: new Date(),
       updatedAt: new Date(),
-      parentId: ''
+      parentId: null
     }
   })
 
@@ -85,12 +85,7 @@ export function AddGuestForm(props: {
 
   const handleLinkSelection = async (id: string) => {
     const guestData = await getGuestRecord(id)
-    form.setValue('parentId', guestData?.id ?? '')
-    form.setValue('address1', guestData?.address1 ?? '')
-    form.setValue('address2', guestData?.address2 ?? '')
-    form.setValue('address3', guestData?.address3 ?? '')
-    form.setValue('town', guestData?.town ?? '')
-    form.setValue('county', guestData?.county ?? '')
+    form.setValue('parentId', guestData?.parentId ?? null)
   }
 
   async function onSubmit(values: Guest) {

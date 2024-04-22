@@ -21,7 +21,6 @@ export async function getGuestRecords() {
 }
 
 export async function getGuestAndLinkedGuestRecord(id: string) {
-  console.log('id: ', id)
   const user = auth()
 
   if (!user.userId) throw new Error('Unauthorized')
@@ -30,7 +29,6 @@ export async function getGuestAndLinkedGuestRecord(id: string) {
 }
 
 export async function getGuestRecord(id: string) {
-  console.log('id: ', id)
   const user = auth()
 
   if (!user.userId) throw new Error('Unauthorized')

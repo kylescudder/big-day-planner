@@ -23,8 +23,6 @@ export default function Guests(props: { data: Guest[] }) {
 
   const columns = useMemo(() => getGuestColumns({ onDelete }), [])
 
-  console.log(props.data)
-
   useEffect(() => {
     if (props.data) {
       setGuests(props.data)

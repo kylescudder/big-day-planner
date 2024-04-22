@@ -34,7 +34,7 @@ export const guests = createTable(
     songChoice: varchar('song_choice').notNull(),
     rsvp: boolean('rsvp'),
     rsvpAnswer: boolean('rsvp_answer'),
-    partnerId: serial('partnerId'),
+    parentId: uuid('parentId'),
     createdAt: timestamp('created_at')
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

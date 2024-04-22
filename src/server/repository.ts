@@ -12,7 +12,7 @@ export async function getGuests() {
 export async function getGuestAndLinkedGuest(id: string) {
   return await db.query.guests.findMany({
     where(fields, operators) {
-      return operators.and(eq(fields.id, id))
+      return operators.or(eq(fields.id, id), eq(fields.parentId, id))
     }
   })
 }
