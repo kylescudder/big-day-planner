@@ -29,6 +29,13 @@ export async function createGuest(guest: Guest) {
   return await db.insert(guests).values(guest).execute()
 }
 
+export async function updateGuestSong(guest: Guest) {
+  await db
+    .update(guests)
+    .set({ song: guest.song, artist: guest.artist })
+    .where(eq(guests.id, guest.id))
+}
+
 export async function deleteGuest(id: string) {
   await db.delete(guests).where(eq(guests.id, id))
 }

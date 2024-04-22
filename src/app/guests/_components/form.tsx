@@ -49,6 +49,7 @@ export function AddGuestForm(props: {
 
   const form = useForm({
     defaultValues: {
+      id: '',
       forename: '',
       surname: '',
       email: '',
@@ -59,9 +60,16 @@ export function AddGuestForm(props: {
       town: '',
       county: '',
       postcode: '',
+      starterId: null,
+      mainId: null,
+      puddingId: null,
+      song: '',
+      artist: '',
+      rsvp: false,
+      rsvpAnswer: false,
+      parentId: '',
       createdAt: new Date(),
-      updatedAt: new Date(),
-      parentId: null
+      updatedAt: new Date()
     }
   })
 
@@ -85,7 +93,7 @@ export function AddGuestForm(props: {
 
   const handleLinkSelection = async (id: string) => {
     const guestData = await getGuestRecord(id)
-    form.setValue('parentId', guestData?.parentId ?? null)
+    form.setValue('parentId', guestData?.parentId ?? '')
   }
 
   async function onSubmit(values: Guest) {

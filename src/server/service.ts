@@ -7,7 +7,8 @@ import {
   getAddress,
   createGuest,
   getGuest,
-  getGuestAndLinkedGuest
+  getGuestAndLinkedGuest,
+  updateGuestSong
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import { type Guest } from './db/schema'
@@ -42,6 +43,14 @@ export async function createGuestRecord(guest: Guest) {
   if (!user.userId) throw new Error('Unauthorized')
 
   return await createGuest(guest)
+}
+
+export async function updateSongChoice(guest: Guest) {
+  const user = auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updateGuestSong(guest)
 }
 
 export async function deleteGuestRecord(id: string) {
