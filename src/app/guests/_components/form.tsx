@@ -33,6 +33,7 @@ import {
   createGuestRecord,
   getGuestRecord
 } from '@/server/service'
+import { uuidv4 } from '@/lib/utils'
 
 export function AddGuestForm(props: {
   guestList: Guest[]
@@ -49,7 +50,7 @@ export function AddGuestForm(props: {
 
   const form = useForm({
     defaultValues: {
-      id: '',
+      id: uuidv4(),
       forename: '',
       surname: '',
       email: '',
