@@ -6,7 +6,6 @@ import {
   timestamp,
   varchar,
   boolean,
-  serial,
   uuid
 } from 'drizzle-orm/pg-core'
 
