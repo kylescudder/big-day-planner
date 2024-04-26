@@ -68,7 +68,7 @@ export function AddGuestForm(props: {
       artist: '',
       rsvp: false,
       rsvpAnswer: false,
-      parentId: '',
+      parentId: null as string | null,
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -94,7 +94,7 @@ export function AddGuestForm(props: {
 
   const handleLinkSelection = async (id: string) => {
     const guestData = await getGuestRecord(id)
-    form.setValue('parentId', guestData?.parentId ?? '')
+    form.setValue('parentId', guestData?.id ?? null)
   }
 
   async function onSubmit(values: Guest) {
