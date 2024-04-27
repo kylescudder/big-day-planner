@@ -1,12 +1,3 @@
-import { postcodeRegex } from '@/utils/regex'
-import { z } from 'zod'
-
-export const postcodeLookup = z.object({
-  postcode: z
-    .string()
-    .min(1, { message: 'A postcode is required.' })
-    .regex(postcodeRegex, 'Invalid Postcode!')
-})
 export interface Address {
   address: string
   id: string
@@ -16,10 +7,6 @@ export interface Address {
 export interface Suggestions {
   suggestions: Address[]
 }
-
-export const addressLookup = z.object({
-  addressUrl: z.string()
-})
 
 export interface AddressData {
   postcode: string
