@@ -22,10 +22,6 @@ export async function getGuestRecords() {
 }
 
 export async function getGuestAndLinkedGuestRecord(id: string) {
-  const user = auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
   return await getGuestAndLinkedGuest(id)
 }
 
