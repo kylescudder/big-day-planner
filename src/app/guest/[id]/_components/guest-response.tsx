@@ -17,7 +17,7 @@ export function GuestResponse(props: { guestData: Guest[] }) {
   }
 
   return (
-    <div className="w-full">
+    <>
       {rsvp && (
         <>
           <Section id="menu" className="bg-background h-52">
@@ -34,6 +34,6 @@ export function GuestResponse(props: { guestData: Guest[] }) {
           </Section>
         </>
       )}
-    </div>
+    </>
   )
 }
