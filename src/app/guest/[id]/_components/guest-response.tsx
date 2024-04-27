@@ -23,7 +23,7 @@ export function GuestResponse(props: { guestData: Guest[] }) {
           <Section id="menu" className="bg-background h-52">
             <p className="text-3xl pt-14">menu</p>
           </Section>
-          <Section id="song-request" className="bg-secondary">
+          <Section id="song-request" className="bg-secondary pb-10">
             <SongRequest guestData={props.guestData} />
           </Section>
           <Section id="timings" className="bg-background">
