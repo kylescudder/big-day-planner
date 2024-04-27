@@ -26,14 +26,14 @@ export const getGuestColumns = (props: {
           (table.getIsSomePageRowsSelected() && 'indeterminate')
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label='Select row'
       />
     ),
     enableSorting: false,
@@ -42,13 +42,13 @@ export const getGuestColumns = (props: {
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => {
       const name = `${String(row.original.forename)} ${String(row.original.surname)}`
       return (
         <div>
-          <div className="font-medium">{name}</div>
+          <div className='font-medium'>{name}</div>
         </div>
       )
     }
@@ -56,13 +56,13 @@ export const getGuestColumns = (props: {
   {
     accessorKey: 'email',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader column={column} title='Email' />
     )
   },
   {
     accessorKey: 'phone',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Phone" />
+      <DataTableColumnHeader column={column} title='Phone' />
     )
   },
   {
@@ -72,7 +72,7 @@ export const getGuestColumns = (props: {
     ),
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">
+        <div className='text-right font-medium'>
           {row.getValue('rsvpd') ? 'Yes' : 'No'}
         </div>
       )
@@ -85,12 +85,12 @@ export const getGuestColumns = (props: {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <IconDots className="h-4 w-4" />
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
+              <IconDots className='h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => props.onDelete(guest)}>
               Delete guest

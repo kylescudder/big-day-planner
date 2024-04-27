@@ -29,12 +29,12 @@ export function AddGuest(props: {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">
-            <IconUserPlus className="pr-2" />
+          <Button variant='outline'>
+            <IconUserPlus className='pr-2' />
             Add Guest
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className='sm:max-w-[425px]'>
           <AddGuestForm
             guestList={props.guests}
             onNewGuest={onNewGuest}
@@ -48,8 +48,8 @@ export function AddGuest(props: {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline">
-          <IconUserPlus className="pr-2" />
+        <Button variant='outline'>
+          <IconUserPlus className='pr-2' />
           Add Guest
         </Button>
       </DrawerTrigger>

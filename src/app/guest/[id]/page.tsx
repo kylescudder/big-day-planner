@@ -11,45 +11,45 @@ export default async function Guest({ params }: { params: { id: string } }) {
   const guestData = await getGuestAndLinkedGuestRecord(params.id)
 
   return (
-    <div className="flex min-h-screen flex-col items-center">
-      <Section id="home" className="bg-background pt-7">
+    <div className='flex min-h-screen flex-col items-center'>
+      <Section id='home' className='bg-background pt-7'>
         <Image
-          alt="Pink Splatter"
-          src="/pink-splatter.svg"
+          alt='Pink Splatter'
+          src='/pink-splatter.svg'
           height={120}
           width={120}
-          className="-right-16 absolute z-0"
+          className='-right-16 absolute z-0'
         />
-        <div className="text-5xl">
-          <p className="inline">hello </p>
+        <div className='text-5xl'>
+          <p className='inline'>hello </p>
           {guestData.map((guest, index) =>
             index === guestData.length - 1
               ? guest.forename.toLowerCase()
               : `${guest.forename.toLowerCase()} & `
           )}
         </div>
-        <p className="text-3xl text-primary pt-10 pb-20">
+        <p className='text-3xl text-primary pt-10 pb-20'>
           we&apos;re getting married!
         </p>
       </Section>
-      <Section id="rsvp" className="bg-primary text-background">
+      <Section id='rsvp' className='bg-primary text-background'>
         <Image
-          alt="Pink Splatter 1"
-          src="/pink-splatter.svg"
+          alt='Pink Splatter 1'
+          src='/pink-splatter.svg'
           height={120}
           width={120}
-          className="-left-16 absolute z-0"
+          className='-left-16 absolute z-0'
         />
-        <p className="text-3xl pt-14">rsvp</p>
-        <section className="pt-10">
+        <p className='text-3xl pt-14'>rsvp</p>
+        <section className='pt-10'>
           <RSVP guestData={guestData} />
         </section>
         <Image
-          alt="Venue illustration"
-          src="/venue.jpg"
+          alt='Venue illustration'
+          src='/venue.jpg'
           width={300}
           height={200}
-          className="-right-16 ml-auto z-0 flex relative"
+          className='-right-16 ml-auto z-0 flex relative'
         />
       </Section>
       <GuestResponse guestData={guestData} />

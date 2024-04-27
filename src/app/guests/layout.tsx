@@ -15,15 +15,15 @@ export default function RootLayout({
 }) {
   return (
     <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
+      attribute='class'
+      defaultTheme='system'
       enableSystem
       disableTransitionOnChange
     >
       <div>
         <TopBar authed={true} />
-        <div className="flex items-center justify-center">
-          <div className="w-full h-full p-6 md:max-w-7xl">
+        <div className='flex items-center justify-center'>
+          <div className='w-full h-full p-6 md:max-w-7xl'>
             {children}
             <Toaster />
           </div>

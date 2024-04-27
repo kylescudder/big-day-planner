@@ -6,15 +6,15 @@ import { Separator } from '@/components/ui/separator'
 
 const TopBar = (props: { authed?: boolean }) => {
   return (
-    <section className="border-zinc-400 p-6 w-full flex justify-between">
-      <div className="flex-row items-center">
+    <section className='border-zinc-400 p-6 w-full flex justify-between'>
+      <div className='flex-row items-center'>
         <SiteTitle />
       </div>
-      <div className="flex items-center">
+      <div className='flex items-center'>
         <ModeToggle />
         {props.authed && (
           <>
-            <Separator orientation="vertical" />
+            <Separator orientation='vertical' />
             <SignOut />
           </>
         )}

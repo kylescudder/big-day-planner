@@ -30,21 +30,21 @@ export function SongRequestForm(props: { guest: Guest }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-4 py-4">
+        <div className='grid gap-4 py-4'>
           <FormField
             control={form.control}
-            name="artist"
+            name='artist'
             render={({ field }: { field: FieldValues }) => (
               <FormItem>
-                <FormLabel htmlFor="artist">Artist</FormLabel>
+                <FormLabel htmlFor='artist'>Artist</FormLabel>
                 <FormControl>
-                  <div className="items-center gap-4">
+                  <div className='items-center gap-4'>
                     <Input
                       {...field}
-                      id="artist"
-                      className="text-base"
-                      placeholder="artist"
-                      variant="default"
+                      id='artist'
+                      className='text-base'
+                      placeholder='artist'
+                      variant='default'
                     />
                   </div>
                 </FormControl>
@@ -54,18 +54,18 @@ export function SongRequestForm(props: { guest: Guest }) {
           />
           <FormField
             control={form.control}
-            name="song"
+            name='song'
             render={({ field }: { field: FieldValues }) => (
               <FormItem>
-                <FormLabel htmlFor="song">Song</FormLabel>
+                <FormLabel htmlFor='song'>Song</FormLabel>
                 <FormControl>
-                  <div className="items-center gap-4">
+                  <div className='items-center gap-4'>
                     <Input
                       {...field}
-                      id="song"
-                      placeholder="song title"
-                      className="text-base"
-                      variant="default"
+                      id='song'
+                      placeholder='song title'
+                      className='text-base'
+                      variant='default'
                     />
                   </div>
                 </FormControl>
@@ -75,10 +75,10 @@ export function SongRequestForm(props: { guest: Guest }) {
           />
         </div>
         <Button
-          type="submit"
-          size="xs"
-          variant="songrequest"
-          className="float-right"
+          type='submit'
+          size='xs'
+          variant='songrequest'
+          className='float-right'
         >
           <p>submit</p>
         </Button>

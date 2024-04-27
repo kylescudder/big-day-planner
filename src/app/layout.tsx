@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={`${cooperBlack.className}`}>
         <ClerkProvider>
           <main className={`${cooperBlack.className} justify-center h-screen`}>

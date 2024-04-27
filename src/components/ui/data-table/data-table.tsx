@@ -64,18 +64,18 @@ export const DataTable = <TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className='flex items-center py-4'>
         <Input
-          placeholder="Filter guests..."
+          placeholder='Filter guests...'
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
             table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className='max-w-sm'
         />
         <DataTableViewOptions table={table} />
       </div>
-      <div className="rounded-md border">
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -116,7 +116,7 @@ export const DataTable = <TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className='h-24 text-center'
                 >
                   No results.
                 </TableCell>

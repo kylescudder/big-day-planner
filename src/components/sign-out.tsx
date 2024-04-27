@@ -3,17 +3,17 @@ import { IconLogout } from '@tabler/icons-react'
 
 export default function Logout() {
   return (
-    <div className="pl-4">
+    <div className='pl-4'>
       <SignedIn>
-        <SignOutButton redirectUrl="/sign-in">
-          <div className="flex align-middle cursor-pointer">
+        <SignOutButton redirectUrl='/sign-in'>
+          <div className='flex align-middle cursor-pointer'>
             <IconLogout
               size={24}
-              className="text-foreground"
+              className='text-foreground'
               stroke={2}
-              strokeLinejoin="miter"
+              strokeLinejoin='miter'
             />
-            <p className="text-foreground max-lg:hidden font-black pl-3">
+            <p className='text-foreground max-lg:hidden font-black pl-3'>
               Sign Out
             </p>
           </div>
