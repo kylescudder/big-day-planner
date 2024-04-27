@@ -73,8 +73,13 @@ export function SongRequestForm(props: { guest: Guest }) {
             )}
           />
         </div>
-        <Button type="submit">
-          <p>Save changes</p>
+        <Button
+          type="submit"
+          size="xs"
+          variant="songrequest"
+          className="float-right"
+        >
+          <p>submit</p>
         </Button>
       </form>
     </Form>
