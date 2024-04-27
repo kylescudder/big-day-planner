@@ -30,7 +30,7 @@ export function SongRequestForm(props: { guest: Guest }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-4 p-4">
+        <div className="grid gap-4 py-4">
           <FormField
             control={form.control}
             name="artist"
