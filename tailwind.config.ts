@@ -10,9 +10,6 @@ const config = {
   ],
   prefix: '',
   theme: {
-    borderRadius: {
-      '4xl': '30px'
-    },
     container: {
       center: true,
       padding: '2rem',
@@ -61,6 +58,7 @@ const config = {
         }
       },
       borderRadius: {
+        '4xl': '30px',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'

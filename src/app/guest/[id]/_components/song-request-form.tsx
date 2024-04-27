@@ -38,7 +38,13 @@ export function SongRequestForm(props: { guest: Guest }) {
                 <FormLabel htmlFor="artist">Artist</FormLabel>
                 <FormControl>
                   <div className="items-center gap-4">
-                    <Input {...field} id="artist" className="text-base" />
+                    <Input
+                      {...field}
+                      id="artist"
+                      className="text-base"
+                      placeholder="artist"
+                      variant="default"
+                    />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -53,7 +59,13 @@ export function SongRequestForm(props: { guest: Guest }) {
                 <FormLabel htmlFor="song">Song</FormLabel>
                 <FormControl>
                   <div className="items-center gap-4">
-                    <Input {...field} id="song" className="text-base" />
+                    <Input
+                      {...field}
+                      id="song"
+                      placeholder="song title"
+                      className="text-base"
+                      variant="default"
+                    />
                   </div>
                 </FormControl>
                 <FormMessage />
