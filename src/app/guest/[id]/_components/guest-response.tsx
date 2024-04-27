@@ -5,6 +5,7 @@ import { type Guest } from '@/server/db/schema'
 import { useState } from 'react'
 import { Timings } from './timings'
 import { SongRequest } from './song-requst'
+import { Details } from './details'
 
 export function GuestResponse(props: { guestData: Guest[] }) {
   const [rsvp, setRSVP] = useState(false)
