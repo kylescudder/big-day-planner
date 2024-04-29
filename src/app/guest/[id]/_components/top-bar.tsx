@@ -1,17 +1,27 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import ListItem from '@/components/ui/list-item'
 import { PAGES } from '@/consts/pages'
 import Image from 'next/image'
 import { IconMenu2 } from '@tabler/icons-react'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
-import { usePathname } from 'next/navigation'
 
 const TopBar = () => {
-  const [currentSection, setCurrentSection] = useState<string>('#rsvp')
-  console.log('currentPage: ', currentSection)
+  const [currentSection, setCurrentSection] = useState<string>('home')
+
+  useEffect(() => {
+    const section = document.getElementById(currentSection)
+    const sectionTop =
+      currentSection === 'home'
+        ? (section?.offsetTop ?? 0) - 96
+        : section?.offsetTop
+    window.scrollTo({
+      top: sectionTop,
+      behavior: 'smooth'
+    })
+  }, [currentSection])
 
   return (
     <div className='flex justify-between py-6 px-6 h-24 w-full'>
