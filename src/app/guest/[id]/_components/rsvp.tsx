@@ -2,6 +2,7 @@
 
 import { type Guest } from '@/server/db/schema'
 import { RSVPAnswer } from './rsvp-answer'
+import { Button } from '@/components/ui/button'
 
 export function RSVP(props: { guestData: Guest[] }) {
   return (
@@ -37,6 +38,14 @@ export function RSVP(props: { guestData: Guest[] }) {
           <p className='text-xs pt-10 pb-10'>
             We kindly ask you let us know by 00/00/2025
           </p>
+          <Button
+            type='submit'
+            size='xs'
+            variant='rsvp'
+            className='float-right'
+          >
+            <p>submit</p>
+          </Button>
         </>
       ) : null}
       {props.guestData[0]?.rsvp === true &&

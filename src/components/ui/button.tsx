@@ -19,7 +19,8 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         songrequest:
-          'bg-secondary border-2 border-white text-white hover:bg-primary/90'
+          'bg-secondary border-2 border-white text-white hover:border-primary hover:border-2 transition-colors ease-in-out duration-500',
+        rsvp: 'bg-primary border-2 border-white text-white hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500'
       },
       size: {
         default: 'h-10 px-4 py-2',
