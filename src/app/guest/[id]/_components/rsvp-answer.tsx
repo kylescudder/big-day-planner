@@ -12,7 +12,7 @@ export function RSVPAnswer(props: { guest: Guest }) {
           htmlFor='terms'
           className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
         >
-          wouldn't miss it for the world
+          wouldn&apos;t miss it for the world
         </label>
         <Checkbox
           className='bg-primary border-background border-2 text-secondary rounded-4xl ml-auto' // added ml-auto to float to the right
