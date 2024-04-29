@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { GuestResponse } from './_components/guest-response'
 import { RSVP } from './_components/rsvp'
 import { redirect } from 'next/navigation'
+import { Fab } from './_components/fab'
 
 export default async function Guest({ params }: { params: { id: string } }) {
   const guestData = await getGuestAndLinkedGuestRecord(params.id)
@@ -15,15 +16,15 @@ export default async function Guest({ params }: { params: { id: string } }) {
     redirect('/')
   }
   return (
-    <div className='flex min-h-screen flex-col items-center'>
+    <div className='flex min-h-screen flex-col items-center overflow-x-hidden pt-10'>
       <Section id='home' className='bg-background pt-7'>
-        <Image
+        {/* <Image
           alt='Pink Splatter'
           src='/pink-splatter.svg'
           height={120}
           width={120}
           className='-right-16 absolute z-0'
-        />
+        /> */}
         <div className='text-5xl'>
           <p className='inline'>hello </p>
           {guestData.map((guest, index) =>
@@ -36,14 +37,14 @@ export default async function Guest({ params }: { params: { id: string } }) {
           we&apos;re getting married!
         </p>
       </Section>
-      <Section id='rsvp' className='bg-primary text-background'>
-        <Image
+      <Section id='rsvp' className='bg-primary text-background pb-10'>
+        {/* <Image
           alt='Pink Splatter 1'
           src='/pink-splatter.svg'
           height={120}
           width={120}
           className='-left-16 absolute z-0'
-        />
+        /> */}
         <p className='text-3xl pt-14'>rsvp</p>
         <section className='pt-10'>
           <RSVP guestData={guestData} />
@@ -57,6 +58,7 @@ export default async function Guest({ params }: { params: { id: string } }) {
         />
       </Section>
       <GuestResponse guestData={guestData} />
+      <Fab />
     </div>
   )
 }
