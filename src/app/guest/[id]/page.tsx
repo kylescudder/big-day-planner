@@ -50,10 +50,10 @@ export default async function Guest({ params }: { params: { id: string } }) {
         </section>
         <Image
           alt='Venue illustration'
-          src='/venue.jpg'
+          src='/assets-rsvp.svg'
           width={300}
           height={200}
-          className='-right-16 ml-auto z-0 flex relative'
+          className='float-end w-full relative h-auto -mr-16'
         />
       </Section>
       <GuestResponse guestData={guestData} />
