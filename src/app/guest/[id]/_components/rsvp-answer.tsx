@@ -15,7 +15,7 @@ export function RSVPAnswer(props: { guest: Guest }) {
           wouldn&apos;t miss it for the world
         </label>
         <Checkbox
-          className='bg-primary border-background border-2 text-secondary rounded-4xl ml-auto' // added ml-auto to float to the right
+          className='bg-primary border-background border-2 text-secondary rounded-4xl ml-auto hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500' // added ml-auto to float to the right
           onCheckedChange={(value) => console.log(value)}
           aria-label='RSVP Yes'
         />
@@ -28,7 +28,7 @@ export function RSVPAnswer(props: { guest: Guest }) {
           will be there in spirit
         </label>
         <Checkbox
-          className='bg-primary border-background border-2 text-secondary rounded-4xl ml-auto' // added ml-auto to float to the right
+          className='bg-primary border-background border-2 text-secondary rounded-4xl ml-auto hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500' // added ml-auto to float to the right
           onCheckedChange={(value) => console.log(value)}
           aria-label='RSVP No'
         />
