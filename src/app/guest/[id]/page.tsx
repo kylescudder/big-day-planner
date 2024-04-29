@@ -11,7 +11,6 @@ import { redirect } from 'next/navigation'
 export default async function Guest({ params }: { params: { id: string } }) {
   const guestData = await getGuestAndLinkedGuestRecord(params.id)
 
-  console.log(guestData)
   if (guestData.length === 0) {
     redirect('/')
   }
