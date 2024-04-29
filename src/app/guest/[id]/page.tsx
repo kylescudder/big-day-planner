@@ -6,10 +6,15 @@ import { getGuestAndLinkedGuestRecord } from '@/server/service'
 import Image from 'next/image'
 import { GuestResponse } from './_components/guest-response'
 import { RSVP } from './_components/rsvp'
+import { redirect } from 'next/navigation'
 
 export default async function Guest({ params }: { params: { id: string } }) {
   const guestData = await getGuestAndLinkedGuestRecord(params.id)
 
+  console.log(guestData)
+  if (guestData.length === 0) {
+    redirect('/')
+  }
   return (
     <div className='flex min-h-screen flex-col items-center'>
       <Section id='home' className='bg-background pt-7'>
