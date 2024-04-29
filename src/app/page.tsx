@@ -1,6 +1,3 @@
-import { Section } from '@/components/section'
-import Guest from './guest/[id]/page'
-
 export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
