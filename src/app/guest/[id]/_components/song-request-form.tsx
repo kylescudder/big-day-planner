@@ -36,7 +36,6 @@ export function SongRequestForm(props: { guest: Guest }) {
             name='artist'
             render={({ field }: { field: FieldValues }) => (
               <FormItem>
-                <FormLabel htmlFor='artist'>Artist</FormLabel>
                 <FormControl>
                   <div className='items-center gap-4'>
                     <Input
@@ -57,7 +56,6 @@ export function SongRequestForm(props: { guest: Guest }) {
             name='song'
             render={({ field }: { field: FieldValues }) => (
               <FormItem>
-                <FormLabel htmlFor='song'>Song</FormLabel>
                 <FormControl>
                   <div className='items-center gap-4'>
                     <Input
