@@ -82,5 +82,6 @@ export function SongRequestForm(props: { guest: Guest }) {
         </Button>
       </form>
     </Form>
+            <p className='text-lg'>{props.guest.forename}</p>
   )
 }
