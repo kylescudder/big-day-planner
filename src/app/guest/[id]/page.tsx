@@ -18,33 +18,28 @@ export default async function Guest({ params }: { params: { id: string } }) {
   return (
     <div className='flex min-h-screen flex-col items-center overflow-x-hidden pt-10'>
       <Section id='home' className='bg-background pt-7'>
-        {/* <Image
-          alt='Pink Splatter'
-          src='/pink-splatter.svg'
-          height={120}
-          width={120}
-          className='-right-16 absolute z-0'
-        /> */}
+        <Image
+          alt='Pink Splatter 1'
+          src='/assets-shape-welcome.svg'
+          height={200}
+          width={200}
+          className='float-end h-auto -mr-8 fixed block right-0 top-16 z-0'
+        />
         <div className='text-5xl'>
-          <p className='inline'>hello </p>
-          {guestData.map((guest, index) =>
-            index === guestData.length - 1
-              ? guest.forename.toLowerCase()
-              : `${guest.forename.toLowerCase()} & `
-          )}
+          <p className='inline relative z-10'>hello </p>
+          <span className='relative z-10'>
+            {guestData.map((guest, index) =>
+              index === guestData.length - 1
+                ? guest.forename.toLowerCase()
+                : `${guest.forename.toLowerCase()} & `
+            )}
+          </span>
         </div>
-        <p className='text-3xl text-primary pt-10 pb-20'>
+        <p className='text-3xl text-primary pt-10 pb-20 relative z-10'>
           we&apos;re getting married!
         </p>
       </Section>
       <Section id='rsvp' className='bg-primary text-background pb-10'>
-        {/* <Image
-          alt='Pink Splatter 1'
-          src='/pink-splatter.svg'
-          height={120}
-          width={120}
-          className='-left-16 absolute z-0'
-        /> */}
         <p className='text-3xl pt-14'>rsvp</p>
         <section className='pt-10'>
           <RSVP guestData={guestData} />
