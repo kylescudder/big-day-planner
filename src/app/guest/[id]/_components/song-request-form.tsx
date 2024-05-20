@@ -3,21 +3,27 @@ import {
   Form,
   FormField,
   FormItem,
-  FormLabel,
   FormControl,
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { type Guest } from '@/server/db/schema'
 import { updateSongChoice } from '@/server/service'
+import { useEffect, useState } from 'react'
 import { useForm, type FieldValues } from 'react-hook-form'
 
 export function SongRequestForm(props: { guest: Guest }) {
+  const [song, setSong] = useState<string>(props.guest.song)
+
   const form = useForm({
     defaultValues: {
       ...props.guest
     }
   })
+
+  useEffect(() => {
+    console.log(song)
+  }, [song])
 
   async function onSubmit(values: Guest) {
     const guest = {
@@ -25,12 +31,20 @@ export function SongRequestForm(props: { guest: Guest }) {
       updatedAt: new Date()
     }
     await updateSongChoice(guest)
+    setSong(guest.song)
   }
 
-  return (
+  return song !== '' ? (
+    <p className='pb-3'>
+      Thanks for submitting your song request {props.guest.forename}, we will
+      share the finished playlist with you once you have everyone&apos;s
+      suggestions!
+    </p>
+  ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='grid gap-4 py-4'>
+        <div className='grid gap-4'>
+          <p className='text-lg'>{props.guest.forename}</p>
           <FormField
             control={form.control}
             name='artist'
@@ -71,17 +85,16 @@ export function SongRequestForm(props: { guest: Guest }) {
               </FormItem>
             )}
           />
+          <Button
+            type='submit'
+            size='xs'
+            variant='songrequest'
+            className='float-right ml-auto w-20'
+          >
+            <p>submit</p>
+          </Button>
         </div>
-        <Button
-          type='submit'
-          size='xs'
-          variant='songrequest'
-          className='float-right'
-        >
-          <p>submit</p>
-        </Button>
       </form>
     </Form>
-            <p className='text-lg'>{props.guest.forename}</p>
   )
 }
