@@ -23,17 +23,16 @@ export default async function Guest({ params }: { params: { id: string } }) {
           src='/assets-shape-welcome.svg'
           height={200}
           width={200}
-          className='float-end h-auto -mr-8 fixed block right-0 top-16 z-0'
+          className='float-end h-auto -mr-8 absolute block right-0 top-16 z-0'
         />
         <div className='text-5xl'>
-          <p className='inline relative z-10'>hello </p>
-          <span className='relative z-10'>
+          <div className='whitespace-pre-line z-10 relative'>
             {guestData.map((guest, index) =>
-              index === guestData.length - 1
-                ? guest.forename.toLowerCase()
-                : `${guest.forename.toLowerCase()} & `
+              index === 0
+                ? `hello ${guest.forename.toLowerCase()}`
+                : `\n& ${guest.forename.toLowerCase()}`
             )}
-          </span>
+          </div>
         </div>
         <p className='text-3xl text-primary pt-10 pb-20 relative z-10'>
           we&apos;re getting married!
