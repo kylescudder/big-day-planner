@@ -9,7 +9,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { type Guest } from '@/server/db/schema'
 import { updateSongChoice } from '@/server/service'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm, type FieldValues } from 'react-hook-form'
 
 export function SongRequestForm(props: { guest: Guest }) {
@@ -20,10 +20,6 @@ export function SongRequestForm(props: { guest: Guest }) {
       ...props.guest
     }
   })
-
-  useEffect(() => {
-    console.log(song)
-  }, [song])
 
   async function onSubmit(values: Guest) {
     const guest = {
