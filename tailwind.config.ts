@@ -20,7 +20,8 @@ const config = {
     extend: {
       spacing: {
         '46': '11.5rem',
-        '62': '15.5rem'
+        '62': '15.5rem',
+        '200': '50rem'
       },
       colors: {
         border: 'hsl(var(--border))',

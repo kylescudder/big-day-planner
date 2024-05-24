@@ -16,9 +16,7 @@ export function RSVP(props: { guestData: Guest[] }) {
       {props.guestData[0]?.rsvp === true &&
       props.guestData[0]?.rsvpAnswer === true ? (
         <div className='text-lg'>
-          <p className='pt-10'>
-            we can&apos;t wait to celebrate our day with you!
-          </p>
+          <p>we can&apos;t wait to celebrate our day with you!</p>
         </div>
       ) : null}
       {props.guestData[0]?.rsvpAnswer === true ? (
