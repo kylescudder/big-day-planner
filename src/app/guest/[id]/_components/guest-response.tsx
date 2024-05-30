@@ -6,8 +6,14 @@ import { useState } from 'react'
 import { Timings } from './timings'
 import { SongRequest } from './song-requst'
 import { Details } from './details'
+import { Menu } from './menu'
 
-export function GuestResponse(props: { guestData: Guest[] }) {
+export function GuestResponse(props: {
+  guestData: Guest[]
+  starters: string[]
+  mains: string[]
+  puddings: string[]
+}) {
   const [rsvp, setRSVP] = useState(false)
   if (
     !rsvp &&
@@ -22,7 +28,12 @@ export function GuestResponse(props: { guestData: Guest[] }) {
       {rsvp && (
         <>
           <Section id='menu' className='bg-background h-52'>
-            <p className='text-3xl pt-14'>menu</p>
+            <Menu
+              guestData={props.guestData}
+              starters={props.starters}
+              mains={props.mains}
+              puddings={props.puddings}
+            />
           </Section>
           <Section id='song-request' className='bg-secondary pb-10'>
             <SongRequest guestData={props.guestData} />

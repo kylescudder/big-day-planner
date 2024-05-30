@@ -8,7 +8,11 @@ import {
   createGuest,
   getGuest,
   getGuestAndLinkedGuest,
-  updateGuestSong
+  updateGuestSong,
+  getStarters,
+  getMains,
+  getPuddings,
+  updateGuestMenu
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import { type Guest } from './db/schema'
@@ -42,11 +46,11 @@ export async function createGuestRecord(guest: Guest) {
 }
 
 export async function updateSongChoice(guest: Guest) {
-  const user = auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
   return await updateGuestSong(guest)
+}
+
+export async function updateMenuChoice(guest: Guest) {
+  return await updateGuestMenu(guest)
 }
 
 export async function deleteGuestRecord(id: string) {
@@ -79,4 +83,16 @@ export async function getAddressRecords(addressUrl: string) {
   if (!user.userId) throw new Error('Unauthorized')
 
   return await getAddress(addressUrl)
+}
+
+export async function getStarterRecords() {
+  return await getStarters()
+}
+
+export async function getMainRecords() {
+  return await getMains()
+}
+
+export async function getPuddingRecords() {
+  return await getPuddings()
 }

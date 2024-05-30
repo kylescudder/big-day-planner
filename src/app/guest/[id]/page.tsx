@@ -2,7 +2,12 @@
 
 import { type Guest } from '@/server/db/schema'
 import { Section } from '@/components/section'
-import { getGuestAndLinkedGuestRecord } from '@/server/service'
+import {
+  getGuestAndLinkedGuestRecord,
+  getMainRecords,
+  getPuddingRecords,
+  getStarterRecords
+} from '@/server/service'
 import Image from 'next/image'
 import { GuestResponse } from './_components/guest-response'
 import { RSVP } from './_components/rsvp'
@@ -11,6 +16,9 @@ import { Fab } from './_components/fab'
 
 export default async function Guest({ params }: { params: { id: string } }) {
   const guestData = await getGuestAndLinkedGuestRecord(params.id)
+  const starters = await getStarterRecords()
+  const mains = await getMainRecords()
+  const puddings = await getPuddingRecords()
 
   if (guestData.length === 0) {
     redirect('/')
@@ -59,7 +67,12 @@ export default async function Guest({ params }: { params: { id: string } }) {
           className='float-end w-full relative h-auto -mr-12'
         />
       </Section>
-      <GuestResponse guestData={guestData} />
+      <GuestResponse
+        guestData={guestData}
+        starters={starters}
+        mains={mains}
+        puddings={puddings}
+      />
       <Fab />
     </div>
   )
