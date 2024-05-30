@@ -15,10 +15,10 @@ export function Timings() {
           </div>
           <div className='flex-col col-span-1'>
             <Image
-              alt='ring illustration'
-              src='/ring.jpg'
-              width={150}
-              height={150}
+              alt='Ring illustration'
+              src='/assets-timings.svg'
+              width={100}
+              height={100}
               className='ml-auto w-50'
             />
           </div>
@@ -31,10 +31,10 @@ export function Timings() {
           </div>
           <div className='flex-col col-span-1'>
             <Image
-              alt='ring illustration'
-              src='/ring.jpg'
-              width={150}
-              height={150}
+              alt='Ring illustration'
+              src='/assets-timings.svg'
+              width={100}
+              height={100}
               className='mr-auto w-50'
             />
           </div>
@@ -47,10 +47,10 @@ export function Timings() {
           </div>
           <div className='flex-col col-span-1'>
             <Image
-              alt='ring illustration'
-              src='/ring.jpg'
-              width={150}
-              height={150}
+              alt='Ring illustration'
+              src='/assets-timings.svg'
+              width={100}
+              height={100}
               className='ml-auto'
             />
           </div>
@@ -63,10 +63,10 @@ export function Timings() {
           </div>
           <div className='flex-col col-span-1'>
             <Image
-              alt='ring illustration'
-              src='/ring.jpg'
-              width={150}
-              height={150}
+              alt='Ring illustration'
+              src='/assets-timings.svg'
+              width={100}
+              height={100}
               className='mr-auto'
             />
           </div>
@@ -78,10 +78,10 @@ export function Timings() {
           </div>
           <div className='flex-col col-span-1'>
             <Image
-              alt='ring illustration'
-              src='/ring.jpg'
-              width={150}
-              height={150}
+              alt='Ring illustration'
+              src='/assets-timings.svg'
+              width={100}
+              height={100}
               className='ml-auto'
             />
           </div>
