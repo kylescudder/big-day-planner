@@ -22,7 +22,7 @@ const config = {
         '46': '11.5rem',
         '62': '15.5rem',
         '200': '50rem',
-        '300': '75rem'
+        '600': '150rem'
       },
       colors: {
         border: 'hsl(var(--border))',

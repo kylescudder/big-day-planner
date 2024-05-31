@@ -20,7 +20,8 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         songrequest:
           'bg-secondary border-2 border-white text-white hover:border-primary hover:border-2 transition-colors ease-in-out duration-500',
-        rsvp: 'bg-primary border-2 border-white text-white hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500'
+        rsvp: 'bg-primary border-2 border-white text-white hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500',
+        menu: 'bg-transparent text-black border-2 border-black hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500'
       },
       size: {
         default: 'h-10 px-4 py-2',
