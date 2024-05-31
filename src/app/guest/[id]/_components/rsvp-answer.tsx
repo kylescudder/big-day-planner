@@ -44,7 +44,7 @@ export function RSVPAnswer(props: { guestData: Guest[] }) {
   ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-4">
+        <div className='grid gap-4'>
           {props.guestData.map((guest, index) => (
             <div key={index} className='text-lg pb-10'>
               <p className='text-lg'>{guest.forename}</p>
