@@ -21,17 +21,16 @@ export function RSVP(props: { guestData: Guest[] }) {
       ) : null}
       {props.guestData[0]?.rsvpAnswer === true ? (
         <div className='text-lg'>
-          <p className='pt-10'>00.00.26</p>
+          <p>00.00.26</p>
           <p>02:00pm-12:00am</p>
           <p className='pt-4'>Lewes Registery Office</p>
           <p>Southover Grange, Southover High St,</p>
           <p>Lewes BN7 1TP</p>
         </div>
       ) : null}
-      {props.guestData[0]?.rsvp === false ? (
-        <>
+      <RSVPAnswer guestData={props.guestData} />
+      {/* {props.guestData[0]?.rsvp === false ? (
           {props.guestData.map((guest, index) => (
-            <RSVPAnswer key={index} guest={guest} />
           ))}
           <p className='text-xs pt-10 pb-10'>
             We kindly ask you let us know by 00/00/2025
@@ -45,7 +44,7 @@ export function RSVP(props: { guestData: Guest[] }) {
             <p>submit</p>
           </Button>
         </>
-      ) : null}
+      ) : null} */}
       {props.guestData[0]?.rsvp === true &&
       props.guestData[0]?.rsvpAnswer === true ? (
         <div className='text-lg'>

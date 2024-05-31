@@ -12,7 +12,8 @@ import {
   getStarters,
   getMains,
   getPuddings,
-  updateGuestMenu
+  updateGuestMenu,
+  updateGuestRSVP
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import { type Guest } from './db/schema'
@@ -45,11 +46,16 @@ export async function createGuestRecord(guest: Guest) {
   return await createGuest(guest)
 }
 
+export async function updateRSVP(guest: Guest) {
+  return await updateGuestRSVP(guest)
+}
+
 export async function updateSongChoice(guest: Guest) {
   return await updateGuestSong(guest)
 }
 
 export async function updateMenuChoice(guest: Guest) {
+  console.log('updateMenuChoice', guest)
   return await updateGuestMenu(guest)
 }
 

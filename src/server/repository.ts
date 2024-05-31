@@ -32,6 +32,13 @@ export async function getGuest(id: string) {
   })
 }
 
+export async function updateGuestRSVP(guest: Guest) {
+  await db
+    .update(guests)
+    .set({ rsvp: guest.rsvp, rsvpAnswer: guest.rsvpAnswer })
+    .where(eq(guests.id, guest.id))
+}
+
 export async function createGuest(guest: Guest) {
   return await db.insert(guests).values(guest).execute()
 }
