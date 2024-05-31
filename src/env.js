@@ -10,6 +10,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     GETADDRESS_URL: z.string().url(),
     GETADDRESS_API_KEY: z.string(),
+    RESEND_API_KEY: z.string(),
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development')
@@ -32,6 +33,7 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     GETADDRESS_URL: process.env.GETADDRESS_URL,
     GETADDRESS_API_KEY: process.env.GETADDRESS_API_KEY,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     NODE_ENV: process.env.NODE_ENV
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
