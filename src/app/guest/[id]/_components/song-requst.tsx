@@ -23,7 +23,7 @@ export function SongRequest(props: { guestData: Guest[] }) {
         />
         <p className='text-lg -ms-16'>
           check out the playlist you and all the other guests are creating{' '}
-          <p className='text-primary'>here</p>
+          <a className='text-primary'>here</a>
         </p>
       </div>
       <p className='text-right w-48 float-end pb-10'>
