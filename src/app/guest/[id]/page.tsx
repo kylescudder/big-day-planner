@@ -47,7 +47,7 @@ export default async function Guest({ params }: { params: { id: string } }) {
           married!
         </p>
       </Section>
-      <Section id='rsvp' className='bg-primary text-background pb-10'>
+      <Section id='rsvp' className='bg-primary text-background pb-20'>
         <Image
           alt='Pink Splatter 2'
           src='/assets-shape-rsvp.svg'

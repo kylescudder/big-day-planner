@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Section } from '@/components/section'
 import {
   type Pudding,
@@ -41,9 +42,23 @@ export function GuestResponse(props: {
             />
           </Section>
           <Section id='song-request' className='bg-secondary'>
+            <Image
+              alt='Pink Splatter 4'
+              src='/assets-shape-song.svg'
+              width={100}
+              height={100}
+              className='float-start h-auto absolute block left-0 top-700 z-0'
+            />
             <SongRequest guestData={props.guestData} />
           </Section>
           <Section id='timings' className='bg-background'>
+            <Image
+              alt='Pink Splatter 5'
+              src='/assets-shape-timings.svg'
+              width={100}
+              height={100}
+              className='float-start h-auto absolute block right-0 top-750 z-0'
+            />
             <Timings />
           </Section>
           <Section id='details' className='bg-primary'>

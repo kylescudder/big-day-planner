@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export function Timings() {
   return (
-    <div>
+    <div className='relative z-10'>
       <p className='text-3xl pt-14'>timings</p>
       <p className=' text-lg pt-10'>
         here are some of the timing guidelines for throughout the day
