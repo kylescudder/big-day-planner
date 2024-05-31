@@ -4,7 +4,7 @@ import { type Guest } from '@/server/db/schema'
 import { RSVPAnswer } from './rsvp-answer'
 
 export function RSVP(props: { guestData: Guest[] }) {
-  console.log(props.guestData)
+  console.log('props.guestData', props.guestData)
   return (
     <div>
       {props.guestData.every(
@@ -23,13 +23,24 @@ export function RSVP(props: { guestData: Guest[] }) {
           <p>Lewes BN7 1TP</p>
         </div>
       ) : null}
-      <RSVPAnswer guestData={props.guestData} />
+      {props.guestData.every((guest) => guest.rsvp === null) ? (
+        <RSVPAnswer guestData={props.guestData} />
+      ) : null}
       {props.guestData.every(
         (guest) => guest.rsvp === true && guest.rsvpAnswer === true
       ) ? (
         <div className='text-lg'>
           <p className='pt-10'>reception details</p>
           <p>address of the receiption will go here</p>
+        </div>
+      ) : null}
+      {props.guestData.every(
+        (guest) => guest.rsvp === true && guest.rsvpAnswer === false
+      ) ? (
+        <div className='text-lg'>
+          <p className='pt-10'>
+            thanks for letting us know, you&apos;ll be missed!
+          </p>
         </div>
       ) : null}
     </div>

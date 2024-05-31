@@ -16,8 +16,11 @@ import { useForm } from 'react-hook-form'
 import { updateRSVP } from '@/server/service'
 
 export function RSVPAnswer(props: { guestData: Guest[] }) {
+  console.log('props.guestData', props.guestData)
   const [rsvpAnswerNo, setRsvpAnswerNo] = useState<boolean>(
-    props.guestData.every((guest) => guest.rsvpAnswer === false ?? null)
+    props.guestData.every(
+      (guest) => (guest.rsvpAnswer === false ?? null) && guest.rsvp === true
+    )
   )
 
   const form = useForm({
