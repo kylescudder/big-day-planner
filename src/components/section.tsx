@@ -7,9 +7,9 @@ function Section({
   return (
     <div
       id={props.id}
-      className={cn('rounded-t-4xl w-full -mt-10 h-fit ', className)}
+      className={cn('rounded-t-4xl w-full -mt-10 h-fit pb-10', className)}
     >
-      <article className='mb-12 px-6'>{props.children}</article>
+      <article className='px-6'>{props.children}</article>
     </div>
   )
 }
