@@ -4,7 +4,6 @@ import { type Guest } from '@/server/db/schema'
 import { RSVPAnswer } from './rsvp-answer'
 
 export function RSVP(props: { guestData: Guest[] }) {
-  console.log('props.guestData', props.guestData)
   return (
     <div>
       {props.guestData.every(

@@ -55,7 +55,6 @@ export async function updateSongChoice(guest: Guest) {
 }
 
 export async function updateMenuChoice(guest: Guest) {
-  console.log('updateMenuChoice', guest)
   return await updateGuestMenu(guest)
 }
 
