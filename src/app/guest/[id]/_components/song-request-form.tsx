@@ -27,6 +27,17 @@ export function SongRequestForm(props: { guest: Guest }) {
       updatedAt: new Date()
     }
     await updateSongChoice(guest)
+    await fetch('/api/song-choice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        forename: guest.forename,
+        song: guest.song,
+        artist: guest.artist
+      })
+    })
     setSong(guest.song)
   }
 

@@ -33,11 +33,24 @@ export function RSVPAnswer(props: { guestData: Guest[] }) {
       const guest = {
         ...value,
         rsvp: true,
+        rsvpAnswer:
+          typeof value.rsvpAnswer === 'string'
+            ? value.rsvpAnswer === 'true'
             : Boolean(value.rsvpAnswer),
         updatedAt: new Date()
       }
-      console.log(guest)
+
       await updateRSVP(guest)
+      await fetch('/api/rsvp-choice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          forename: guest.forename,
+          rsvpAnswer: guest.rsvpAnswer
+        })
+      })
     }
     setRsvpAnswerNo(true)
   }
@@ -59,11 +72,6 @@ export function RSVPAnswer(props: { guestData: Guest[] }) {
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        defaultValue={
-                          field.value !== undefined
-                            ? String(field.value)
-                            : 'false'
-                        }
                         className='flex flex-col space-y-1'
                       >
                         <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>

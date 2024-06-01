@@ -43,6 +43,25 @@ export function MenuForm(props: {
         updatedAt: new Date()
       }
       await updateMenuChoice(guest)
+      const starter = props.starters.find(
+        (starter) => starter.id === guest.starterId
+      )
+      const main = props.mains.find((main) => main.id === guest.mainId)
+      const pudding = props.puddings.find(
+        (pudding) => pudding.id === guest.puddingId
+      )
+      await fetch('/api/menu-choice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          forename: guest.forename,
+          starter: starter,
+          main: main,
+          pudding: pudding
+        })
+      })
     }
     setAllMenuChosen(true)
   }
