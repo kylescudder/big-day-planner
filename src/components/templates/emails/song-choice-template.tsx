@@ -1,4 +1,3 @@
-import { type Guest } from '@/server/db/schema'
 import * as React from 'react'
 
 interface EmailTemplateProps {
