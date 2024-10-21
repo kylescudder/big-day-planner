@@ -30,7 +30,7 @@
     "@tanstack/react-table": "^8.16.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "drizzle-orm": "^0.31.2",
+    "drizzle-orm": "^0.35.2",
     "next": "^14.2.1",
     "next-themes": "^0.3.0",
     "postgres": "^3.4.3",
