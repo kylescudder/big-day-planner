@@ -14,7 +14,10 @@ import { RSVP } from './_components/rsvp'
 import { redirect } from 'next/navigation'
 import { Fab } from './_components/fab'
 
-export default async function Guest({ params }: { params: { id: string } }) {
+export default async function Guest(props: {
+  params: Promise<{ id: string }>
+}) {
+  const params = await props.params
   const guestData = await getGuestAndLinkedGuestRecord(params.id)
   const starters = await getStarterRecords()
   const mains = await getMainRecords()

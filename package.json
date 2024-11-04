@@ -7,7 +7,7 @@
     "build": "next build",
     "db:push": "drizzle-kit push:pg",
     "db:studio": "drizzle-kit studio",
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbopack",
     "lint": "next lint",
     "start": "next start",
     "format": "prettier --write .",
@@ -31,11 +31,11 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "drizzle-orm": "^0.36.0",
-    "next": "^14.2.1",
+    "next": "15.0.2",
     "next-themes": "^0.3.0",
     "postgres": "^3.4.3",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0-rc-02c0e824-20241028",
+    "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-hook-form": "^7.51.3",
     "resend": "^4.0.0",
     "sonner": "^1.4.41",
@@ -47,13 +47,13 @@
   "devDependencies": {
     "@types/eslint": "^8.56.2",
     "@types/node": "^22.8.7",
-    "@types/react": "^18.2.57",
-    "@types/react-dom": "^18.2.19",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "drizzle-kit": "^0.27.1",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^15.0.2",
+    "eslint-config-next": "15.0.2",
     "eslint-plugin-drizzle": "^0.2.3",
     "husky": "^9.0.11",
     "pg": "^8.11.3",
@@ -65,5 +65,9 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.30.2"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   }
 }
