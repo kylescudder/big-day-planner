@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${cooperBlack.className}`}>
-        <ClerkProvider>
+        <ClerkProvider dynamic>
           <main className={`${cooperBlack.className} justify-center h-screen`}>
             {children}
             <Toaster />

@@ -19,7 +19,7 @@ import { auth } from '@clerk/nextjs/server'
 import { type Guest } from './db/schema'
 
 export async function getGuestRecords() {
-  const user = auth()
+  const user = await auth()
 
   if (!user.userId) throw new Error('Unauthorized')
 
@@ -31,7 +31,7 @@ export async function getGuestAndLinkedGuestRecord(id: string) {
 }
 
 export async function getGuestRecord(id: string) {
-  const user = auth()
+  const user = await auth()
 
   if (!user.userId) throw new Error('Unauthorized')
 
@@ -39,7 +39,7 @@ export async function getGuestRecord(id: string) {
 }
 
 export async function createGuestRecord(guest: Guest) {
-  const user = auth()
+  const user = await auth()
 
   if (!user.userId) throw new Error('Unauthorized')
 
@@ -59,7 +59,7 @@ export async function updateMenuChoice(guest: Guest) {
 }
 
 export async function deleteGuestRecord(id: string) {
-  const user = auth()
+  const user = await auth()
 
   if (!user.userId) throw new Error('Unauthorized')
 
@@ -75,7 +75,7 @@ export async function deleteGuestRecord(id: string) {
 }
 
 export async function getAddressListRecords(postcode: string) {
-  const user = auth()
+  const user = await auth()
 
   if (!user.userId) throw new Error('Unauthorized')
 
@@ -83,7 +83,7 @@ export async function getAddressListRecords(postcode: string) {
 }
 
 export async function getAddressRecords(addressUrl: string) {
-  const user = auth()
+  const user = await auth()
 
   if (!user.userId) throw new Error('Unauthorized')
 
