@@ -18,7 +18,7 @@ import { updateRSVP } from '@/server/service'
 export function RSVPAnswer(props: { guestData: Guest[] }) {
   const [rsvpAnswerNo, setRsvpAnswerNo] = useState<boolean>(
     props.guestData.every(
-      (guest) => (guest.rsvpAnswer === false ?? null) && guest.rsvp === true
+      (guest) => guest.rsvpAnswer === false && guest.rsvp === true
     )
   )
 
