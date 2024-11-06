@@ -3,6 +3,7 @@
 import { type Guest } from '@/server/db/schema'
 import { Section } from '@/components/section'
 import {
+  getDetailRecord,
   getGuestAndLinkedGuestRecord,
   getMainRecords,
   getPuddingRecords,
@@ -22,6 +23,7 @@ export default async function Guest(props: {
   const starters = await getStarterRecords()
   const mains = await getMainRecords()
   const puddings = await getPuddingRecords()
+  const details = await getDetailRecord()
 
   if (guestData.length === 0) {
     redirect('/')
@@ -71,6 +73,7 @@ export default async function Guest(props: {
         />
       </Section>
       <GuestResponse
+        details={details}
         guestData={guestData}
         starters={starters}
         mains={mains}

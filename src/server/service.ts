@@ -13,10 +13,12 @@ import {
   getMains,
   getPuddings,
   updateGuestMenu,
-  updateGuestRSVP
+  updateGuestRSVP,
+  getDetails,
+  updateDetails
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
-import { type Guest } from './db/schema'
+import { Detail, type Guest } from './db/schema'
 
 export async function getGuestRecords() {
   const user = await auth()
@@ -64,14 +66,6 @@ export async function deleteGuestRecord(id: string) {
   if (!user.userId) throw new Error('Unauthorized')
 
   await deleteGuest(id)
-
-  // analyticsServerClient.capture({
-  //   distinctId: user.userId,
-  //   event: "delete image",
-  //   properties: {
-  //     imageId: id,
-  //   },
-  // });
 }
 
 export async function getAddressListRecords(postcode: string) {
@@ -100,4 +94,16 @@ export async function getMainRecords() {
 
 export async function getPuddingRecords() {
   return await getPuddings()
+}
+
+export async function getDetailRecord() {
+  return await getDetails()
+}
+
+export async function updateDetailRecord(details: Detail) {
+  const user = await auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updateDetails(details)
 }

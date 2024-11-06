@@ -5,13 +5,15 @@ import {
   guests,
   type Starter,
   type Main,
-  type Pudding
+  type Pudding,
+  type Detail,
+  details
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
 import { type AddressData, type Suggestions } from '@/types/address'
 
-export async function getGuests() {
+export async function getGuests(): Promise<Guest[]> {
   return await db.query.guests.findMany({})
 }
 
@@ -93,4 +95,35 @@ export const getMains = async (): Promise<Main[]> => {
 
 export const getPuddings = async (): Promise<Pudding[]> => {
   return await db.query.puddings.findMany({})
+}
+
+export const getDetails = async (): Promise<Detail> => {
+  const result = await db.query.details.findFirst({})
+  if (result) {
+    return result
+  } else {
+    throw new Error('No details found')
+  }
+}
+
+export async function updateDetails(detail: Detail) {
+  await db
+    .insert(details)
+    .values(detail)
+    .onConflictDoUpdate({
+      target: [details.id],
+      set: {
+        address1: detail.address1,
+        address2: detail.address2,
+        address3: detail.address3,
+        town: detail.town,
+        county: detail.county,
+        postcode: detail.postcode,
+        detailsTextSubheader: detail.detailsTextSubheader,
+        detailsText: detail.detailsText,
+        adultsOnly: detail.adultsOnly,
+        adultsOnlyText: detail.adultsOnlyText,
+        dresscode: detail.dresscode
+      }
+    })
 }

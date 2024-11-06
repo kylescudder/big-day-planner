@@ -24,7 +24,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { AddGuestForm } from './form'
+import { AddGuestForm } from './form/add-guest-form'
 import { type Guest } from '@/server/db/schema'
 import { Form } from '@/components/ui/form'
 import { uuidv4 } from '@/lib/utils'
@@ -80,7 +80,6 @@ export function AddGuest(props: {
     await createGuestRecord(newGuest)
     setAddressList([])
     setAddressSearched(false)
-    setOpen(false)
     props.onNewGuest(newGuest)
     setOpen(false)
     form.reset()

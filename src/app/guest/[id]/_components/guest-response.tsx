@@ -6,7 +6,8 @@ import {
   type Pudding,
   type Main,
   type Starter,
-  type Guest
+  type Guest,
+  Detail
 } from '@/server/db/schema'
 import { useState } from 'react'
 import { Timings } from './timings'
@@ -15,6 +16,7 @@ import { Details } from './details'
 import { Menu } from './menu'
 
 export function GuestResponse(props: {
+  details: Detail
   guestData: Guest[]
   starters: Starter[]
   mains: Main[]
@@ -62,7 +64,7 @@ export function GuestResponse(props: {
             <Timings />
           </Section>
           <Section id='details' className='bg-primary'>
-            <Details />
+            <Details details={props.details} />
           </Section>
         </>
       )}

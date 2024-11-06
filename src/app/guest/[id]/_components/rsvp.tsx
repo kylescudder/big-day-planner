@@ -22,7 +22,7 @@ export function RSVP(props: { guestData: Guest[] }) {
           <p>Lewes BN7 1TP</p>
         </div>
       ) : null}
-      {props.guestData.every((guest) => guest.rsvp === null) ? (
+      {props.guestData.every((guest) => guest.rsvp === false) ? (
         <RSVPAnswer guestData={props.guestData} />
       ) : null}
       {props.guestData.every(
