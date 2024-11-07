@@ -270,12 +270,8 @@
           "name": "guest_starterId_starter_id_fk",
           "tableFrom": "guest",
           "tableTo": "starter",
-          "columnsFrom": [
-            "starterId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["starterId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -283,12 +279,8 @@
           "name": "guest_mainId_main_id_fk",
           "tableFrom": "guest",
           "tableTo": "main",
-          "columnsFrom": [
-            "mainId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["mainId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -296,12 +288,8 @@
           "name": "guest_puddingId_pudding_id_fk",
           "tableFrom": "guest",
           "tableTo": "pudding",
-          "columnsFrom": [
-            "puddingId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["puddingId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
