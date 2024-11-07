@@ -7,7 +7,9 @@ import {
   type Main,
   type Pudding,
   type Detail,
-  details
+  details,
+  Espoused,
+  espoused
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
@@ -97,12 +99,12 @@ export const getPuddings = async (): Promise<Pudding[]> => {
   return await db.query.puddings.findMany({})
 }
 
-export const getDetails = async (): Promise<Detail> => {
+export const getDetails = async (): Promise<Detail | null> => {
   const result = await db.query.details.findFirst({})
-  if (result) {
-    return result
+  if (result === undefined) {
+    return null
   } else {
-    throw new Error('No details found')
+    return result
   }
 }
 
@@ -124,6 +126,29 @@ export async function updateDetails(detail: Detail) {
         adultsOnly: detail.adultsOnly,
         adultsOnlyText: detail.adultsOnlyText,
         dresscode: detail.dresscode
+      }
+    })
+}
+
+export const getEspoused = async (): Promise<Espoused | null> => {
+  const result = await db.query.espoused.findFirst({})
+  if (result === undefined) {
+    return null
+  }
+  return result
+}
+
+export async function updateEspoused(espousedData: Espoused) {
+  await db
+    .insert(espoused)
+    .values(espousedData)
+    .onConflictDoUpdate({
+      target: [espoused.id],
+      set: {
+        groom: espousedData.groom,
+        bride: espousedData.bride,
+        groomEmail: espousedData.groomEmail,
+        brideEmail: espousedData.brideEmail
       }
     })
 }

@@ -1,13 +1,14 @@
-import { EmailTemplate } from '@/components/templates/emails/rsvp-choice-template'
+import { EmailTemplate } from '@/components/templates/emails/rsvp-thanks-template'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 interface EmailData {
   forename: string
+  email: string
   rsvpAnswer: boolean
-  groomEmail: string
-  brideEmail: string
+  bride: string
+  groom: string
 }
 
 export async function POST(req: Request) {
@@ -15,17 +16,21 @@ export async function POST(req: Request) {
     const emailData = (await req.json()) as EmailData
 
     if (!emailData) {
-      return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
+      return NextResponse.json(
+        { error: 'Email data not found' },
+        { status: 404 }
+      )
     }
 
     const { data, error } = await resend.emails.send({
-      from: 'The Wedding Site <wedding@kylescudder.co.uk>',
-      to: [`${emailData.groomEmail}`, `${emailData.brideEmail}`],
-      subject: `${emailData.forename} has submitted their RSVP!`,
-      text: 'Hello world',
+      from: `${emailData.bride} & ${emailData.groom} <wedding@kylescudder.co.uk>`,
+      to: [`${emailData.email}`],
+      subject: `Thank you for your has submitted you RSVP!`,
       react: EmailTemplate({
         forename: emailData.forename,
-        rsvpAnswer: emailData.rsvpAnswer
+        rsvpAnswer: emailData.rsvpAnswer,
+        bride: emailData.bride,
+        groom: emailData.groom
       })
     })
 

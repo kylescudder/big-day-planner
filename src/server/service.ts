@@ -15,10 +15,12 @@ import {
   updateGuestMenu,
   updateGuestRSVP,
   getDetails,
-  updateDetails
+  updateDetails,
+  updateEspoused,
+  getEspoused
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
-import { Detail, type Guest } from './db/schema'
+import { Detail, Espoused, type Guest } from './db/schema'
 
 export async function getGuestRecords() {
   const user = await auth()
@@ -106,4 +108,16 @@ export async function updateDetailRecord(details: Detail) {
   if (!user.userId) throw new Error('Unauthorized')
 
   return await updateDetails(details)
+}
+
+export async function getEspousedRecord() {
+  return await getEspoused()
+}
+
+export async function updateEspousedRecord(espoused: Espoused) {
+  const user = await auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updateEspoused(espoused)
 }

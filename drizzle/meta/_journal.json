@@ -15,6 +15,20 @@
       "when": 1730893188878,
       "tag": "0001_amusing_living_mummy",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1730970261472,
+      "tag": "0002_soft_supreme_intelligence",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1730999059601,
+      "tag": "0003_famous_caretaker",
+      "breakpoints": true
     }
   ]
 }

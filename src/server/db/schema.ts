@@ -43,12 +43,12 @@ export const details = createTable('detail', {
   id: uuid('id')
     .primaryKey()
     .$defaultFn(() => uuidv4()),
-  address1: varchar('address1').notNull(),
+  address1: varchar('address1', { length: 256 }).notNull(),
   address2: varchar('address2', { length: 256 }),
   address3: varchar('address3', { length: 256 }),
-  town: varchar('town'),
-  county: varchar('county'),
-  postcode: varchar('postcode'),
+  town: varchar('town').notNull(),
+  county: varchar('county').notNull(),
+  postcode: varchar('postcode').notNull(),
   detailsTextSubheader: varchar('details_text_subheader', { length: 256 }),
   detailsText: varchar('details_text', { length: 1024 }),
   adultsOnly: boolean('adults_only'),
@@ -56,6 +56,17 @@ export const details = createTable('detail', {
   dresscode: varchar('dresscode', { length: 256 })
 })
 export type Detail = typeof details.$inferSelect
+
+export const espoused = createTable('espoused', {
+  id: uuid('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv4()),
+  groom: varchar('groom', { length: 256 }).notNull(),
+  bride: varchar('bride', { length: 256 }).notNull(),
+  groomEmail: varchar('groom_email', { length: 256 }).notNull(),
+  brideEmail: varchar('bride_email', { length: 256 }).notNull()
+})
+export type Espoused = typeof espoused.$inferSelect
 
 export const starters = createTable('starter', {
   id: uuid('id')

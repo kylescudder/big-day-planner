@@ -10,12 +10,15 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { type Guest } from '@/server/db/schema'
+import { Espoused, type Guest } from '@/server/db/schema'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useForm } from 'react-hook-form'
-import { updateRSVP } from '@/server/service'
+import { getEspousedRecord, updateRSVP } from '@/server/service'
 
-export function RSVPAnswer(props: { guestData: Guest[] }) {
+export function RSVPAnswer(props: {
+  guestData: Guest[]
+  onRsvpAnswer: (rsp: boolean, rsvpAnswer: boolean) => void
+}) {
   const [rsvpAnswerNo, setRsvpAnswerNo] = useState<boolean>(
     props.guestData.every(
       (guest) => guest.rsvpAnswer === false && guest.rsvp === true
@@ -40,6 +43,9 @@ export function RSVPAnswer(props: { guestData: Guest[] }) {
         updatedAt: new Date()
       }
 
+      const espoused: Espoused | null = await getEspousedRecord()
+      if (!espoused) throw new Error('espoused not found')
+
       await updateRSVP(guest)
       await fetch('/api/rsvp-choice', {
         method: 'POST',
@@ -48,11 +54,27 @@ export function RSVPAnswer(props: { guestData: Guest[] }) {
         },
         body: JSON.stringify({
           forename: guest.forename,
-          rsvpAnswer: guest.rsvpAnswer
+          rsvpAnswer: guest.rsvpAnswer,
+          brideEmail: espoused.brideEmail,
+          groomEmail: espoused.groomEmail
         })
       })
+
+      await fetch('/api/rsvp-thanks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          forename: guest.forename,
+          email: guest.email,
+          rsvpAnswer: guest.rsvpAnswer,
+          bride: espoused.bride,
+          groom: espoused.groom
+        })
+      })
+      props.onRsvpAnswer(guest.rsvp, guest.rsvpAnswer)
     }
-    setRsvpAnswerNo(true)
   }
 
   return rsvpAnswerNo === true ? (
