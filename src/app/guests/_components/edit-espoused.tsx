@@ -24,7 +24,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { uuidv4 } from '@/lib/utils'
-import { espoused, Espoused } from '@/server/db/schema'
+import { Espoused } from '@/server/db/schema'
 import { updateEspousedRecord } from '@/server/service'
 import { IconEdit } from '@tabler/icons-react'
 import { useState } from 'react'
@@ -43,7 +43,9 @@ export function EditEspoused(props: {
     defaultValues: {
       id: uuidv4(),
       groom: props.espoused?.groom ?? '',
-      bride: props.espoused?.bride ?? ''
+      groomEmail: props.espoused?.groomEmail ?? '',
+      bride: props.espoused?.bride ?? '',
+      brideEmail: props.espoused?.brideEmail ?? ''
     }
   })
 
