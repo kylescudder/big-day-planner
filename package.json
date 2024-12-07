@@ -37,7 +37,7 @@
     "postgres": "3.4.5",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-hook-form": "7.53.1",
+    "react-hook-form": "7.54.0",
     "resend": "4.0.0",
     "sonner": "1.7.0",
     "tailwind-merge": "2.5.4",
