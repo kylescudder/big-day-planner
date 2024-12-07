@@ -3,6 +3,7 @@
 import { DataTable } from '@/components/ui/data-table/data-table'
 import LoadingPage from '@/components/ui/loading/loading-page'
 import { Detail, Espoused, type Guest } from '@/server/db/schema'
+import { Image } from '@/types/image'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { getGuestColumns } from './_components/columns'
@@ -10,11 +11,13 @@ import { AddGuest } from './_components/add-guest'
 import { EditDetails } from './_components/edit-details'
 import { deleteGuestRecord } from '@/server/service'
 import { EditEspoused } from './_components/edit-espoused'
+import { EditImages } from './_components/edit-images'
 
 export default function Guests(props: {
   details: Detail
   espoused: Espoused
   data: Guest[]
+  images: Image
 }) {
   const [guests, setGuests] = useState<Guest[]>([])
 
@@ -53,11 +56,18 @@ export default function Guests(props: {
     })
   }
 
+  const onImagesSave = () => {
+    toast('Images saved!', {
+      duration: 2000
+    })
+  }
+
   return (
     <div>
       <AddGuest guests={guests} onNewGuest={onNewGuest} />
       <EditDetails details={props.details} onDetailsSave={onDetailsSave} />
       <EditEspoused espoused={props.espoused} onEspousedSave={onEspousedSave} />
+      <EditImages images={props.images} onImagesSave={onImagesSave} />
       <div className='flex flex-col'>
         <DataTable columns={columns} data={guests || []} />
       </div>

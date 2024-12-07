@@ -5,6 +5,16 @@
 await import('./src/env.js')
 
 /** @type {import("next").NextConfig} */
-const config = {}
+const config = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'utfs.io',
+        pathname: '/a/<APP_ID>/*'
+      }
+    ]
+  }
+}
 
 export default config

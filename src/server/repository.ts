@@ -14,6 +14,7 @@ import {
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
 import { type AddressData, type Suggestions } from '@/types/address'
+import { type Image } from '@/types/image'
 
 export async function getGuests(): Promise<Guest[]> {
   return await db.query.guests.findMany({})
@@ -151,4 +152,12 @@ export async function updateEspoused(espousedData: Espoused) {
         brideEmail: espousedData.brideEmail
       }
     })
+}
+
+export async function getImages() {
+  const images: Image = {
+    logo: 'https://ufts.io/a/big-day-planner/szhMDBp4V1z7JDW9rmgRCUEKneH65FxYBOzG2gZQ9PaVlWwb'
+  }
+
+  return images
 }

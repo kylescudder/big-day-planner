@@ -17,7 +17,8 @@ import {
   getDetails,
   updateDetails,
   updateEspoused,
-  getEspoused
+  getEspoused,
+  getImages
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import { Detail, Espoused, type Guest } from './db/schema'
@@ -120,4 +121,8 @@ export async function updateEspousedRecord(espoused: Espoused) {
   if (!user.userId) throw new Error('Unauthorized')
 
   return await updateEspoused(espoused)
+}
+
+export async function getImagesRecord() {
+  return await getImages()
 }
