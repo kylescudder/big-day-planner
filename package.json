@@ -28,7 +28,7 @@
     "@t3-oss/env-nextjs": "0.11.1",
     "@tabler/icons-react": "3.21.0",
     "@tanstack/react-table": "8.20.5",
-    "@uploadthing/react": "^7.1.2",
+    "@uploadthing/react": "7.1.2",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "drizzle-orm": "0.36.1",
@@ -42,7 +42,7 @@
     "sonner": "1.7.0",
     "tailwind-merge": "2.5.4",
     "tailwindcss-animate": "1.0.7",
-    "uploadthing": "^7.4.0",
+    "uploadthing": "7.4.0",
     "vaul": "1.1.1",
     "zod": "3.23.8"
   },
