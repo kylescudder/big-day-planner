@@ -8,7 +8,7 @@ import {
   getGuestRecords,
   getImagesRecord
 } from '@/server/service'
-import { Detail, Espoused } from '@/server/db/schema'
+import { Detail, Espoused, Image } from '@/server/db/schema'
 
 export default async function GuestsPage() {
   const data = await getGuestRecords()
@@ -17,10 +17,9 @@ export default async function GuestsPage() {
     throw new Error('Details not found')
   }
   const espoused: Espoused | null = await getEspousedRecord()
-  if (espoused === null) {
-    throw new Error('Espoused not found')
-  }
-  const images = await getImagesRecord()
+
+  const images: Image[] | null = await getImagesRecord()
+  if (!images) return null
 
   return (
     <div>

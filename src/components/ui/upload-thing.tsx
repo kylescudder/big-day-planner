@@ -1,22 +1,54 @@
 'use client'
-
+import { useState } from 'react'
 import { UploadButton } from '@/utils/uploadthing'
+import { twMerge } from 'tailwind-merge'
+import { Image } from '@/server/db/schema'
+import { uuidv4 } from '@/lib/utils'
+import { ImageType } from '@/consts/image-types'
 
-export default function UploadThing() {
+interface UploadThingImageLogoProps {
+  onUploadCompleteAction: (image: Image) => void
+  disabled?: boolean
+}
+
+export default function UploadThingImageLogo({
+  onUploadCompleteAction,
+  disabled = false
+}: UploadThingImageLogoProps) {
+  const [isUploaded, setIsUploaded] = useState(false)
+
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <UploadButton
-        endpoint='imageUploader'
-        onClientUploadComplete={(res) => {
-          // Do something with the response
-          console.log('Files: ', res)
-          alert('Upload Completed')
-        }}
-        onUploadError={(error: Error) => {
-          // Do something with the error.
-          alert(`ERROR! ${error.message}`)
-        }}
-      />
+    <main className='flex flex-col items-center justify-between'>
+      {!isUploaded ? (
+        <UploadButton
+          disabled={disabled}
+          appearance={{
+            button:
+              'ut-ready:bg-primary ut-uploading:cursor-not-allowed rounded-r-none bg-primary bg-none after:bg-secondary',
+            container: 'w-max flex-row rounded-md border-cyan-300 bg-slate-800',
+            allowedContent:
+              'flex h-8 flex-col items-center justify-center px-2 text-white'
+          }}
+          endpoint='logoUploader'
+          onClientUploadComplete={(res) => {
+            console.log('Files: ', res)
+            const uploadedImage: Image = {
+              id: uuidv4(),
+              key: res[0]!.key,
+              type: ImageType.LOGO
+              // Add other required Image properties here
+            }
+            onUploadCompleteAction(uploadedImage)
+            setIsUploaded(true)
+          }}
+          onUploadError={(error: Error) => {
+            alert(`ERROR! ${error.message}`)
+          }}
+          config={{ cn: twMerge }}
+        />
+      ) : (
+        <div className='text-green-600 font-medium'>Upload complete!</div>
+      )}
     </main>
   )
 }

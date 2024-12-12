@@ -2,8 +2,12 @@
 
 import { DataTable } from '@/components/ui/data-table/data-table'
 import LoadingPage from '@/components/ui/loading/loading-page'
-import { Detail, Espoused, type Guest } from '@/server/db/schema'
-import { Image } from '@/types/image'
+import {
+  type Detail,
+  type Espoused,
+  type Guest,
+  type Image
+} from '@/server/db/schema'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { getGuestColumns } from './_components/columns'
@@ -15,9 +19,9 @@ import { EditImages } from './_components/edit-images'
 
 export default function Guests(props: {
   details: Detail
-  espoused: Espoused
+  espoused: Espoused | null
   data: Guest[]
-  images: Image
+  images: Image[]
 }) {
   const [guests, setGuests] = useState<Guest[]>([])
 

@@ -26,13 +26,13 @@ import { useMediaQuery } from '@/hooks/use-media-query'
 import { uuidv4 } from '@/lib/utils'
 import { Espoused } from '@/server/db/schema'
 import { updateEspousedRecord } from '@/server/service'
-import { IconEdit } from '@tabler/icons-react'
+import { IconFriends } from '@tabler/icons-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { EditEspousedForm } from './form/edit-espoused-form'
 
 export function EditEspoused(props: {
-  espoused: Espoused
+  espoused: Espoused | null
   onEspousedSave: () => void
 }) {
   const [open, setOpen] = useState(false)
@@ -62,8 +62,8 @@ export function EditEspoused(props: {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant='outline'>
-            <IconEdit className='pr-2' />
+          <Button variant='outline' className='mx-2'>
+            <IconFriends className='pr-2' />
             Edit Espoused
           </Button>
         </DialogTrigger>
@@ -95,8 +95,8 @@ export function EditEspoused(props: {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant='outline'>
-          <IconEdit className='pr-2' />
+        <Button variant='outline' className='mx-2'>
+          <IconFriends className='pr-2' />
           Edit Espoused
         </Button>
       </DrawerTrigger>

@@ -89,7 +89,7 @@ export function AddGuest(props: {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant='outline'>
+          <Button variant='outline' className='mr-1'>
             <IconUserPlus className='pr-2' />
             Add Guest
           </Button>
@@ -129,7 +129,7 @@ export function AddGuest(props: {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant='outline'>
+        <Button variant='outline' className='mr-1'>
           <IconUserPlus className='pr-2' />
           Add Guest
         </Button>

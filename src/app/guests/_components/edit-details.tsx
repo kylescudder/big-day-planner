@@ -69,7 +69,7 @@ export function EditDetails(props: {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant='outline'>
+          <Button variant='outline' className='mx-2'>
             <IconEdit className='pr-2' />
             Edit Details
           </Button>
@@ -100,7 +100,7 @@ export function EditDetails(props: {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant='outline'>
+        <Button variant='outline' className='mx-2'>
           <IconEdit className='pr-2' />
           Edit Details
         </Button>

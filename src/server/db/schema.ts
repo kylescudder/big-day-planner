@@ -68,6 +68,15 @@ export const espoused = createTable('espoused', {
 })
 export type Espoused = typeof espoused.$inferSelect
 
+export const images = createTable('image', {
+  id: uuid('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv4()),
+  type: varchar('type', { length: 256 }).notNull(),
+  key: varchar('key', { length: 256 }).notNull()
+})
+export type Image = typeof images.$inferSelect
+
 export const starters = createTable('starter', {
   id: uuid('id')
     .primaryKey()
