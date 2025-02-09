@@ -52,7 +52,7 @@
     "@types/node": "22.13.1",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0",
-    "drizzle-kit": "0.30.0",
+    "drizzle-kit": "0.30.4",
     "husky": "9.1.7",
     "pg": "8.13.1",
     "postcss": "8.5.1",
