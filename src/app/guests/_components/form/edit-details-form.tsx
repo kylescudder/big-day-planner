@@ -1,4 +1,7 @@
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import { Checkbox } from '@/components/ui/checkbox'
+import { DateTimePicker } from '@/components/ui/datetimepicker'
 import {
   FormControl,
   FormField,
@@ -7,7 +10,15 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
 import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/utils'
+import { IconCalendar } from '@tabler/icons-react'
+import { format } from 'date-fns'
 import { FieldValues } from 'react-hook-form'
 
 export function EditDetailsForm(props: { form: any }) {
@@ -210,6 +221,32 @@ export function EditDetailsForm(props: { form: any }) {
               <div className='space-y-1 leading-none'>
                 <FormLabel>Allow Song Requests?</FormLabel>
               </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={props.form.control}
+          name='endDateTime'
+          render={({ field }) => (
+            <FormItem className='flex w-72 flex-col gap-2'>
+              <FormLabel htmlFor='datetime'>Date time</FormLabel>
+              <FormControl>
+                <DateTimePicker value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={props.form.control}
+          name='startDateTime'
+          render={({ field }) => (
+            <FormItem className='flex w-72 flex-col gap-2'>
+              <FormLabel htmlFor='datetime'>Date time</FormLabel>
+              <FormControl>
+                <DateTimePicker value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

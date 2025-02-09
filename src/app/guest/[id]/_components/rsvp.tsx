@@ -2,6 +2,7 @@
 import { Detail, type Guest } from '@/server/db/schema'
 import { RSVPAnswer } from './rsvp-answer'
 import { useState } from 'react'
+import { format } from 'date-fns'
 
 export function RSVP(props: {
   guestData: Guest[]
@@ -30,8 +31,17 @@ export function RSVP(props: {
             <p>we can&apos;t wait to celebrate our day with you!</p>
           </div>
           <div className='text-lg pt-10'>
-            <p>00.00.26</p>
-            <p>02:00pm-12:00am</p>
+            <p
+              className={`${props.details.startDateTime ? '' : 'hidden'} pt-4`}
+            >
+              {format(props.details.startDateTime, 'dd/MM/yyyy')}
+            </p>
+            <p
+              className={`${props.details.startDateTime && props.details.endDateTime ? '' : 'hidden'}`}
+            >
+              {format(props.details.startDateTime, 'hh:mm aaa')} -{' '}
+              {format(props.details.endDateTime, 'hh:mm aaa')}
+            </p>
             <p className={`${props.details.address1 ? '' : 'hidden'} pt-4`}>
               {props.details.address1}
             </p>
@@ -44,15 +54,21 @@ export function RSVP(props: {
             <span
               className={`${!props.details.postcode && !props.details.town && !props.details.county ? 'hidden' : ''}`}
             >
-              <p className={`${props.details.town ? '' : 'hidden'}`}>
-                {props.details.town}
-              </p>
-              <p className={`${props.details.county ? '' : 'hidden'}`}>
-                {props.details.county}
-              </p>
-              <p className={`${props.details.postcode ? '' : 'hidden'}`}>
-                {props.details.postcode}
-              </p>
+              <div className='flex items-center space-x-2'>
+                <p className={`${props.details.town ? '' : 'hidden'}`}>
+                  {props.details.town}
+                  {props.details.town && props.details.county && <span>,</span>}
+                </p>
+                <p className={`${props.details.county ? '' : 'hidden'}`}>
+                  {props.details.county}
+                  {props.details.county && props.details.postcode && (
+                    <span>,</span>
+                  )}
+                </p>
+                <p className={`${props.details.postcode ? '' : 'hidden'}`}>
+                  {props.details.postcode}
+                </p>
+              </div>
             </span>
           </div>
           <div className='text-lg'>

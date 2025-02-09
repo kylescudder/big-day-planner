@@ -5,7 +5,9 @@ import {
   timestamp,
   varchar,
   boolean,
-  uuid
+  uuid,
+  time,
+  date
 } from 'drizzle-orm/pg-core'
 
 export const createTable = pgTableCreator((name) => `${name}`)
@@ -43,6 +45,8 @@ export const details = createTable('detail', {
   id: uuid('id')
     .primaryKey()
     .$defaultFn(() => uuidv4()),
+  startDateTime: timestamp('startDateTime').notNull(),
+  endDateTime: timestamp('endDateTime').notNull(),
   address1: varchar('address1', { length: 256 }).notNull(),
   address2: varchar('address2', { length: 256 }),
   address3: varchar('address3', { length: 256 }),
