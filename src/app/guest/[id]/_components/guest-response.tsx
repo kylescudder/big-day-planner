@@ -52,7 +52,11 @@ export function GuestResponse(props: {
         />
         <p className='text-3xl pt-14'>rsvp</p>
         <section className='pt-10 z-10 relative'>
-          <RSVP guestData={props.guestData} onRsvpAnswer={onRsvpAnswer} />
+          <RSVP
+            guestData={props.guestData}
+            onRsvpAnswer={onRsvpAnswer}
+            details={props.details}
+          />
         </section>
         <Image
           alt='Venue illustration'
@@ -72,7 +76,10 @@ export function GuestResponse(props: {
               puddings={props.puddings}
             />
           </Section>
-          <Section id='song-request' className='bg-secondary'>
+          <Section
+            id='song-request'
+            className={`${props.details.songRequest ? '' : 'hidden'} justify-center h-screen`}
+          >
             <Image
               alt='Pink Splatter 4'
               src='/assets-shape-song.svg'

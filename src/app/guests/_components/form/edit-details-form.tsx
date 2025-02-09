@@ -13,7 +13,7 @@ import { FieldValues } from 'react-hook-form'
 export function EditDetailsForm(props: { form: any }) {
   return (
     <div className='grid grid-cols-12 gap-4 p-4'>
-      <div className='col-span-6'>
+      <div className='col-span-4'>
         <FormField
           control={props.form.control}
           name='address1'
@@ -109,7 +109,7 @@ export function EditDetailsForm(props: { form: any }) {
           )}
         />
       </div>
-      <div className='col-span-6'>
+      <div className='col-span-4'>
         <FormField
           control={props.form.control}
           name='adultsOnly'
@@ -191,6 +191,25 @@ export function EditDetailsForm(props: { form: any }) {
                 <Input {...field} id='dresscode' className='text-base' />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+      <div className='col-span-4'>
+        <FormField
+          control={props.form.control}
+          name='songRequest'
+          render={({ field }) => (
+            <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className='space-y-1 leading-none'>
+                <FormLabel>Allow Song Requests?</FormLabel>
+              </div>
             </FormItem>
           )}
         />

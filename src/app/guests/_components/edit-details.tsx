@@ -52,7 +52,8 @@ export function EditDetails(props: {
       detailsText: props.details?.detailsText ?? '',
       adultsOnly: props.details?.adultsOnly ?? false,
       adultsOnlyText: props.details?.adultsOnlyText ?? '',
-      dresscode: props.details?.dresscode ?? ''
+      dresscode: props.details?.dresscode ?? '',
+      songRequest: props.details?.songRequest ?? false
     }
   })
 
