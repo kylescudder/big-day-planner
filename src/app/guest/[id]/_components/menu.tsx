@@ -22,13 +22,6 @@ export function Menu(props: {
         mains={props.mains}
         puddings={props.puddings}
       />
-      <Image
-        alt='Pink Splatter 3'
-        src='/assets-shape-menu&song.svg'
-        width={100}
-        height={100}
-        className='float-start h-auto absolute block right-0 top-600 z-0'
-      />
       <div className='columns-2 pt-10'>
         <Image
           alt='Menu illustration'

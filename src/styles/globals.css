@@ -29,6 +29,8 @@
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
 
+  --color-pink: hsl(var(--pink));
+
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
 
@@ -112,6 +114,7 @@
     --input: 350 30% 18%;
     --ring: 350 83.7% 38.4%;
     --radius: 0.5rem;
+    --pink: 339, 77%, 82%;
   }
   .dark {
     --background: 350 50% 5%;

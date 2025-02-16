@@ -43,13 +43,6 @@ export function GuestResponse(props: {
   return (
     <>
       <Section id='rsvp' className='bg-primary text-background pb-20'>
-        <Image
-          alt='Pink Splatter 2'
-          src='/assets-shape-rsvp.svg'
-          height={100}
-          width={100}
-          className='float-start h-auto absolute block left-0 top-200 z-0'
-        />
         <p className='text-3xl pt-14'>rsvp</p>
         <section className='pt-10 z-10 relative'>
           <RSVP
@@ -60,7 +53,7 @@ export function GuestResponse(props: {
         </section>
         <Image
           alt='Venue illustration'
-          src='/assets-rsvp.svg'
+          src='/asset-rsvp-venue.png'
           width={300}
           height={200}
           className='float-end w-full relative h-auto -mr-12'
@@ -80,23 +73,9 @@ export function GuestResponse(props: {
             id='song-request'
             className={`${props.details.songRequest ? '' : 'hidden'} justify-center h-screen`}
           >
-            <Image
-              alt='Pink Splatter 4'
-              src='/assets-shape-song.svg'
-              width={100}
-              height={100}
-              className='float-start h-auto absolute block left-0 top-700 z-0'
-            />
             <SongRequest guestData={props.guestData} />
           </Section>
-          <Section id='timings' className='bg-background'>
-            <Image
-              alt='Pink Splatter 5'
-              src='/assets-shape-timings.svg'
-              width={100}
-              height={100}
-              className='float-start h-auto absolute block right-0 top-750 z-0'
-            />
+          <Section id='timings' className='bg-pink text-white'>
             <Timings />
           </Section>
           <Section id='details' className='pb-12 bg-primary'>

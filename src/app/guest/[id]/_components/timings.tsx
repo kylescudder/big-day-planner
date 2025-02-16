@@ -7,7 +7,7 @@ export function Timings() {
       <p className=' text-lg pt-10'>
         here are some of the timing guidelines for throughout the day
       </p>
-      <div className='text-lg w-4/5 mx-auto'>
+      <div className='text-lg mx-auto'>
         <div className='flex flex-row items-center pb-5'>
           <div className='flex-col col-span-1'>
             <p className='text-lg w-50 flex'>wedding ceremony</p>
@@ -16,10 +16,10 @@ export function Timings() {
           <div className='flex-col col-span-1'>
             <Image
               alt='Ring illustration'
-              src='/assets-timings.svg'
+              src='/asset-timings-ceremony.png'
               width={100}
               height={100}
-              className='ml-auto w-50'
+              className='ml-auto w-72'
             />
           </div>
         </div>
