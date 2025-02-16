@@ -46,7 +46,7 @@ export function GuestResponse(props: {
     <>
       <Section
         id='rsvp'
-        className={`bg-pink pb-20 ${props.guestData[0]?.rsvpAnswer ? '' : 'h-screen'}`}
+        className={`bg-pink pb-20 ${!props.guestData[0]?.rsvpAnswer || !props.guestData[0]?.rsvp ? 'h-screen' : ''}`}
       >
         <section className='z-10 relative'>
           <RSVP

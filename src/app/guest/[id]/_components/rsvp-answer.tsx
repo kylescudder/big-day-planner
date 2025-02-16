@@ -10,14 +10,16 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { Espoused, type Guest } from '@/server/db/schema'
+import { Detail, Espoused, type Guest } from '@/server/db/schema'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useForm } from 'react-hook-form'
 import { getEspousedRecord, updateRSVP } from '@/server/service'
+import { format, subMonths } from 'date-fns'
 
 export function RSVPAnswer(props: {
   guestData: Guest[]
   onRsvpAnswer: (rsp: boolean, rsvpAnswer: boolean) => void
+  details: Detail
 }) {
   const [rsvpAnswerNo, setRsvpAnswerNo] = useState<boolean>(
     props.guestData.every(
@@ -30,6 +32,8 @@ export function RSVPAnswer(props: {
       ...props.guestData
     }
   })
+
+  const submissionCutoff = subMonths(props.details.startDateTime, 3)
 
   async function onSubmit(guests: Guest[]) {
     for (const [key, value] of Object.entries(guests)) {
@@ -81,13 +85,12 @@ export function RSVPAnswer(props: {
     <p className='pb-3'>thanks for letting us know, you&apos;ll be missed!</p>
   ) : (
     <>
-      <p className='text-5xl pt-14'>rsvp</p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid gap-4'>
+          <div className='grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl'>
             {props.guestData.map((guest, index) => (
               <div key={index} className='text-lg pb-10'>
-                <p className='text-lg'>{guest.forename}</p>
+                <p className='text-lg text-primary'>{guest.forename}</p>
                 <FormField
                   control={form.control}
                   name={`${index}.rsvpAnswer`}
@@ -99,7 +102,7 @@ export function RSVPAnswer(props: {
                           className='flex flex-col space-y-1'
                         >
                           <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>
-                            <FormLabel className='font-normal'>
+                            <FormLabel className='font-normal text-lg'>
                               wouldn&apos;t miss it for the world
                             </FormLabel>
                             <FormControl>
@@ -110,7 +113,7 @@ export function RSVPAnswer(props: {
                             </FormControl>
                           </FormItem>
                           <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>
-                            <FormLabel className='font-normal'>
+                            <FormLabel className='font-normal text-lg'>
                               will be there in spirit
                             </FormLabel>
                             <FormControl>
@@ -128,19 +131,20 @@ export function RSVPAnswer(props: {
                 />
               </div>
             ))}
-            <div className='flex justify-between items-center pb-10'>
-              <p className='text-xs'>
-                We kindly ask you let us know by 00/00/2025
-              </p>
-              <Button
-                type='submit'
-                size='xs'
-                variant='rsvp'
-                className='float-right'
-              >
-                <p>submit</p>
-              </Button>
-            </div>
+          </div>
+          <div className='flex justify-between items-center py-10'>
+            <p className='text-xs'>
+              We kindly ask you let us know by{' '}
+              {format(submissionCutoff, 'dd/MM/yyyy')}
+            </p>
+            <Button
+              type='submit'
+              size='xs'
+              variant='rsvp'
+              className='float-right'
+            >
+              <p>submit</p>
+            </Button>
           </div>
         </form>
       </Form>

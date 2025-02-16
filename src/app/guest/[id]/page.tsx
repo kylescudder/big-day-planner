@@ -37,7 +37,7 @@ export default async function Guest(props: {
     <div className='flex min-h-screen flex-col items-center overflow-x-hidden pt-10'>
       <Section
         id='home'
-        className={`bg-pink pt-7 ${guestData[0]?.rsvpAnswer ? '' : 'hidden'}`}
+        className={`bg-pink pt-7 ${!guestData[0]?.rsvpAnswer && guestData[0]?.rsvp ? 'hidden' : ''}`}
       >
         <div className='text-5xl'>
           <div className='whitespace-pre-line z-10 relative'>
