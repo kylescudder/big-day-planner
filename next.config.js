@@ -10,8 +10,8 @@ const config = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'utfs.io',
-        pathname: '/a/<APP_ID>/*'
+        hostname: `xgxwpeak3r.ufs.sh`,
+        pathname: '/f/*'
       }
     ]
   }
@@ -19,6 +19,7 @@ const config = {
 
 // Injected content via Sentry wizard below
 import { withSentryConfig } from '@sentry/nextjs'
+import { env } from './src/env.js'
 
 const sentryConfig = {
   // For all available options, see:

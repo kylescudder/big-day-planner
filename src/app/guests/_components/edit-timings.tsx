@@ -31,6 +31,7 @@ import { useForm } from 'react-hook-form'
 import { deleteTimingRecord, updateTimingRecord } from '@/server/service'
 import { Timing } from '@/server/db/schema'
 import { format } from 'date-fns'
+import { env } from '@/env'
 
 export function EditTimings(props: {
   timings: Timing[]
@@ -45,7 +46,9 @@ export function EditTimings(props: {
     defaultValues: {
       id: uuidv4(),
       time: '',
-      event: ''
+      event: '',
+      altText: '',
+      imageUrl: ''
     }
   })
 
@@ -58,6 +61,7 @@ export function EditTimings(props: {
     setCurrentTimings(updatedTimings)
     await updateTimingRecord(newTiming) // Assuming this function updates the record
     props.onTimingsSave(updatedTimings) // Pass the updated timings back
+    form.reset()
   }
 
   function handleTimingDelete(timing: Timing) {
@@ -72,6 +76,13 @@ export function EditTimings(props: {
       <span>
         {format(new Date(timing.time), 'HH:mm')} - {timing.event}
       </span>
+      {timing.imageUrl && (
+        <img
+          src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${timing.imageUrl}`}
+          alt='Logo'
+          className='w-24 h-24 object-contain'
+        />
+      )}
       <Button
         variant='outline'
         className='ml-2'

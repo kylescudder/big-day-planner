@@ -114,7 +114,9 @@ export const timings = createTable('timing', {
     .primaryKey()
     .$defaultFn(() => uuidv4()),
   time: timestamp('time').notNull(),
-  event: varchar('event', { length: 256 })
+  event: varchar('event', { length: 256 }),
+  altText: varchar('alt_text', { length: 256 }),
+  imageUrl: varchar('image_url', { length: 256 })
 })
 
 export type Timing = typeof timings.$inferSelect

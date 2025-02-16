@@ -22,7 +22,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_UT_APP_ID: z.string()
   },
 
   /**
@@ -34,6 +34,7 @@ export const env = createEnv({
     GETADDRESS_URL: process.env.GETADDRESS_URL,
     GETADDRESS_API_KEY: process.env.GETADDRESS_API_KEY,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    NEXT_PUBLIC_UT_APP_ID: process.env.NEXT_PUBLIC_UT_APP_ID,
     NODE_ENV: process.env.NODE_ENV
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

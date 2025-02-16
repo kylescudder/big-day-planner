@@ -31,11 +31,7 @@ export function TimePicker({
   )
 
   const minutes = React.useMemo(() => {
-    const minutes = []
-    for (let i = 0; i < 60; i += 5) {
-      minutes.push(i)
-    }
-    return minutes
+    return Array.from({ length: 12 }, (_, i) => i * 5)
   }, [])
 
   const hours = React.useMemo(() => {
@@ -44,32 +40,46 @@ export function TimePicker({
 
   React.useEffect(() => {
     if (date) {
-      setSelectedHour(date.getHours())
-      setSelectedMinute(date.getMinutes())
+      const hour = date.getHours()
+      const minute = date.getMinutes()
+      // Only update state if the values are different
+      if (hour !== selectedHour) {
+        setSelectedHour(hour)
+      }
+      if (minute !== selectedMinute) {
+        setSelectedMinute(minute)
+      }
     }
-  }, [date])
+  }, [date]) // Removed selectedHour and selectedMinute from dependencies
 
   const handleHourChange = React.useCallback(
     (hour: string) => {
       const hourValue = Number.parseInt(hour, 10)
-      setSelectedHour(hourValue)
-      const newDate = new Date(date || new Date())
-      newDate.setHours(hourValue)
-      setDate(newDate)
-      minuteRef.current?.focus()
+      if (hourValue !== selectedHour) {
+        setSelectedHour(hourValue)
+        const newDate = new Date(date || new Date())
+        newDate.setHours(hourValue)
+        setDate(newDate)
+        // Use setTimeout to avoid focus recursion
+        setTimeout(() => {
+          minuteRef.current?.focus()
+        }, 0)
+      }
     },
-    [date, setDate]
+    [date, selectedHour, setDate]
   )
 
   const handleMinuteChange = React.useCallback(
     (minute: string) => {
       const minuteValue = Number.parseInt(minute, 10)
-      setSelectedMinute(minuteValue)
-      const newDate = new Date(date || new Date())
-      newDate.setMinutes(minuteValue)
-      setDate(newDate)
+      if (minuteValue !== selectedMinute) {
+        setSelectedMinute(minuteValue)
+        const newDate = new Date(date || new Date())
+        newDate.setMinutes(minuteValue)
+        setDate(newDate)
+      }
     },
-    [date, setDate]
+    [date, selectedMinute, setDate]
   )
 
   return (

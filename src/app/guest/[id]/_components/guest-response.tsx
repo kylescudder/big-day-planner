@@ -77,7 +77,7 @@ export function GuestResponse(props: {
           >
             <SongRequest guestData={props.guestData} />
           </Section>
-          <Section id='timings' className='bg-pink text-white'>
+          <Section id='timings' className='bg-pink'>
             <Timings timings={props.timings} />
           </Section>
           <Section id='details' className='pb-12 bg-primary'>

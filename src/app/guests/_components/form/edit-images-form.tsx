@@ -1,6 +1,7 @@
 import { Label } from '@/components/ui/label'
 import UploadThingImageLogo from '@/components/ui/upload-thing'
 import { ImageType } from '@/consts/image-types'
+import { env } from '@/env'
 import { uuidv4 } from '@/lib/utils'
 import { Image } from '@/server/db/schema'
 import { useState } from 'react'
@@ -26,7 +27,7 @@ export function EditImagesForm(props: { images: Image[] }) {
         />
         {displayedLogoImage && (
           <img
-            src={`https://utfs.io/f/${displayedLogoImage.key}`}
+            src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${displayedLogoImage.key}`}
             alt='Logo'
             className='w-24 h-24 object-contain'
           />
