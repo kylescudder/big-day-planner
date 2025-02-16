@@ -24,7 +24,7 @@ const TopBar = () => {
   }, [currentSection])
 
   return (
-    <div className='flex justify-between py-6 px-6 h-24 w-full'>
+    <div className='flex justify-between bg-pink py-6 px-6 h-24 w-full'>
       <div>
         <Image alt='K&R Logo' src='/logo.svg' height={60} width={60} />
       </div>

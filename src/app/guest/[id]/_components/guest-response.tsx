@@ -44,9 +44,11 @@ export function GuestResponse(props: {
 
   return (
     <>
-      <Section id='rsvp' className='bg-primary text-background pb-20'>
-        <p className='text-3xl pt-14'>rsvp</p>
-        <section className='pt-10 z-10 relative'>
+      <Section
+        id='rsvp'
+        className={`bg-pink pb-20 ${props.guestData[0]?.rsvpAnswer ? '' : 'h-screen'}`}
+      >
+        <section className='z-10 relative'>
           <RSVP
             guestData={props.guestData}
             onRsvpAnswer={onRsvpAnswer}
@@ -55,10 +57,10 @@ export function GuestResponse(props: {
         </section>
         <Image
           alt='Venue illustration'
-          src='/asset-rsvp-venue.png'
+          src='/assets-venue.svg'
           width={300}
           height={200}
-          className='float-end w-full relative h-auto -mr-12'
+          className='float-end w-full relative h-auto'
         />
       </Section>
       {rsvp && rsvpAnswer && (
@@ -77,10 +79,26 @@ export function GuestResponse(props: {
           >
             <SongRequest guestData={props.guestData} />
           </Section>
+          <Image
+            alt='Divider illustration'
+            src='/assest-timing-top-dividers.svg'
+            width='0'
+            height='0'
+            sizes='100vw'
+            className='float-end w-full relative h-auto'
+          />
           <Section id='timings' className='bg-pink'>
             <Timings timings={props.timings} />
           </Section>
-          <Section id='details' className='pb-12 bg-primary'>
+          <Image
+            alt='Divider illustration'
+            src='/assest-timing-bottom-dividers.svg'
+            width='0'
+            height='0'
+            sizes='100vw'
+            className='float-end w-full relative h-auto'
+          />
+          <Section id='details' className='pb-12'>
             <Details details={props.details} />
           </Section>
         </>

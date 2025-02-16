@@ -2,7 +2,7 @@
 import { Detail, type Guest } from '@/server/db/schema'
 import { RSVPAnswer } from './rsvp-answer'
 import { useState } from 'react'
-import { format } from 'date-fns'
+import { format, differenceInDays } from 'date-fns'
 
 export function RSVP(props: {
   guestData: Guest[]
@@ -28,19 +28,16 @@ export function RSVP(props: {
       {rsvp && rsvpAnswer && (
         <section>
           <div className='text-lg'>
-            <p>we can&apos;t wait to celebrate our day with you!</p>
-          </div>
-          <div className='text-lg pt-10'>
             <p
               className={`${props.details.startDateTime ? '' : 'hidden'} pt-4`}
             >
-              {format(props.details.startDateTime, 'dd/MM/yyyy')}
+              {format(props.details.startDateTime, 'MMMM dd, yyyy')}
             </p>
             <p
               className={`${props.details.startDateTime && props.details.endDateTime ? '' : 'hidden'}`}
             >
-              {format(props.details.startDateTime, 'hh:mm aaa')} -{' '}
-              {format(props.details.endDateTime, 'hh:mm aaa')}
+              {format(props.details.startDateTime, 'hh:mmaaa')} -{' '}
+              {format(props.details.endDateTime, 'hh:mmaaa')}
             </p>
             <p className={`${props.details.address1 ? '' : 'hidden'} pt-4`}>
               {props.details.address1}
@@ -79,8 +76,9 @@ export function RSVP(props: {
       )}
       {rsvp && !rsvpAnswer && (
         <div className='text-lg pb-16'>
-          <p className='pt-10'>
-            thanks for letting us know, you&apos;ll be missed!
+          <p className='text-5xl'>you will be missed!</p>
+          <p className='text-3xl text-primary pt-10'>
+            thanks you for your rsvp
           </p>
         </div>
       )}

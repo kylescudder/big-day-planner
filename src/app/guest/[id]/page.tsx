@@ -35,14 +35,17 @@ export default async function Guest(props: {
 
   return (
     <div className='flex min-h-screen flex-col items-center overflow-x-hidden pt-10'>
-      <Section id='home' className='bg-background pt-7'>
+      <Section
+        id='home'
+        className={`bg-pink pt-7 ${guestData[0]?.rsvpAnswer ? '' : 'hidden'}`}
+      >
         <div className='text-5xl'>
           <div className='whitespace-pre-line z-10 relative'>
             we&apos;re getting <br />
             married!
           </div>
         </div>
-        <p className='text-3xl text-primary pt-10 pb-28 relative z-10'>
+        <p className='text-3xl text-primary pt-10 relative z-10'>
           {guestData.map((guest, index) =>
             index === 0
               ? `hello ${guest.forename.toLowerCase()}`
