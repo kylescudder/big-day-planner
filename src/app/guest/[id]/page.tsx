@@ -7,7 +7,8 @@ import {
   getGuestAndLinkedGuestRecord,
   getMainRecords,
   getPuddingRecords,
-  getStarterRecords
+  getStarterRecords,
+  getTimingRecords
 } from '@/server/service'
 import Image from 'next/image'
 import { GuestResponse } from './_components/guest-response'
@@ -22,6 +23,7 @@ export default async function Guest(props: {
   const starters = await getStarterRecords()
   const mains = await getMainRecords()
   const puddings = await getPuddingRecords()
+  const timings = await getTimingRecords()
   const details: Detail | null = await getDetailRecord()
   if (!details) {
     redirect('/')
@@ -54,6 +56,7 @@ export default async function Guest(props: {
         starters={starters}
         mains={mains}
         puddings={puddings}
+        timings={timings}
       />
       <Fab />
     </div>
