@@ -108,3 +108,13 @@ export const puddings = createTable('pudding', {
 })
 
 export type Pudding = typeof puddings.$inferSelect
+
+export const timings = createTable('timing', {
+  id: uuid('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv4()),
+  time: timestamp('time').notNull(),
+  event: varchar('event', { length: 256 })
+})
+
+export type Timing = typeof timings.$inferSelect

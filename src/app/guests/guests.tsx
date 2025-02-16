@@ -6,7 +6,8 @@ import {
   type Detail,
   type Espoused,
   type Guest,
-  type Image
+  type Image,
+  type Timing
 } from '@/server/db/schema'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
@@ -16,12 +17,14 @@ import { EditDetails } from './_components/edit-details'
 import { deleteGuestRecord } from '@/server/service'
 import { EditEspoused } from './_components/edit-espoused'
 import { EditImages } from './_components/edit-images'
+import { EditTimings } from './_components/edit-timings'
 
 export default function Guests(props: {
   details: Detail
   espoused: Espoused | null
   data: Guest[]
   images: Image[]
+  timings: Timing[]
 }) {
   const [guests, setGuests] = useState<Guest[]>([])
 
@@ -66,12 +69,19 @@ export default function Guests(props: {
     })
   }
 
+  const onTimingsSave = () => {
+    toast('Timings saved!', {
+      duration: 2000
+    })
+  }
+
   return (
     <div>
       <AddGuest guests={guests} onNewGuest={onNewGuest} />
       <EditDetails details={props.details} onDetailsSave={onDetailsSave} />
       <EditEspoused espoused={props.espoused} onEspousedSave={onEspousedSave} />
       <EditImages images={props.images} onImagesSave={onImagesSave} />
+      <EditTimings timings={props.timings} onTimingsSave={onTimingsSave} />
       <div className='flex flex-col'>
         <DataTable columns={columns} data={guests || []} />
       </div>

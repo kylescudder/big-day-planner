@@ -7,6 +7,7 @@ import {
   type Main,
   type Starter,
   type Guest,
+  type Timing,
   Detail
 } from '@/server/db/schema'
 import { useState } from 'react'
@@ -22,6 +23,7 @@ export function GuestResponse(props: {
   starters: Starter[]
   mains: Main[]
   puddings: Pudding[]
+  timings: Timing[]
 }) {
   const [rsvp, setRSVP] = useState(false)
   const [rsvpAnswer, setRsvpAnswer] = useState(
@@ -76,7 +78,7 @@ export function GuestResponse(props: {
             <SongRequest guestData={props.guestData} />
           </Section>
           <Section id='timings' className='bg-pink text-white'>
-            <Timings />
+            <Timings timings={props.timings} />
           </Section>
           <Section id='details' className='pb-12 bg-primary'>
             <Details details={props.details} />

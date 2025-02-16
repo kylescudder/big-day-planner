@@ -11,7 +11,9 @@ import {
   Espoused,
   espoused,
   type Image,
-  images
+  images,
+  type Timing,
+  timings
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
@@ -180,4 +182,29 @@ export async function updateImage(imageData: Image) {
   } catch (e) {
     console.error(e)
   }
+}
+
+export const getTimings = async (): Promise<Timing[] | null> => {
+  const result = await db.query.timings.findMany({})
+  if (result === undefined) {
+    return null
+  }
+  return result
+}
+
+export async function updateTimings(timingData: Timing) {
+  await db
+    .insert(timings)
+    .values(timingData)
+    .onConflictDoUpdate({
+      target: [timings.id],
+      set: {
+        time: timingData.time,
+        event: timingData.event
+      }
+    })
+}
+
+export async function deleteTimings(timing: Timing) {
+  await db.delete(timings).where(eq(timings.id, timing.id))
 }

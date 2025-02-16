@@ -6,7 +6,8 @@ import {
   getDetailRecord,
   getEspousedRecord,
   getGuestRecords,
-  getImagesRecord
+  getImagesRecord,
+  getTimingRecords
 } from '@/server/service'
 import { Detail, Espoused, Image } from '@/server/db/schema'
 
@@ -21,6 +22,9 @@ export default async function GuestsPage() {
   const images: Image[] | null = await getImagesRecord()
   if (!images) return null
 
+  const timings: Timing[] | null = await getTimingRecords()
+  if (!timings) return null
+
   return (
     <div>
       <Guests
@@ -28,6 +32,7 @@ export default async function GuestsPage() {
         espoused={espoused}
         data={data}
         images={images}
+        timings={timings}
       />
     </div>
   )
