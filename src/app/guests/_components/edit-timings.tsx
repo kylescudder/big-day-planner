@@ -94,6 +94,8 @@ export function EditTimings(props: {
     </li>
   )
 
+  const listStyle = 'overflow-y-auto max-h-64' // Set max height and enable scrolling
+
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -108,7 +110,7 @@ export function EditTimings(props: {
             <DialogTitle>Edit Timings</DialogTitle>
             <DialogDescription>Edit the timings for the day.</DialogDescription>
           </DialogHeader>
-          <ul>{currentTimings.map(renderTimingItem)}</ul>
+          <ul className={listStyle}>{currentTimings.map(renderTimingItem)}</ul>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
               <EditTimingsForm form={form} />
@@ -140,7 +142,7 @@ export function EditTimings(props: {
           <DrawerTitle>Edit Timings</DrawerTitle>
           <DrawerDescription>Edit the timings for the day.</DrawerDescription>
         </DrawerHeader>
-        <ul>{currentTimings.map(renderTimingItem)}</ul>
+        <ul className={listStyle}>{currentTimings.map(renderTimingItem)}</ul>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
             <EditTimingsForm form={form} />
