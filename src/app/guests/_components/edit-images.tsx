@@ -26,14 +26,28 @@ import { IconLibraryPhoto } from '@tabler/icons-react'
 import { useState } from 'react'
 import { EditImagesForm } from './form/edit-images-form'
 import { Image } from '@/server/db/schema'
+import { updateImageRecord } from '@/server/service'
 
 export function EditImages(props: {
   images: Image[]
   onImagesSave: () => void
 }) {
   const [open, setOpen] = useState(false)
+  const [uploadedImages, setUploadedImages] = useState<Image[]>([])
 
   const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  const handleSave = async () => {
+    uploadedImages.forEach((image) => {
+      updateImageRecord(image)
+    })
+    try {
+      props.onImagesSave()
+      setOpen(false)
+    } catch (error) {
+      console.error('Error saving images:', error)
+    }
+  }
 
   if (isDesktop) {
     return (
@@ -51,9 +65,12 @@ export function EditImages(props: {
               Edit the images used around the site.
             </DialogDescription>
           </DialogHeader>
-          <EditImagesForm images={props.images} />
+          <EditImagesForm
+            images={props.images}
+            setUploadedImages={setUploadedImages}
+          />
           <DialogFooter>
-            <Button type='submit'>
+            <Button type='button' onClick={handleSave}>
               <p>Save changes</p>
             </Button>
             <DialogClose asChild>
@@ -80,9 +97,12 @@ export function EditImages(props: {
             Edit the images used around the site.
           </DrawerDescription>
         </DrawerHeader>
-        <EditImagesForm images={props.images} />
+        <EditImagesForm
+          images={props.images}
+          setUploadedImages={setUploadedImages}
+        />
         <DrawerFooter>
-          <Button type='submit'>
+          <Button type='button' onClick={handleSave}>
             <p>Save changes</p>
           </Button>
           <DrawerClose asChild>

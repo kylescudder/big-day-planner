@@ -52,12 +52,6 @@ export const ourFileRouter = {
       return { userId: user.userId }
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const image: Image = {
-        id: uuidv4(),
-        type: ImageType.LOGO,
-        key: file.key
-      }
-      await updateImageRecord(image)
       return { uploadedBy: metadata.userId }
     })
 } satisfies FileRouter

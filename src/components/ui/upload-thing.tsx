@@ -9,11 +9,13 @@ import { ImageType } from '@/consts/image-types'
 interface UploadThingImageLogoProps {
   onUploadCompleteAction: (image: Image) => void
   disabled?: boolean
+  type: ImageType
 }
 
 export default function UploadThingImageLogo({
   onUploadCompleteAction,
-  disabled = false
+  disabled = false,
+  type
 }: UploadThingImageLogoProps) {
   const [isUploaded, setIsUploaded] = useState(false)
 
@@ -30,11 +32,10 @@ export default function UploadThingImageLogo({
         }}
         endpoint='logoUploader'
         onClientUploadComplete={(res) => {
-          console.log('Files: ', res)
           const uploadedImage: Image = {
             id: uuidv4(),
             key: res[0]!.key,
-            type: ImageType.LOGO
+            type: type
             // Add other required Image properties here
           }
           onUploadCompleteAction(uploadedImage)

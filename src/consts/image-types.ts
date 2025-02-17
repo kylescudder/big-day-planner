@@ -1,4 +1,5 @@
 export enum ImageType {
   LOGO = 'logo',
-  FAVICON = 'favicon'
+  FAVICON = 'favicon',
+  RSVP = 'rsvp'
 }
