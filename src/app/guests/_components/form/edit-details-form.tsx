@@ -1,5 +1,3 @@
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DateTimePicker } from '@/components/ui/datetimepicker'
 import {
@@ -10,15 +8,8 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import { IconCalendar } from '@tabler/icons-react'
-import { format } from 'date-fns'
+import { enGB } from 'date-fns/locale'
 import { FieldValues } from 'react-hook-form'
 
 export function EditDetailsForm(props: { form: any }) {
@@ -226,12 +217,17 @@ export function EditDetailsForm(props: { form: any }) {
         />
         <FormField
           control={props.form.control}
-          name='endDateTime'
+          name='startDateTime'
           render={({ field }) => (
             <FormItem className='flex w-72 flex-col gap-2'>
-              <FormLabel htmlFor='datetime'>Date time</FormLabel>
+              <FormLabel htmlFor='datetime'>Start Date time</FormLabel>
               <FormControl>
-                <DateTimePicker value={field.value} onChange={field.onChange} />
+                <DateTimePicker
+                  displayFormat={{ hour24: 'dd/MM/yyyy hh:mmaaa' }}
+                  locale={enGB}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -239,12 +235,17 @@ export function EditDetailsForm(props: { form: any }) {
         />
         <FormField
           control={props.form.control}
-          name='startDateTime'
+          name='endDateTime'
           render={({ field }) => (
             <FormItem className='flex w-72 flex-col gap-2'>
-              <FormLabel htmlFor='datetime'>Date time</FormLabel>
+              <FormLabel htmlFor='datetime'>End Date time</FormLabel>
               <FormControl>
-                <DateTimePicker value={field.value} onChange={field.onChange} />
+                <DateTimePicker
+                  displayFormat={{ hour24: 'dd/MM/yyyy hh:mmaaa' }}
+                  locale={enGB}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
