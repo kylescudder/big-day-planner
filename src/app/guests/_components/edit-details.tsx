@@ -41,7 +41,7 @@ export function EditDetails(props: {
 
   const form = useForm({
     defaultValues: {
-      id: uuidv4(),
+      id: props.details?.id ?? uuidv4(),
       startDateTime: props.details.startDateTime ?? '',
       endDateTime: props.details.endDateTime ?? '',
       address1: props.details?.address1 ?? '',

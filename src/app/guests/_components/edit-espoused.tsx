@@ -41,7 +41,7 @@ export function EditEspoused(props: {
 
   const form = useForm({
     defaultValues: {
-      id: uuidv4(),
+      id: props.espoused?.id ?? uuidv4(),
       groom: props.espoused?.groom ?? '',
       groomEmail: props.espoused?.groomEmail ?? '',
       bride: props.espoused?.bride ?? '',
