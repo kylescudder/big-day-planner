@@ -9,8 +9,7 @@ import {
   type Guest,
   type Timing,
   type Images,
-  Detail,
-  images
+  Detail
 } from '@/server/db/schema'
 import { useState } from 'react'
 import { Timings } from './timings'
@@ -65,7 +64,7 @@ export function GuestResponse(props: {
           src='/assets-venue.svg'
           width={300}
           height={200}
-          className='float-end w-full relative h-auto'
+          className='float-end w-full relative h-auto pt-10'
         />
       </Section>
       <img
