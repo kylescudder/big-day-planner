@@ -1,22 +1,24 @@
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import UploadThingImageLogo from '@/components/ui/upload-thing'
 import { ImageType } from '@/consts/image-types'
 import { env } from '@/env'
-import { uuidv4 } from '@/lib/utils'
-import { Image } from '@/server/db/schema'
+import { Images } from '@/server/db/schema'
+import { deleteImageRecord } from '@/server/service'
+import { IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 
 export function EditImagesForm(props: {
-  images: Image[]
-  setUploadedImages: (images: Image[]) => void
+  images: Images[]
+  setUploadedImages: (images: Images[]) => void
 }) {
   const logoImage = props.images.filter(
     (image) => image.type === ImageType.LOGO
   )[0]
 
-  const [uploadedLogoImage, setUploadedLogoImage] = useState<Image | undefined>(
-    logoImage
-  )
+  const [uploadedLogoImage, setUploadedLogoImage] = useState<
+    Images | undefined
+  >(logoImage)
 
   const displayedLogoImage = uploadedLogoImage || logoImage
 
@@ -24,20 +26,26 @@ export function EditImagesForm(props: {
     (image) => image.type === ImageType.RSVP
   )[0]
 
-  const [uploadedRSVPImage, setUploadedRSVPImage] = useState<Image | undefined>(
-    rsvpImage
-  )
+  const [uploadedRSVPImage, setUploadedRSVPImage] = useState<
+    Images | undefined
+  >(rsvpImage)
 
   const displayedRSVPImage = uploadedRSVPImage || rsvpImage
 
-  const handleLogoUpload = (image: Image) => {
+  const handleLogoUpload = (image: Images) => {
     setUploadedLogoImage(image)
     props.setUploadedImages((prev) => [...prev, image]) // Add to uploaded images
   }
 
-  const handleRSVPUpload = (image: Image) => {
+  const handleRSVPUpload = (image: Images) => {
     setUploadedRSVPImage(image)
     props.setUploadedImages((prev) => [...prev, image]) // Add to uploaded images
+  }
+
+  const deleteImage = (image: Images | undefined) => {
+    if (image != undefined) {
+      deleteImageRecord(image)
+    }
   }
 
   return (
@@ -57,6 +65,14 @@ export function EditImagesForm(props: {
               className='w-24 h-24 object-contain'
             />
           )}
+          <Button
+            variant='outline'
+            className={`ml-2 ${displayedLogoImage == undefined ? `hidden` : ``}`}
+            onClick={() => deleteImage(displayedLogoImage)}
+            aria-label='Delete timing'
+          >
+            <IconTrash />
+          </Button>
         </div>
 
         <div className='flex items-center gap-4'>
@@ -73,6 +89,14 @@ export function EditImagesForm(props: {
               className='w-24 h-24 object-contain'
             />
           )}
+          <Button
+            variant='outline'
+            className={`ml-2 ${displayedRSVPImage == undefined ? `hidden` : ``}`}
+            onClick={() => deleteImage(displayedRSVPImage)}
+            aria-label='Delete timing'
+          >
+            <IconTrash />
+          </Button>
         </div>
       </div>
     </div>

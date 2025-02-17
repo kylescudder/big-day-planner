@@ -22,10 +22,11 @@ import {
   updateImage,
   getTimings,
   updateTimings,
-  deleteTimings
+  deleteTimings,
+  deleteImages
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
-import { Detail, Espoused, Image, Timing, type Guest } from './db/schema'
+import { Detail, Espoused, Images, Timing, type Guest } from './db/schema'
 
 export async function getGuestRecords() {
   const user = await auth()
@@ -131,8 +132,12 @@ export async function getImagesRecord() {
   return await getImages()
 }
 
-export async function updateImageRecord(image: Image) {
+export async function updateImageRecord(image: Images) {
   return await updateImage(image)
+}
+
+export async function deleteImageRecord(image: Images) {
+  return await deleteImages(image)
 }
 
 export async function getTimingRecords() {

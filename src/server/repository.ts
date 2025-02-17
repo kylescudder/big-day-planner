@@ -10,16 +10,14 @@ import {
   details,
   Espoused,
   espoused,
-  type Image,
   images,
   type Timing,
-  timings
+  timings,
+  Images
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
 import { type AddressData, type Suggestions } from '@/types/address'
-import { ImageType } from '@/consts/image-types'
-import { Primitive } from 'zod'
 
 export async function getGuests(): Promise<Guest[]> {
   return await db.query.guests.findMany({})
@@ -159,7 +157,7 @@ export async function updateEspoused(espousedData: Espoused) {
     })
 }
 
-export const getImages = async (): Promise<Image[] | null> => {
+export const getImages = async (): Promise<Images[] | null> => {
   const result = await db.query.images.findMany({})
   if (result === undefined) {
     return null
@@ -167,7 +165,7 @@ export const getImages = async (): Promise<Image[] | null> => {
   return result
 }
 
-export async function updateImage(imageData: Image) {
+export async function updateImage(imageData: Images) {
   try {
     await db
       .insert(images)
@@ -182,6 +180,10 @@ export async function updateImage(imageData: Image) {
   } catch (e) {
     console.error(e)
   }
+}
+
+export async function deleteImages(image: Images) {
+  await db.delete(images).where(eq(images.id, image.id))
 }
 
 export const getTimings = async (): Promise<Timing[] | null> => {
