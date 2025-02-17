@@ -10,7 +10,6 @@ import {
   getStarterRecords,
   getTimingRecords
 } from '@/server/service'
-import Image from 'next/image'
 import { GuestResponse } from './_components/guest-response'
 import { redirect } from 'next/navigation'
 import { Fab } from './_components/fab'

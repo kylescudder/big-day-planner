@@ -23,7 +23,7 @@ export function GuestResponse(props: {
   starters: Starter[]
   mains: Main[]
   puddings: Pudding[]
-  timings: Timing[]
+  timings: Timing[] | null
 }) {
   const [rsvp, setRSVP] = useState(false)
   const [rsvpAnswer, setRsvpAnswer] = useState(

@@ -9,7 +9,7 @@ import {
   getImagesRecord,
   getTimingRecords
 } from '@/server/service'
-import { Detail, Espoused, Image } from '@/server/db/schema'
+import { Detail, Espoused, Image, Timing } from '@/server/db/schema'
 
 export default async function GuestsPage() {
   const data = await getGuestRecords()

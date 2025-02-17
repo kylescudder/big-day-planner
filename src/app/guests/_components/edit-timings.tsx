@@ -45,7 +45,7 @@ export function EditTimings(props: {
   const form = useForm({
     defaultValues: {
       id: uuidv4(),
-      time: '',
+      time: new Date(),
       event: '',
       altText: '',
       imageUrl: ''
