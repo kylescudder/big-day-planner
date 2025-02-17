@@ -80,7 +80,7 @@ export const images = createTable('image', {
   type: varchar('type', { length: 256 }).notNull(),
   key: varchar('key', { length: 256 }).notNull()
 })
-export type Image = typeof images.$inferSelect
+export type Images = typeof images.$inferSelect
 
 export const starters = createTable('starter', {
   id: uuid('id')

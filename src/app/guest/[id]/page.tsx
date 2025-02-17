@@ -5,6 +5,7 @@ import { Section } from '@/components/section'
 import {
   getDetailRecord,
   getGuestAndLinkedGuestRecord,
+  getImagesRecord,
   getMainRecords,
   getPuddingRecords,
   getStarterRecords,
@@ -24,6 +25,7 @@ export default async function Guest(props: {
   const puddings = await getPuddingRecords()
   const timings = await getTimingRecords()
   const details: Detail | null = await getDetailRecord()
+  const images = await getImagesRecord()
   if (!details) {
     redirect('/')
   }
@@ -59,6 +61,7 @@ export default async function Guest(props: {
         mains={mains}
         puddings={puddings}
         timings={timings}
+        images={images}
       />
       <Fab />
     </div>

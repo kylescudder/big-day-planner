@@ -8,7 +8,9 @@ import {
   type Starter,
   type Guest,
   type Timing,
-  Detail
+  type Images,
+  Detail,
+  images
 } from '@/server/db/schema'
 import { useState } from 'react'
 import { Timings } from './timings'
@@ -16,6 +18,8 @@ import { SongRequest } from './song-requst'
 import { Details } from './details'
 import { Menu } from './menu'
 import { RSVP } from './rsvp'
+import { ImageType } from '@/consts/image-types'
+import { env } from '@/env'
 
 export function GuestResponse(props: {
   details: Detail
@@ -24,6 +28,7 @@ export function GuestResponse(props: {
   mains: Main[]
   puddings: Pudding[]
   timings: Timing[] | null
+  images: Images[]
 }) {
   const [rsvp, setRSVP] = useState(false)
   const [rsvpAnswer, setRsvpAnswer] = useState(
@@ -63,6 +68,13 @@ export function GuestResponse(props: {
           className='float-end w-full relative h-auto'
         />
       </Section>
+      <img
+        alt='Venue illustration'
+        src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${props.images.find((image) => image.type == ImageType.RSVP)?.key}`}
+        width={300}
+        height={200}
+        className='float-end w-full relative h-auto'
+      />
       {rsvp && rsvpAnswer && (
         <>
           <Section id='menu' className='bg-background'>
