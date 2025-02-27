@@ -4,6 +4,7 @@ import { Meals } from '@/types/meals'
 import { uuidv4 } from '@/lib/utils'
 import { Main, Pudding, Starter } from '@/server/db/schema'
 import { Button } from '@/components/ui/button'
+import { IconTrash } from '@tabler/icons-react'
 
 export function EditMealsForm(props: {
   meals: Meals
@@ -60,6 +61,33 @@ export function EditMealsForm(props: {
     }
   }
 
+  const handleDeleteStarterItem = (id: string) => {
+    const updatedMeals = {
+      ...localMeals,
+      starters: localMeals.starters.filter((item) => item.id !== id)
+    }
+    setLocalMeals(updatedMeals)
+    props.onMealsChange(updatedMeals)
+  }
+
+  const handleDeleteMainItem = (id: string) => {
+    const updatedMeals = {
+      ...localMeals,
+      mains: localMeals.mains.filter((item) => item.id !== id)
+    }
+    setLocalMeals(updatedMeals)
+    props.onMealsChange(updatedMeals)
+  }
+
+  const handleDeletePuddingItem = (id: string) => {
+    const updatedMeals = {
+      ...localMeals,
+      puddings: localMeals.puddings.filter((item) => item.id !== id)
+    }
+    setLocalMeals(updatedMeals)
+    props.onMealsChange(updatedMeals)
+  }
+
   return (
     <div className='grid gap-4 p-4'>
       <div>
@@ -68,9 +96,17 @@ export function EditMealsForm(props: {
           {localMeals?.starters.map((item: Starter) => (
             <li
               key={item.id}
-              className='bg-gray-100 p-2 rounded-md mb-1 hover:bg-gray-200 transition'
+              className='p-2 rounded-md mb-1 cursor-pointer transition'
             >
-              {item.text}
+              <span>{item.text}</span>
+              <Button
+                variant='destructive'
+                size='sm'
+                onClick={() => handleDeleteStarterItem(item.id)}
+                className='h-8 px-2'
+              >
+                <IconTrash className='h-4 w-4' />
+              </Button>
             </li>
           ))}
         </ul>
@@ -97,9 +133,17 @@ export function EditMealsForm(props: {
           {localMeals?.mains.map((item: Main) => (
             <li
               key={item.id}
-              className='bg-gray-100 p-2 rounded-md mb-1 hover:bg-gray-200 transition'
+              className='p-2 rounded-md mb-1 cursor-pointer transition'
             >
-              {item.text}
+              <span>{item.text}</span>
+              <Button
+                variant='destructive'
+                size='sm'
+                onClick={() => handleDeleteMainItem(item.id)}
+                className='h-8 px-2'
+              >
+                <IconTrash className='h-4 w-4' />
+              </Button>
             </li>
           ))}
         </ul>
@@ -126,9 +170,17 @@ export function EditMealsForm(props: {
           {localMeals?.puddings.map((item: Pudding) => (
             <li
               key={item.id}
-              className='bg-gray-100 p-2 rounded-md mb-1 hover:bg-gray-200 transition'
+              className='p-2 rounded-md mb-1 cursor-pointer transition'
             >
-              {item.text}
+              <span>{item.text}</span>
+              <Button
+                variant='destructive'
+                size='sm'
+                onClick={() => handleDeletePuddingItem(item.id)}
+                className='h-8 px-2'
+              >
+                <IconTrash className='h-4 w-4' />
+              </Button>
             </li>
           ))}
         </ul>

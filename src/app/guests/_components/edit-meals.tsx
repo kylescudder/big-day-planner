@@ -21,9 +21,8 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer'
-import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
-import { Main, Pudding, Starter } from '@/server/db/schema'
+import { Main, Pudding, Starter, starters } from '@/server/db/schema'
 import {
   updateMainRecords,
   updatePuddingRecords,
@@ -57,10 +56,26 @@ export function EditMeals(props: {
     const meals = {
       ...values
     }
-
-    await updateStarterRecords(meals.starters)
-    await updateMainRecords(meals.mains)
-    await updatePuddingRecords(meals.puddings)
+    if (
+      JSON.stringify(meals.starters) !=
+      JSON.stringify(form.getValues('starters'))
+    ) {
+      form.setValue('starters', meals.starters)
+      await updateStarterRecords(meals.starters)
+    }
+    if (
+      JSON.stringify(meals.mains) != JSON.stringify(form.getValues('mains'))
+    ) {
+      form.setValue('mains', meals.mains)
+      await updateMainRecords(meals.mains)
+    }
+    if (
+      JSON.stringify(meals.puddings) !=
+      JSON.stringify(form.getValues('puddings'))
+    ) {
+      form.setValue('puddings', meals.puddings)
+      await updatePuddingRecords(meals.puddings)
+    }
     props.onMealsSave()
   }
 

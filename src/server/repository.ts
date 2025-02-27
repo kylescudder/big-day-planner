@@ -104,6 +104,8 @@ export async function updateStarters(starterArray: Starter[]) {
     text: starter.text
   }))
 
+  await db.delete(starters)
+
   await Promise.all(
     updates.map((update) =>
       db
@@ -129,6 +131,8 @@ export async function updateMains(mainArray: Main[]) {
     text: main.text
   }))
 
+  await db.delete(mains)
+
   await Promise.all(
     updates.map((update) =>
       db
@@ -153,6 +157,8 @@ export async function updatePuddings(puddingArray: Pudding[]) {
     id: pudding.id,
     text: pudding.text
   }))
+
+  await db.delete(puddings)
 
   await Promise.all(
     updates.map((update) =>
