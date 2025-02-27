@@ -9,13 +9,13 @@ import {
 import { TimePicker } from '@/components/ui/timepicker'
 import { FieldValues } from 'react-hook-form'
 import UploadThingImageLogo from '@/components/ui/upload-thing'
-import { Image } from '@/server/db/schema'
+import { Images } from '@/server/db/schema'
 import { useEffect, useState } from 'react'
 import { env } from '@/env'
 
 export function EditTimingsForm(props: { form: any }) {
   const [uploadedLogoImage, setUploadedLogoImage] = useState<
-    Image | undefined
+    Images | undefined
   >()
 
   useEffect(() => {

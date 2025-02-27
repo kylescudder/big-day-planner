@@ -15,23 +15,25 @@ export function Menu(props: {
 }) {
   return (
     <>
-      <p className='text-3xl pt-14'>menu</p>
-      <MenuForm
-        guestData={props.guestData}
-        starters={props.starters}
-        mains={props.mains}
-        puddings={props.puddings}
-      />
-      <div className='columns-2 pt-10'>
-        <Image
-          alt='Menu illustration'
-          src='/assets-menu-choice.svg'
-          width={150}
-          height={150}
+      <p className='text-5xl pt-14'>menu</p>
+      <div className='grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl'>
+        <MenuForm
+          guestData={props.guestData}
+          starters={props.starters}
+          mains={props.mains}
+          puddings={props.puddings}
         />
-        <p className='pt-28 pr-12 text-right -ms-16 relative z-10'>
-          We kindly ask you to make your choices by 00/00/25
-        </p>
+        <div className='columns-2 pt-10'>
+          <Image
+            alt='Menu illustration'
+            src='/assets-menu-choice.svg'
+            width={150}
+            height={150}
+          />
+          <p className='pt-28 pr-12 text-right -ms-16 relative z-10'>
+            We kindly ask you to make your choices by 00/00/25
+          </p>
+        </div>
       </div>
     </>
   )

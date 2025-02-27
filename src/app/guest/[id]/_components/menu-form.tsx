@@ -25,9 +25,13 @@ export function MenuForm(props: {
   puddings: Pudding[]
 }) {
   const [allMenuChosen, setAllMenuChosen] = useState<boolean>(
-    props.guestData.every(
-      (guest) => guest.starterId && guest.mainId && guest.puddingId
-    )
+    props.guestData.every((guest) => {
+      const hasStarter = props.starters.length > 0 ? guest.starterId : true
+      const hasMain = props.mains.length > 0 ? guest.mainId : true
+      const hasPudding = props.puddings.length > 0 ? guest.puddingId : true
+
+      return hasStarter && hasMain && hasPudding
+    })
   )
 
   const form = useForm({
@@ -75,114 +79,132 @@ export function MenuForm(props: {
           {props.guestData.map((guest, index) => (
             <div key={index} className='text-lg pt-10'>
               <p className='text-lg'>{guest.forename}</p>
-              <p className='text-secondary pb-5'>starter</p>
-              <FormField
-                control={form.control}
-                name={`${index}.starterId`}
-                render={({ field }) => (
-                  <FormItem className='space-y-3'>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value ?? ''}
-                        className='flex flex-col space-y-1'
-                      >
-                        {props.starters.map((starter, index) => (
-                          <div key={index}>
-                            <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>
-                              <FormLabel className='font-normal'>
-                                {starter.text}
-                              </FormLabel>
-                              <FormControl>
-                                <RadioGroupItem
-                                  value={starter.id}
-                                  className='border-2 border-black'
-                                />
-                              </FormControl>
-                            </FormItem>
-                            {index !== props.starters.length - 1 && <p>or</p>}
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <p className='text-secondary pb-5'>main</p>
-              <FormField
-                control={form.control}
-                name={`${index}.mainId`}
-                render={({ field }) => (
-                  <FormItem className='space-y-3'>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value ?? ''}
-                        className='flex flex-col space-y-1'
-                      >
-                        {props.mains.map((main, index) => (
-                          <div key={index}>
-                            <FormItem
-                              key={index}
-                              className='flex items-center space-x-3 space-y-0 justify-between'
-                            >
-                              <FormLabel className='font-normal'>
-                                {main.text}
-                              </FormLabel>
-                              <FormControl>
-                                <RadioGroupItem
-                                  value={main.id}
-                                  className='border-2 border-black'
-                                />
-                              </FormControl>
-                            </FormItem>
-                            {index !== props.starters.length - 1 && <p>or</p>}
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <p className='text-secondary pb-5'>pudding</p>
-              <FormField
-                control={form.control}
-                name={`${index}.puddingId`}
-                render={({ field }) => (
-                  <FormItem className='space-y-3'>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value ?? ''}
-                        className='flex flex-col space-y-1'
-                      >
-                        {props.puddings.map((pudding, index) => (
-                          <div key={index}>
-                            <FormItem
-                              key={index}
-                              className='flex items-center space-x-3 space-y-0 justify-between'
-                            >
-                              <FormLabel className='font-normal'>
-                                {pudding.text}
-                              </FormLabel>
-                              <FormControl>
-                                <RadioGroupItem
-                                  value={pudding.id}
-                                  className='border-2 border-black'
-                                />
-                              </FormControl>
-                            </FormItem>
-                            {index !== props.starters.length - 1 && <p>or</p>}
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {props.starters.length > 0 && (
+                <article>
+                  <p className='text-secondary pb-5'>starter</p>
+                  <FormField
+                    control={form.control}
+                    name={`${index}.starterId`}
+                    render={({ field }) => (
+                      <FormItem className='space-y-3'>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value ?? ''}
+                            className='flex flex-col space-y-1'
+                          >
+                            {props.starters.map((starter, index) => (
+                              <div key={index}>
+                                <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>
+                                  <FormLabel className='font-normal'>
+                                    {starter.text}
+                                  </FormLabel>
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={starter.id}
+                                      className='border-2 border-black'
+                                    />
+                                  </FormControl>
+                                </FormItem>
+                                {index !== props.starters.length - 1 && (
+                                  <p>or</p>
+                                )}
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </article>
+              )}
+              {props.mains.length > 0 && (
+                <article>
+                  <p className='text-secondary pb-5'>main</p>
+                  <FormField
+                    control={form.control}
+                    name={`${index}.mainId`}
+                    render={({ field }) => (
+                      <FormItem className='space-y-3'>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value ?? ''}
+                            className='flex flex-col space-y-1'
+                          >
+                            {props.mains.map((main, index) => (
+                              <div key={index}>
+                                <FormItem
+                                  key={index}
+                                  className='flex items-center space-x-3 space-y-0 justify-between'
+                                >
+                                  <FormLabel className='font-normal'>
+                                    {main.text}
+                                  </FormLabel>
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={main.id}
+                                      className='border-2 border-black'
+                                    />
+                                  </FormControl>
+                                </FormItem>
+                                {index !== props.starters.length - 1 && (
+                                  <p>or</p>
+                                )}
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </article>
+              )}
+              {props.puddings.length > 0 && (
+                <article>
+                  <p className='text-secondary pb-5'>pudding</p>
+                  <FormField
+                    control={form.control}
+                    name={`${index}.puddingId`}
+                    render={({ field }) => (
+                      <FormItem className='space-y-3'>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value ?? ''}
+                            className='flex flex-col space-y-1'
+                          >
+                            {props.puddings.map((pudding, index) => (
+                              <div key={index}>
+                                <FormItem
+                                  key={index}
+                                  className='flex items-center space-x-3 space-y-0 justify-between'
+                                >
+                                  <FormLabel className='font-normal'>
+                                    {pudding.text}
+                                  </FormLabel>
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={pudding.id}
+                                      className='border-2 border-black'
+                                    />
+                                  </FormControl>
+                                </FormItem>
+                                {index !== props.starters.length - 1 && (
+                                  <p>or</p>
+                                )}
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </article>
+              )}
             </div>
           ))}
           <Button

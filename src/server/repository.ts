@@ -13,7 +13,10 @@ import {
   images,
   type Timing,
   timings,
-  Images
+  Images,
+  starters,
+  mains,
+  puddings
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
@@ -95,12 +98,75 @@ export const getStarters = async (): Promise<Starter[]> => {
   return await db.query.starters.findMany({})
 }
 
+export async function updateStarters(starterArray: Starter[]) {
+  const updates = starterArray.map((starter) => ({
+    id: starter.id,
+    text: starter.text
+  }))
+
+  await Promise.all(
+    updates.map((update) =>
+      db
+        .insert(starters)
+        .values(update)
+        .onConflictDoUpdate({
+          target: [starters.id],
+          set: {
+            text: update.text
+          }
+        })
+    )
+  )
+}
+
 export const getMains = async (): Promise<Main[]> => {
   return await db.query.mains.findMany({})
 }
 
+export async function updateMains(mainArray: Main[]) {
+  const updates = mainArray.map((main) => ({
+    id: main.id,
+    text: main.text
+  }))
+
+  await Promise.all(
+    updates.map((update) =>
+      db
+        .insert(mains)
+        .values(update)
+        .onConflictDoUpdate({
+          target: [mains.id],
+          set: {
+            text: update.text
+          }
+        })
+    )
+  )
+}
+
 export const getPuddings = async (): Promise<Pudding[]> => {
   return await db.query.puddings.findMany({})
+}
+
+export async function updatePuddings(puddingArray: Pudding[]) {
+  const updates = puddingArray.map((pudding) => ({
+    id: pudding.id,
+    text: pudding.text
+  }))
+
+  await Promise.all(
+    updates.map((update) =>
+      db
+        .insert(puddings)
+        .values(update)
+        .onConflictDoUpdate({
+          target: [puddings.id],
+          set: {
+            text: update.text
+          }
+        })
+    )
+  )
 }
 
 export const getDetails = async (): Promise<Detail | null> => {

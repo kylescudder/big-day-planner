@@ -7,9 +7,20 @@ import {
   getEspousedRecord,
   getGuestRecords,
   getImagesRecord,
+  getMainRecords,
+  getPuddingRecords,
+  getStarterRecords,
   getTimingRecords
 } from '@/server/service'
-import { Detail, Espoused, Image, Timing } from '@/server/db/schema'
+import {
+  Detail,
+  Espoused,
+  Images,
+  Main,
+  Pudding,
+  Starter,
+  Timing
+} from '@/server/db/schema'
 
 export default async function GuestsPage() {
   const data = await getGuestRecords()
@@ -19,8 +30,15 @@ export default async function GuestsPage() {
   }
   const espoused: Espoused | null = await getEspousedRecord()
 
-  const images: Image[] | null = await getImagesRecord()
+  const images: Images[] | null = await getImagesRecord()
   if (!images) return null
+
+  const starters: Starter[] | null = await getStarterRecords()
+  if (!starters) return null
+  const mains: Main[] | null = await getMainRecords()
+  if (!mains) return null
+  const puddings: Pudding[] | null = await getPuddingRecords()
+  if (!puddings) return null
 
   const timings: Timing[] | null = await getTimingRecords()
   if (!timings) return null
@@ -29,6 +47,9 @@ export default async function GuestsPage() {
     <div>
       <Guests
         details={details}
+        starters={starters}
+        mains={mains}
+        puddings={puddings}
         espoused={espoused}
         data={data}
         images={images}

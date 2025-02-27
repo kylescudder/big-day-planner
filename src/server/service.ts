@@ -23,10 +23,22 @@ import {
   getTimings,
   updateTimings,
   deleteTimings,
-  deleteImages
+  deleteImages,
+  updateStarters,
+  updateMains,
+  updatePuddings
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
-import { Detail, Espoused, Images, Timing, type Guest } from './db/schema'
+import {
+  Detail,
+  Espoused,
+  Images,
+  Main,
+  Pudding,
+  Starter,
+  Timing,
+  type Guest
+} from './db/schema'
 
 export async function getGuestRecords() {
   const user = await auth()
@@ -96,12 +108,36 @@ export async function getStarterRecords() {
   return await getStarters()
 }
 
+export async function updateStarterRecords(starters: Starter[]) {
+  const user = await auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updateStarters(starters)
+}
+
 export async function getMainRecords() {
   return await getMains()
 }
 
+export async function updateMainRecords(mains: Main[]) {
+  const user = await auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updateMains(mains)
+}
+
 export async function getPuddingRecords() {
   return await getPuddings()
+}
+
+export async function updatePuddingRecords(puddings: Pudding[]) {
+  const user = await auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updatePuddings(puddings)
 }
 
 export async function getDetailRecord() {

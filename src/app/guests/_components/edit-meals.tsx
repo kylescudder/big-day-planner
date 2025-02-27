@@ -21,32 +21,47 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer'
+import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
-import { IconLibraryPhoto } from '@tabler/icons-react'
+import { Main, Pudding, Starter } from '@/server/db/schema'
+import {
+  updateMainRecords,
+  updatePuddingRecords,
+  updateStarterRecords
+} from '@/server/service'
+import { IconEdit } from '@tabler/icons-react'
 import { useState } from 'react'
-import { EditImagesForm } from './form/edit-images-form'
-import { Images } from '@/server/db/schema'
-import { updateImageRecord } from '@/server/service'
+import { useForm } from 'react-hook-form'
+import { EditMealsForm } from './form/edit-meals-form'
+import { Meals } from '@/types/meals'
 
-export function EditImages(props: {
-  images: Images[]
-  onImagesSave: () => void
+export function EditMeals(props: {
+  starters: Starter[]
+  mains: Main[]
+  puddings: Pudding[]
+  onMealsSave: () => void
 }) {
   const [open, setOpen] = useState(false)
-  const [uploadedImages, setUploadedImages] = useState<Images[]>([])
 
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
-  const handleSave = async () => {
-    uploadedImages.forEach((image) => {
-      updateImageRecord(image)
-    })
-    try {
-      props.onImagesSave()
-      setOpen(false)
-    } catch (error) {
-      console.error('Error saving images:', error)
+  const form = useForm<Meals>({
+    defaultValues: {
+      starters: props.starters ?? [],
+      mains: props.mains ?? [],
+      puddings: props.puddings ?? []
     }
+  })
+
+  async function handleMealChange(values: Meals) {
+    const meals = {
+      ...values
+    }
+
+    await updateStarterRecords(meals.starters)
+    await updateMainRecords(meals.mains)
+    await updatePuddingRecords(meals.puddings)
+    props.onMealsSave()
   }
 
   if (isDesktop) {
@@ -54,25 +69,20 @@ export function EditImages(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconLibraryPhoto className='pr-2' />
-            Edit Images
+            <IconEdit className='pr-2' />
+            Edit Meals
           </Button>
         </DialogTrigger>
         <DialogContent className='max-w-7xl'>
           <DialogHeader>
-            <DialogTitle>Edit Images</DialogTitle>
-            <DialogDescription>
-              Edit the images used around the site.
-            </DialogDescription>
+            <DialogTitle>Edit Meals</DialogTitle>
+            <DialogDescription>Edit the meals of the day.</DialogDescription>
           </DialogHeader>
-          <EditImagesForm
-            images={props.images}
-            setUploadedImages={setUploadedImages}
+          <EditMealsForm
+            meals={form.getValues()}
+            onMealsChange={handleMealChange}
           />
           <DialogFooter>
-            <Button type='button' onClick={handleSave}>
-              <p>Save changes</p>
-            </Button>
             <DialogClose asChild>
               <Button variant='outline'>Cancel</Button>
             </DialogClose>
@@ -86,25 +96,20 @@ export function EditImages(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconLibraryPhoto className='pr-2' />
-          Edit Images
+          <IconEdit className='pr-2' />
+          Edit Meals
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Edit Images</DrawerTitle>
-          <DrawerDescription>
-            Edit the images used around the site.
-          </DrawerDescription>
+          <DrawerTitle>Edit Meals</DrawerTitle>
+          <DrawerDescription>Edit the meals of the day.</DrawerDescription>
         </DrawerHeader>
-        <EditImagesForm
-          images={props.images}
-          setUploadedImages={setUploadedImages}
+        <EditMealsForm
+          meals={form.getValues()}
+          onMealsChange={handleMealChange}
         />
         <DrawerFooter>
-          <Button type='button' onClick={handleSave}>
-            <p>Save changes</p>
-          </Button>
           <DrawerClose asChild>
             <Button className='w-full' variant='outline'>
               Cancel

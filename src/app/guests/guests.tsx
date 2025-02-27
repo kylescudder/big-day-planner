@@ -3,10 +3,13 @@
 import { DataTable } from '@/components/ui/data-table/data-table'
 import LoadingPage from '@/components/ui/loading/loading-page'
 import {
+  Main,
+  Pudding,
+  Starter,
   type Detail,
   type Espoused,
   type Guest,
-  type Image,
+  type Images,
   type Timing
 } from '@/server/db/schema'
 import { useEffect, useMemo, useState } from 'react'
@@ -18,12 +21,16 @@ import { deleteGuestRecord } from '@/server/service'
 import { EditEspoused } from './_components/edit-espoused'
 import { EditImages } from './_components/edit-images'
 import { EditTimings } from './_components/edit-timings'
+import { EditMeals } from './_components/edit-meals'
 
 export default function Guests(props: {
   details: Detail
+  starters: Starter[]
+  mains: Main[]
+  puddings: Pudding[]
   espoused: Espoused | null
   data: Guest[]
-  images: Image[]
+  images: Images[]
   timings: Timing[]
 }) {
   const [guests, setGuests] = useState<Guest[]>([])
@@ -57,6 +64,12 @@ export default function Guests(props: {
     })
   }
 
+  const onMealsSave = () => {
+    toast('Meals saved!', {
+      duration: 2000
+    })
+  }
+
   const onEspousedSave = () => {
     toast('Espoused saved!', {
       duration: 2000
@@ -79,6 +92,12 @@ export default function Guests(props: {
     <div>
       <AddGuest guests={guests} onNewGuest={onNewGuest} />
       <EditDetails details={props.details} onDetailsSave={onDetailsSave} />
+      <EditMeals
+        starters={props.starters}
+        mains={props.mains}
+        puddings={props.puddings}
+        onMealsSave={onMealsSave}
+      />
       <EditEspoused espoused={props.espoused} onEspousedSave={onEspousedSave} />
       <EditImages images={props.images} onImagesSave={onImagesSave} />
       <EditTimings timings={props.timings} onTimingsSave={onTimingsSave} />
