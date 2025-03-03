@@ -108,7 +108,7 @@ export function GuestResponse(props: {
             width='0'
             height='0'
             sizes='100vw'
-            className='float-end w-full relative h-auto'
+            className='float-end w-full relative -top-[1px] h-auto'
           />
           <Section id='details' className='pb-12'>
             <Details details={props.details} />
