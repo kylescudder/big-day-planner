@@ -67,7 +67,8 @@ export async function updateGuestMenu(guest: Guest) {
     .set({
       starterId: guest.starterId,
       mainId: guest.mainId,
-      puddingId: guest.puddingId
+      puddingId: guest.puddingId,
+      dietaryRequirements: guest.dietaryRequirements
     })
     .where(eq(guests.id, guest.id))
 }

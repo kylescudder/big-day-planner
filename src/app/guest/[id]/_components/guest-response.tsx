@@ -50,7 +50,7 @@ export function GuestResponse(props: {
     <>
       <Section
         id='rsvp'
-        className={`bg-pink pb-20 ${!props.guestData[0]?.rsvpAnswer || !props.guestData[0]?.rsvp ? 'h-screen' : ''}`}
+        className={`bg-pink pb-10 ${!props.guestData[0]?.rsvpAnswer || !props.guestData[0]?.rsvp ? 'h-screen' : ''}`}
       >
         <section className='z-10 relative'>
           <RSVP
@@ -82,6 +82,7 @@ export function GuestResponse(props: {
               starters={props.starters}
               mains={props.mains}
               puddings={props.puddings}
+              details={props.details}
             />
           </Section>
           <Section

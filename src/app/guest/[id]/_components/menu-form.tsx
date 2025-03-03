@@ -16,7 +16,8 @@ import {
 } from '@/server/db/schema'
 import { updateMenuChoice } from '@/server/service'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
+import { Textarea } from '@/components/ui/textarea'
 
 export function MenuForm(props: {
   guestData: Guest[]
@@ -77,11 +78,11 @@ export function MenuForm(props: {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='grid gap-4'>
           {props.guestData.map((guest, index) => (
-            <div key={index} className='text-lg pt-10'>
+            <div key={index} className='text-lg pt-4'>
               <p className='text-lg'>{guest.forename}</p>
               {props.starters.length > 0 && (
-                <article>
-                  <p className='text-secondary pb-5'>starter</p>
+                <article className='pt-4'>
+                  <p className='text-secondary'>starter</p>
                   <FormField
                     control={form.control}
                     name={`${index}.starterId`}
@@ -120,8 +121,8 @@ export function MenuForm(props: {
                 </article>
               )}
               {props.mains.length > 0 && (
-                <article>
-                  <p className='text-secondary pb-5'>main</p>
+                <article className='pt-4'>
+                  <p className='text-secondary'>main</p>
                   <FormField
                     control={form.control}
                     name={`${index}.mainId`}
@@ -163,8 +164,8 @@ export function MenuForm(props: {
                 </article>
               )}
               {props.puddings.length > 0 && (
-                <article>
-                  <p className='text-secondary pb-5'>pudding</p>
+                <article className='pt-4'>
+                  <p className='text-secondary'>pudding</p>
                   <FormField
                     control={form.control}
                     name={`${index}.puddingId`}
@@ -205,6 +206,32 @@ export function MenuForm(props: {
                   />
                 </article>
               )}
+              <FormField
+                control={form.control}
+                name={`${index}.dietaryRequirements`}
+                render={({ field }: { field: FieldValues }) => (
+                  <FormItem className='pt-4'>
+                    <FormLabel
+                      htmlFor='dietaryRequirements'
+                      className='text-secondary'
+                    >
+                      dietary requirements
+                    </FormLabel>
+                    <FormControl>
+                      <div className='items-center gap-4'>
+                        <Textarea
+                          {...field}
+                          value=''
+                          id='dietaryRequirements'
+                          className='text-base'
+                          variant='ghost'
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           ))}
           <Button

@@ -34,6 +34,7 @@ export const guests = createTable('guest', {
   rsvp: boolean('rsvp'),
   rsvpAnswer: boolean('rsvp_answer'),
   parentId: uuid('parentId'),
+  dietaryRequirements: varchar('dietaryRequirements', { length: 256 }),
   createdAt: timestamp('created_at')
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

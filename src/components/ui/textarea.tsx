@@ -9,7 +9,8 @@ const inputVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-secondary rounded-2xl border-2 border-white text-white hover:border-primary hover:border-2 transition-colors ease-in-out duration-500 placeholder:text-white focus:bg-primary hover:focus:border-white'
+          'bg-secondary rounded-2xl border-2 border-white text-white hover:border-primary hover:border-2 transition-colors ease-in-out duration-500 placeholder:text-white focus:bg-primary hover:focus:border-white',
+        ghost: 'bg-none rounded-2xl border-2 border-primary text-black'
       }
     },
     defaultVariants: {
