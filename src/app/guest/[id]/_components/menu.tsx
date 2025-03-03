@@ -29,7 +29,7 @@ export function Menu(props: {
       </div>
       <div>
         <p className='text-center pt-4'>
-          We kindly ask you to make your choices by{' '}
+          we kindly ask you to make your choices by{' '}
           {format(props.details.startDateTime, 'dd/MM/yyyy')}
         </p>
       </div>
