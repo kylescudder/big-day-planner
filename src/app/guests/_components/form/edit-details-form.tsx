@@ -185,7 +185,7 @@ export function EditDetailsForm(props: { form: any }) {
         />
         <FormField
           control={props.form.control}
-          name='drersscode'
+          name='dresscode'
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor='dresscode'>Dress code</FormLabel>
