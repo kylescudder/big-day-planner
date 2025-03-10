@@ -7,7 +7,7 @@ import { ImageType } from '@/consts/image-types'
 import { Images } from '@/server/db/schema'
 
 interface UploadThingImageLogoProps {
-  onUploadCompleteAction: (image: Image) => void
+  onUploadCompleteAction: (image: Images) => void
   disabled?: boolean
   type: ImageType
 }
