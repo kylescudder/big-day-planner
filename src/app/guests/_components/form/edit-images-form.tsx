@@ -34,12 +34,13 @@ export function EditImagesForm(props: {
 
   const handleLogoUpload = (image: Images) => {
     setUploadedLogoImage(image)
-    props.setUploadedImages((prev) => [...prev, image]) // Add to uploaded images
+    // Create a new array with all existing images plus the new one
+    props.setUploadedImages([...props.images, image])
   }
 
   const handleRSVPUpload = (image: Images) => {
     setUploadedRSVPImage(image)
-    props.setUploadedImages((prev) => [...prev, image]) // Add to uploaded images
+    props.setUploadedImages([...props.images, image])
   }
 
   const deleteImage = (image: Images | undefined, type: ImageType) => {
