@@ -12,6 +12,7 @@ import UploadThingImageLogo from '@/components/ui/upload-thing'
 import { Images } from '@/server/db/schema'
 import { useEffect, useState } from 'react'
 import { env } from '@/env'
+import { ImageType } from '@/consts/image-types'
 
 export function EditTimingsForm(props: { form: any }) {
   const [uploadedLogoImage, setUploadedLogoImage] = useState<
@@ -79,7 +80,11 @@ export function EditTimingsForm(props: { form: any }) {
             </FormItem>
           )}
         />
-        <UploadThingImageLogo onUploadCompleteAction={setUploadedLogoImage} />
+        <UploadThingImageLogo
+          onUploadCompleteAction={setUploadedLogoImage}
+          disabled={uploadedLogoImage !== undefined}
+          type={ImageType.LOGO}
+        />
         {displayedLogoImage && (
           <img
             src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${displayedLogoImage.key}`}
