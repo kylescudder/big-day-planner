@@ -12,8 +12,7 @@ const cooperBlack = localFont({ src: '../styles/fonts/COOPBL.woff' })
 
 export const metadata = {
   title: 'Big Day Planner',
-  description: 'Plan your big day!',
-  icons: [{ rel: 'icon', url: '/favicon.ico' }]
+  description: 'Plan your big day!'
 }
 
 export default function RootLayout({
