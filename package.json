@@ -73,6 +73,8 @@
   },
   "trustedDependencies": [
     "@clerk/shared",
+    "@sentry/cli",
+    "esbuild",
     "sharp"
   ]
 }
