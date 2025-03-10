@@ -16,7 +16,8 @@ import {
   Images,
   starters,
   mains,
-  puddings
+  Hotel,
+  hotels
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
@@ -281,4 +282,28 @@ export async function updateTimings(timingData: Timing) {
 
 export async function deleteTimings(timing: Timing) {
   await db.delete(timings).where(eq(timings.id, timing.id))
+}
+export const getHotels = async (): Promise<Hotel[] | null> => {
+  const result = await db.query.hotels.findMany({})
+  if (result === undefined) {
+    return null
+  }
+  return result
+}
+
+export async function updateHotels(hotelData: Hotel) {
+  await db
+    .insert(hotels)
+    .values(hotelData)
+    .onConflictDoUpdate({
+      target: [hotels.id],
+      set: {
+        name: hotelData.name,
+        url: hotelData.url
+      }
+    })
+}
+
+export async function deleteHotels(hotel: Hotel) {
+  await db.delete(hotels).where(eq(hotels.id, hotel.id))
 }

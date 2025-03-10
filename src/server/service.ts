@@ -27,11 +27,15 @@ import {
   updateStarters,
   updateMains,
   updatePuddings
+  deleteHotels,
+  updateHotels,
+  getHotels
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import {
   Detail,
   Espoused,
+  Hotel,
   Images,
   Main,
   Pudding,
@@ -186,4 +190,15 @@ export async function updateTimingRecord(timing: Timing) {
 
 export async function deleteTimingRecord(timing: Timing) {
   return await deleteTimings(timing)
+}
+export async function getHotelRecords() {
+  return await getHotels()
+}
+
+export async function updateHotelRecord(hotel: Hotel) {
+  return await updateHotels(hotel)
+}
+
+export async function deleteHotelRecord(hotel: Hotel) {
+  return await deleteHotels(hotel)
 }
