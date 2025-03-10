@@ -16,6 +16,9 @@ import {
   Images,
   starters,
   mains,
+  puddings,
+  Taxi,
+  taxis,
   Hotel,
   hotels
 } from './db/schema'
@@ -283,6 +286,32 @@ export async function updateTimings(timingData: Timing) {
 export async function deleteTimings(timing: Timing) {
   await db.delete(timings).where(eq(timings.id, timing.id))
 }
+
+export const getTaxis = async (): Promise<Taxi[] | null> => {
+  const result = await db.query.taxis.findMany({})
+  if (result === undefined) {
+    return null
+  }
+  return result
+}
+
+export async function updateTaxis(taxiData: Taxi) {
+  await db
+    .insert(taxis)
+    .values(taxiData)
+    .onConflictDoUpdate({
+      target: [taxis.id],
+      set: {
+        name: taxiData.name,
+        phone: taxiData.phone
+      }
+    })
+}
+
+export async function deleteTaxis(taxi: Taxi) {
+  await db.delete(taxis).where(eq(taxis.id, taxi.id))
+}
+
 export const getHotels = async (): Promise<Hotel[] | null> => {
   const result = await db.query.hotels.findMany({})
   if (result === undefined) {

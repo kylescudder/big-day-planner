@@ -26,7 +26,10 @@ import {
   deleteImages,
   updateStarters,
   updateMains,
-  updatePuddings
+  updatePuddings,
+  deleteTaxis,
+  updateTaxis,
+  getTaxis,
   deleteHotels,
   updateHotels,
   getHotels
@@ -40,6 +43,7 @@ import {
   Main,
   Pudding,
   Starter,
+  Taxi,
   Timing,
   type Guest
 } from './db/schema'
@@ -191,6 +195,19 @@ export async function updateTimingRecord(timing: Timing) {
 export async function deleteTimingRecord(timing: Timing) {
   return await deleteTimings(timing)
 }
+
+export async function getTaxiRecords() {
+  return await getTaxis()
+}
+
+export async function updateTaxiRecord(taxi: Taxi) {
+  return await updateTaxis(taxi)
+}
+
+export async function deleteTaxiRecord(taxi: Taxi) {
+  return await deleteTaxis(taxi)
+}
+
 export async function getHotelRecords() {
   return await getHotels()
 }

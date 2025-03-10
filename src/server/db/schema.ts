@@ -5,7 +5,7 @@ import {
   timestamp,
   varchar,
   boolean,
-  uuid,
+  uuid
 } from 'drizzle-orm/pg-core'
 
 export const createTable = pgTableCreator((name) => `${name}`)
@@ -128,3 +128,13 @@ export const taxis = createTable('taxi', {
 })
 
 export type Taxi = typeof taxis.$inferSelect
+
+export const hotels = createTable('hotels', {
+  id: uuid('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv4()),
+  name: varchar('name').notNull(),
+  url: varchar('url').notNull()
+})
+
+export type Hotel = typeof hotels.$inferSelect
