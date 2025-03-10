@@ -62,6 +62,7 @@ export function AddGuest(props: {
       artist: '',
       rsvp: false,
       rsvpAnswer: false,
+      dietaryRequirements: '',
       parentId: null as string | null,
       createdAt: new Date(),
       updatedAt: new Date()
