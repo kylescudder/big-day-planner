@@ -2,9 +2,9 @@
 import { useState } from 'react'
 import { UploadButton } from '@/utils/uploadthing'
 import { twMerge } from 'tailwind-merge'
-import { Image } from '@/server/db/schema'
 import { uuidv4 } from '@/lib/utils'
 import { ImageType } from '@/consts/image-types'
+import { Images } from '@/server/db/schema'
 
 interface UploadThingImageLogoProps {
   onUploadCompleteAction: (image: Image) => void
@@ -32,7 +32,7 @@ export default function UploadThingImageLogo({
         }}
         endpoint='logoUploader'
         onClientUploadComplete={(res) => {
-          const uploadedImage: Image = {
+          const uploadedImage: Images = {
             id: uuidv4(),
             key: res[0]!.key,
             type: type
