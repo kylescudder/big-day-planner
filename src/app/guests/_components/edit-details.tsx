@@ -52,7 +52,6 @@ export function EditDetails(props: {
       postcode: props.details?.postcode ?? '',
       detailsTextSubheader: props.details?.detailsTextSubheader ?? '',
       detailsText: props.details?.detailsText ?? '',
-      adultsOnly: props.details?.adultsOnly ?? false,
       adultsOnlyText: props.details?.adultsOnlyText ?? '',
       dresscode: props.details?.dresscode ?? '',
       songRequest: props.details?.songRequest ?? false

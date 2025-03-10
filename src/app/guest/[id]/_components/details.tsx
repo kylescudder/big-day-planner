@@ -9,13 +9,11 @@ export function Details(props: { details: Detail }) {
       >
         <p className='pt-10'>{props.details.detailsTextSubheader}</p>
       </div>
-      {props.details.adultsOnly ?? (
-        <div
-          className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.adultsOnlyText ? '' : 'hidden'}`}
-        >
-          <p className='pt-10'>{props.details.adultsOnlyText}</p>
-        </div>
-      )}
+      <div
+        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.adultsOnlyText ? '' : 'hidden'}`}
+      >
+        <p className='pt-10'>{props.details.adultsOnlyText}</p>
+      </div>
       <div
         className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.detailsText ? '' : 'hidden'}`}
       >

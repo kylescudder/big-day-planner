@@ -200,7 +200,6 @@ export async function updateDetails(detail: Detail) {
         postcode: detail.postcode,
         detailsTextSubheader: detail.detailsTextSubheader,
         detailsText: detail.detailsText,
-        adultsOnly: detail.adultsOnly,
         adultsOnlyText: detail.adultsOnlyText,
         dresscode: detail.dresscode
       }

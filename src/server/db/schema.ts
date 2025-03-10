@@ -56,7 +56,6 @@ export const details = createTable('detail', {
   postcode: varchar('postcode').notNull(),
   detailsTextSubheader: varchar('details_text_subheader', { length: 256 }),
   detailsText: varchar('details_text', { length: 1024 }),
-  adultsOnly: boolean('adults_only'),
   adultsOnlyText: varchar('adults_only_text', { length: 256 }),
   dresscode: varchar('dresscode', { length: 256 }),
   songRequest: boolean('song_request')
