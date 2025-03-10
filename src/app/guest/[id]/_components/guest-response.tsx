@@ -67,13 +67,21 @@ export function GuestResponse(props: {
           className='float-end w-full relative h-auto pt-10'
         />
       </Section>
-      <img
-        alt='Venue illustration'
-        src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${props.images.find((image) => image.type == ImageType.RSVP)?.key}`}
-        width={300}
-        height={200}
-        className='float-end w-full relative h-auto'
-      />
+      {(() => {
+        const rsvpImage = props.images.find(
+          (image) => image.type == ImageType.RSVP
+        )
+        return rsvpImage ? (
+          <img
+            alt='Venue illustration'
+            src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${rsvpImage.key}`}
+            width={300}
+            height={200}
+            className='float-end w-full relative h-auto'
+          />
+        ) : null
+      })()}
+
       {rsvp && rsvpAnswer && (
         <>
           <Section id='menu' className='bg-background'>
