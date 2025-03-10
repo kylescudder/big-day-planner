@@ -179,7 +179,7 @@ export function AddGuestForm(props: {
         )}
       />
       <FormField
-        name='address'
+        name='address1'
         rules={{ required: 'Address is required' }}
         render={() => (
           <FormItem>
