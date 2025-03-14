@@ -6,6 +6,7 @@ import {
   Main,
   Pudding,
   Starter,
+  Taxi,
   type Detail,
   type Espoused,
   type Guest,
@@ -22,6 +23,7 @@ import { EditEspoused } from './_components/edit-espoused'
 import { EditImages } from './_components/edit-images'
 import { EditTimings } from './_components/edit-timings'
 import { EditMeals } from './_components/edit-meals'
+import { EditTaxis } from './_components/edit-taxis'
 
 export default function Guests(props: {
   details: Detail
@@ -32,6 +34,7 @@ export default function Guests(props: {
   data: Guest[]
   images: Images[]
   timings: Timing[]
+  taxis: Taxi[]
 }) {
   const [guests, setGuests] = useState<Guest[]>([])
 
@@ -88,6 +91,12 @@ export default function Guests(props: {
     })
   }
 
+  const onTaxisSave = () => {
+    toast('Taxis saved!', {
+      duration: 2000
+    })
+  }
+
   return (
     <div>
       <AddGuest guests={guests} onNewGuest={onNewGuest} />
@@ -101,6 +110,7 @@ export default function Guests(props: {
       <EditEspoused espoused={props.espoused} onEspousedSave={onEspousedSave} />
       <EditImages images={props.images} onImagesSave={onImagesSave} />
       <EditTimings timings={props.timings} onTimingsSave={onTimingsSave} />
+      <EditTaxis taxis={props.taxis} onTaxisSave={onTaxisSave} />
       <div className='flex flex-col'>
         <DataTable columns={columns} data={guests || []} />
       </div>

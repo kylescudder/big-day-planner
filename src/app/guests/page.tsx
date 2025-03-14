@@ -10,6 +10,7 @@ import {
   getMainRecords,
   getPuddingRecords,
   getStarterRecords,
+  getTaxiRecords,
   getTimingRecords
 } from '@/server/service'
 import {
@@ -19,6 +20,7 @@ import {
   Main,
   Pudding,
   Starter,
+  Taxi,
   Timing
 } from '@/server/db/schema'
 
@@ -43,6 +45,9 @@ export default async function GuestsPage() {
   const timings: Timing[] | null = await getTimingRecords()
   if (!timings) return null
 
+  const taxis: Taxi[] | null = await getTaxiRecords()
+  if (!taxis) return null
+
   return (
     <div>
       <Guests
@@ -54,6 +59,7 @@ export default async function GuestsPage() {
         data={data}
         images={images}
         timings={timings}
+        taxis={taxis}
       />
     </div>
   )
