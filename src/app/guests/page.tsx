@@ -3,6 +3,7 @@
 import React from 'react'
 import Guests from '@/app/guests/guests'
 import {
+  getColourRecords,
   getDetailRecord,
   getEspousedRecord,
   getGuestRecords,
@@ -15,6 +16,7 @@ import {
   getTimingRecords
 } from '@/server/service'
 import {
+  Colour,
   Detail,
   Espoused,
   Hotel,
@@ -52,6 +54,9 @@ export default async function GuestsPage() {
 
   const hotels: Hotel[] | null = await getHotelRecords()
   if (!hotels) return null
+
+  const colours: Colour[] | null = await getColourRecords()
+  if (!colours) return null
 
   return (
     <div>

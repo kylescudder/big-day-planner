@@ -139,3 +139,12 @@ export const hotels = createTable('hotels', {
 })
 
 export type Hotel = typeof hotels.$inferSelect
+
+export const colours = createTable('colours', {
+  id: uuid('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv4()),
+  hex: varchar('hex').notNull()
+})
+
+export type Colour = typeof colours.$inferSelect

@@ -32,10 +32,14 @@ import {
   getTaxis,
   deleteHotels,
   updateHotels,
-  getHotels
+  getHotels,
+  updateColours,
+  deleteColours,
+  getColours
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import {
+  Colour,
   Detail,
   Espoused,
   Hotel,
@@ -218,4 +222,16 @@ export async function updateHotelRecord(hotel: Hotel) {
 
 export async function deleteHotelRecord(hotel: Hotel) {
   return await deleteHotels(hotel)
+}
+
+export async function getColourRecords() {
+  return await getColours()
+}
+
+export async function updateColourRecord(colour: Colour) {
+  return await updateColours(colour)
+}
+
+export async function deleteColourRecord(colour: Colour) {
+  return await deleteColours(colour)
 }

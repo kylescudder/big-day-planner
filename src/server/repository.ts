@@ -20,7 +20,9 @@ import {
   Taxi,
   taxis,
   Hotel,
-  hotels
+  hotels,
+  Colour,
+  colours
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
@@ -336,4 +338,28 @@ export async function updateHotels(hotelData: Hotel) {
 
 export async function deleteHotels(hotel: Hotel) {
   await db.delete(hotels).where(eq(hotels.id, hotel.id))
+}
+
+export const getColours = async (): Promise<Colour[] | null> => {
+  const result = await db.query.colours.findMany({})
+  if (result === undefined) {
+    return null
+  }
+  return result
+}
+
+export async function updateColours(colourData: Colour) {
+  await db
+    .insert(colours)
+    .values(colourData)
+    .onConflictDoUpdate({
+      target: [colours.id],
+      set: {
+        hex: colourData.hex
+      }
+    })
+}
+
+export async function deleteColours(colour: Colour) {
+  await db.delete(colours).where(eq(colours.id, colour.id))
 }
