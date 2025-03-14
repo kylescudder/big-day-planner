@@ -6,6 +6,7 @@ import {
   getDetailRecord,
   getEspousedRecord,
   getGuestRecords,
+  getHotelRecords,
   getImagesRecord,
   getMainRecords,
   getPuddingRecords,
@@ -16,6 +17,7 @@ import {
 import {
   Detail,
   Espoused,
+  Hotel,
   Images,
   Main,
   Pudding,
@@ -48,6 +50,9 @@ export default async function GuestsPage() {
   const taxis: Taxi[] | null = await getTaxiRecords()
   if (!taxis) return null
 
+  const hotels: Hotel[] | null = await getHotelRecords()
+  if (!hotels) return null
+
   return (
     <div>
       <Guests
@@ -60,6 +65,7 @@ export default async function GuestsPage() {
         images={images}
         timings={timings}
         taxis={taxis}
+        hotels={hotels}
       />
     </div>
   )

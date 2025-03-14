@@ -3,6 +3,7 @@
 import { DataTable } from '@/components/ui/data-table/data-table'
 import LoadingPage from '@/components/ui/loading/loading-page'
 import {
+  Hotel,
   Main,
   Pudding,
   Starter,
@@ -24,6 +25,7 @@ import { EditImages } from './_components/edit-images'
 import { EditTimings } from './_components/edit-timings'
 import { EditMeals } from './_components/edit-meals'
 import { EditTaxis } from './_components/edit-taxis'
+import { EditHotels } from './_components/edit-hotels'
 
 export default function Guests(props: {
   details: Detail
@@ -35,6 +37,7 @@ export default function Guests(props: {
   images: Images[]
   timings: Timing[]
   taxis: Taxi[]
+  hotels: Hotel[]
 }) {
   const [guests, setGuests] = useState<Guest[]>([])
 
@@ -90,6 +93,7 @@ export default function Guests(props: {
         onTimingsSave={() => onSave('Timings')}
       />
       <EditTaxis taxis={props.taxis} onTaxisSave={onSave('Taxis')} />
+      <EditHotels hotels={props.hotels} onHotelsSave={() => onSave('Hotels')} />
       <div className='flex flex-col'>
         <DataTable columns={columns} data={guests || []} />
       </div>
