@@ -9,7 +9,9 @@ import {
   getMainRecords,
   getPuddingRecords,
   getStarterRecords,
-  getTimingRecords
+  getTimingRecords,
+  getTaxiRecords,
+  getHotelRecords
 } from '@/server/service'
 import { GuestResponse } from './_components/guest-response'
 import { redirect } from 'next/navigation'
@@ -26,6 +28,8 @@ export default async function Guest(props: {
   const timings = await getTimingRecords()
   const details: Detail | null = await getDetailRecord()
   const images = (await getImagesRecord()) || []
+  const taxis = (await getTaxiRecords()) || []
+  const hotels = (await getHotelRecords()) || []
   if (!details) {
     redirect('/')
   }
@@ -61,6 +65,8 @@ export default async function Guest(props: {
         puddings={puddings}
         timings={timings}
         images={images}
+        taxis={taxis}
+        hotels={hotels}
       />
       <Fab />
     </div>

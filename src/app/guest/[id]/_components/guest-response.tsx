@@ -9,7 +9,9 @@ import {
   type Guest,
   type Timing,
   type Images,
-  Detail
+  Detail,
+  Hotel,
+  Taxi
 } from '@/server/db/schema'
 import { useState } from 'react'
 import { Timings } from './timings'
@@ -19,6 +21,8 @@ import { Menu } from './menu'
 import { RSVP } from './rsvp'
 import { ImageType } from '@/consts/image-types'
 import { env } from '@/env'
+import { Taxis } from './taxis'
+import { Hotels } from './hotels'
 
 export function GuestResponse(props: {
   details: Detail
@@ -28,6 +32,8 @@ export function GuestResponse(props: {
   puddings: Pudding[]
   timings: Timing[] | null
   images: Images[]
+  taxis: Taxi[]
+  hotels: Hotel[]
 }) {
   const [rsvp, setRSVP] = useState(false)
   const [rsvpAnswer, setRsvpAnswer] = useState(
@@ -120,6 +126,12 @@ export function GuestResponse(props: {
           />
           <Section id='details' className='pb-12'>
             <Details details={props.details} />
+          </Section>
+          <Section id='taxis' className='pb-12'>
+            <Taxis taxis={props.taxis} />
+          </Section>
+          <Section id='hotels' className='pb-12'>
+            <Hotels hotels={props.hotels} />
           </Section>
         </>
       )}
