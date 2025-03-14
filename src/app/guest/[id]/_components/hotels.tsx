@@ -13,12 +13,12 @@ export function Hotels(props: { hotels: Hotel[] | null }) {
         className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl`}
       >
         <p>
-          For those who will be staying close or not driving, here are a list of
+          for those who will be staying close or not driving, here are a list of
           local hotels and bed & breakfasts
         </p>
         <Collapsible className='w-full space-y-2'>
           <CollapsibleTrigger className='w-full'>
-            <Button variant='default'>Hotel</Button>
+            <Button variant='default'>hotel</Button>
           </CollapsibleTrigger>
           <CollapsibleContent className='overflow-hidden transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down'>
             <div className='relative z-10'>
