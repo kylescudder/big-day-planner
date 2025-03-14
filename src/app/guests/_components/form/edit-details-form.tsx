@@ -179,6 +179,23 @@ export function EditDetailsForm(props: { form: any }) {
             </FormItem>
           )}
         />
+        <FormField
+          control={props.form.control}
+          name='registryMessage'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor='registryMessage'>Registry Message</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  id='registryMessage'
+                  className='text-base'
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
       <div className='col-span-4'>
         <FormField

@@ -56,6 +56,7 @@ export const details = createTable('detail', {
   detailsText: varchar('details_text', { length: 1024 }),
   adultsOnlyText: varchar('adults_only_text', { length: 256 }),
   dresscode: varchar('dresscode', { length: 256 }),
+  registryMessage: varchar('registryMessage', { length: 500 }),
   songRequest: boolean('song_request')
 })
 export type Detail = typeof details.$inferSelect

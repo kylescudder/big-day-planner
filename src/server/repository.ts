@@ -205,7 +205,8 @@ export async function updateDetails(detail: Detail) {
         detailsTextSubheader: detail.detailsTextSubheader,
         detailsText: detail.detailsText,
         adultsOnlyText: detail.adultsOnlyText,
-        dresscode: detail.dresscode
+        dresscode: detail.dresscode,
+        registryMessage: detail.registryMessage
       }
     })
 }

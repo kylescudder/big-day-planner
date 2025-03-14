@@ -54,6 +54,7 @@ export function EditDetails(props: {
       detailsText: props.details?.detailsText ?? '',
       adultsOnlyText: props.details?.adultsOnlyText ?? '',
       dresscode: props.details?.dresscode ?? '',
+      registryMessage: props.details?.registryMessage ?? '',
       songRequest: props.details?.songRequest ?? false
     }
   })
