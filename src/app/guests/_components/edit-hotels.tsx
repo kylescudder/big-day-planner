@@ -31,7 +31,10 @@ import { useForm } from 'react-hook-form'
 import { deleteHotelRecord, updateHotelRecord } from '@/server/service'
 import { Hotel } from '@/server/db/schema'
 
-export function EditHotels(props: { hotels: Hotel[]; onHotelsSave: void }) {
+export function EditHotels(props: {
+  hotels: Hotel[]
+  onHotelsSave: () => void
+}) {
   const [open, setOpen] = useState(false)
   const [currentHotels, setCurrentHotels] = useState<Hotel[]>(props.hotels)
 

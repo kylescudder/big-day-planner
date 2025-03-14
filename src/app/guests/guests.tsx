@@ -87,12 +87,12 @@ export default function Guests(props: {
         espoused={props.espoused}
         onEspousedSave={() => onSave('Espoused')}
       />
-      <EditImages images={props.images} onImagesSave={onSave('Images')} />
+      <EditImages images={props.images} onImagesSave={() => onSave('Images')} />
       <EditTimings
         timings={props.timings}
         onTimingsSave={() => onSave('Timings')}
       />
-      <EditTaxis taxis={props.taxis} onTaxisSave={onSave('Taxis')} />
+      <EditTaxis taxis={props.taxis} onTaxisSave={() => onSave('Taxis')} />
       <EditHotels hotels={props.hotels} onHotelsSave={() => onSave('Hotels')} />
       <div className='flex flex-col'>
         <DataTable columns={columns} data={guests || []} />
