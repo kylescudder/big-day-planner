@@ -33,10 +33,7 @@ import { Taxi } from '@/server/db/schema'
 import { format } from 'date-fns'
 import { env } from '@/env'
 
-export function EditTaxis(props: {
-  taxis: Taxi[]
-  onTaxisSave: (newTaxis: Taxi[]) => void
-}) {
+export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
   const [open, setOpen] = useState(false)
   const [currentTaxis, setCurrentTaxis] = useState<Taxi[]>(props.taxis)
 
@@ -58,7 +55,7 @@ export function EditTaxis(props: {
     const updatedTaxis = [...currentTaxis, newTaxi]
     setCurrentTaxis(updatedTaxis)
     await updateTaxiRecord(newTaxi) // Assuming this function updates the record
-    props.onTaxisSave(updatedTaxis) // Pass the updated taxis back
+    props.onTaxisSave // Pass the updated taxis back
     form.reset()
   }
 

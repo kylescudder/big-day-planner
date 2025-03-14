@@ -61,38 +61,8 @@ export default function Guests(props: {
     setGuests((prevGuests) => [...prevGuests, newGuest])
   }
 
-  const onDetailsSave = () => {
-    toast('Details saved!', {
-      duration: 2000
-    })
-  }
-
-  const onMealsSave = () => {
-    toast('Meals saved!', {
-      duration: 2000
-    })
-  }
-
-  const onEspousedSave = () => {
-    toast('Espoused saved!', {
-      duration: 2000
-    })
-  }
-
-  const onImagesSave = () => {
-    toast('Images saved!', {
-      duration: 2000
-    })
-  }
-
-  const onTimingsSave = () => {
-    toast('Timings saved!', {
-      duration: 2000
-    })
-  }
-
-  const onTaxisSave = () => {
-    toast('Taxis saved!', {
+  const onSave = (entity: string) => {
+    toast(`${entity} saved!`, {
       duration: 2000
     })
   }
@@ -100,17 +70,26 @@ export default function Guests(props: {
   return (
     <div>
       <AddGuest guests={guests} onNewGuest={onNewGuest} />
-      <EditDetails details={props.details} onDetailsSave={onDetailsSave} />
+      <EditDetails
+        details={props.details}
+        onDetailsSave={() => onSave('Details')}
+      />
       <EditMeals
         starters={props.starters}
         mains={props.mains}
         puddings={props.puddings}
-        onMealsSave={onMealsSave}
+        onMealsSave={() => onSave('Meals')}
       />
-      <EditEspoused espoused={props.espoused} onEspousedSave={onEspousedSave} />
-      <EditImages images={props.images} onImagesSave={onImagesSave} />
-      <EditTimings timings={props.timings} onTimingsSave={onTimingsSave} />
-      <EditTaxis taxis={props.taxis} onTaxisSave={onTaxisSave} />
+      <EditEspoused
+        espoused={props.espoused}
+        onEspousedSave={() => onSave('Espoused')}
+      />
+      <EditImages images={props.images} onImagesSave={onSave('Images')} />
+      <EditTimings
+        timings={props.timings}
+        onTimingsSave={() => onSave('Timings')}
+      />
+      <EditTaxis taxis={props.taxis} onTaxisSave={onSave('Taxis')} />
       <div className='flex flex-col'>
         <DataTable columns={columns} data={guests || []} />
       </div>

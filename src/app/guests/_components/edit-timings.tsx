@@ -35,7 +35,7 @@ import { env } from '@/env'
 
 export function EditTimings(props: {
   timings: Timing[]
-  onTimingsSave: (newTimings: Timing[]) => void
+  onTimingsSave: () => void
 }) {
   const [open, setOpen] = useState(false)
   const [currentTimings, setCurrentTimings] = useState<Timing[]>(props.timings)
@@ -60,7 +60,7 @@ export function EditTimings(props: {
     const updatedTimings = [...currentTimings, newTiming]
     setCurrentTimings(updatedTimings)
     await updateTimingRecord(newTiming) // Assuming this function updates the record
-    props.onTimingsSave(updatedTimings) // Pass the updated timings back
+    props.onTimingsSave // Pass the updated timings back
     form.reset()
   }
 
