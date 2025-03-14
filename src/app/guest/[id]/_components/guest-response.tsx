@@ -79,7 +79,7 @@ export function GuestResponse(props: {
         )
         return rsvpImage ? (
           <img
-            alt='Venue illustration'
+            alt='RSVP Image'
             src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${rsvpImage.key}`}
             width={300}
             height={200}
@@ -133,6 +133,20 @@ export function GuestResponse(props: {
           <Section id='hotels' className='pb-12'>
             <Hotels hotels={props.hotels} />
           </Section>
+          {(() => {
+            const footerImage = props.images.find(
+              (image) => image.type == ImageType.FOOTER
+            )
+            return footerImage ? (
+              <img
+                alt='Footer image'
+                src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${footerImage.key}`}
+                width={300}
+                height={200}
+                className='float-end w-full relative h-auto'
+              />
+            ) : null
+          })()}
         </>
       )}
     </>

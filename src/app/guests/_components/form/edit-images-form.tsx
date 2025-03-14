@@ -25,12 +25,19 @@ export function EditImagesForm(props: {
   const rsvpImage = props.images.filter(
     (image) => image.type === ImageType.RSVP
   )[0]
+  const footerImage = props.images.filter(
+    (image) => image.type === ImageType.FOOTER
+  )[0]
 
   const [uploadedRSVPImage, setUploadedRSVPImage] = useState<
     Images | undefined
   >(rsvpImage)
+  const [uploadedFooterImage, setUploadedFooterImage] = useState<
+    Images | undefined
+  >(footerImage)
 
   const displayedRSVPImage = uploadedRSVPImage || rsvpImage
+  const displayedFooterImage = uploadedFooterImage || footerImage
 
   const handleLogoUpload = (image: Images) => {
     setUploadedLogoImage(image)
@@ -40,6 +47,10 @@ export function EditImagesForm(props: {
 
   const handleRSVPUpload = (image: Images) => {
     setUploadedRSVPImage(image)
+    props.setUploadedImages([...props.images, image])
+  }
+  const handleFooterUpload = (image: Images) => {
+    setUploadedFooterImage(image)
     props.setUploadedImages([...props.images, image])
   }
 
@@ -86,7 +97,7 @@ export function EditImagesForm(props: {
               variant='outline'
               className={`ml-2 ${displayedLogoImage == undefined ? `hidden` : ``}`}
               onClick={() => deleteImage(displayedLogoImage, ImageType.LOGO)}
-              aria-label='Delete timing'
+              aria-label='Delete logo image'
             >
               <IconTrash />
             </Button>
@@ -114,7 +125,37 @@ export function EditImagesForm(props: {
               variant='outline'
               className={`ml-2 ${displayedRSVPImage == undefined ? `hidden` : ``}`}
               onClick={() => deleteImage(displayedRSVPImage, ImageType.RSVP)}
-              aria-label='Delete timing'
+              aria-label='Delete RSVP image'
+            >
+              <IconTrash />
+            </Button>
+          </div>
+        </div>
+
+        <div className='flex items-center'>
+          <Label htmlFor='footer'>Footer</Label>
+        </div>
+        <div className='flex items-center justify-between'>
+          <UploadThingImageLogo
+            onUploadCompleteAction={handleFooterUpload}
+            disabled={uploadedFooterImage !== undefined}
+            type={ImageType.FOOTER}
+          />
+          <div className='flex items-center gap-4'>
+            {displayedFooterImage && (
+              <img
+                src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${displayedFooterImage.key}`}
+                alt='Footer'
+                className='w-24 h-24 object-contain'
+              />
+            )}
+            <Button
+              variant='outline'
+              className={`ml-2 ${displayedFooterImage == undefined ? `hidden` : ``}`}
+              onClick={() =>
+                deleteImage(displayedFooterImage, ImageType.FOOTER)
+              }
+              aria-label='Delete footer image'
             >
               <IconTrash />
             </Button>
