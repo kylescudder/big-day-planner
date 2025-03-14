@@ -6,11 +6,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { TimePicker } from '@/components/ui/timepicker'
 import { FieldValues } from 'react-hook-form'
-import UploadThingImageLogo from '@/components/ui/upload-thing'
-import { env } from '@/env'
-import { ImageType } from '@/consts/image-types'
 
 export function EditTaxisForm(props: { form: any }) {
   return (
@@ -36,10 +32,10 @@ export function EditTaxisForm(props: { form: any }) {
           rules={{ required: 'Phone number is required' }}
           render={({ field }: { field: FieldValues }) => (
             <FormItem>
-              <FormLabel htmlFor='event'>Event</FormLabel>
+              <FormLabel htmlFor='phone'>Phone</FormLabel>
               <FormControl>
                 <div className='items-center gap-4'>
-                  <Input {...field} id='event' className='text-base' />
+                  <Input {...field} id='phone' className='text-base' />
                 </div>
               </FormControl>
               <FormMessage />
