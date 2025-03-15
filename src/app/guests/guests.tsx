@@ -30,7 +30,7 @@ import { EditHotels } from './_components/edit-hotels'
 import { EditColours } from './_components/edit-colours'
 
 export default function Guests(props: {
-  details: Detail
+  details: Detail | null
   starters: Starter[]
   mains: Main[]
   puddings: Pudding[]

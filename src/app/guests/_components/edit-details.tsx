@@ -32,7 +32,7 @@ import { EditDetailsForm } from './form/edit-details-form'
 import { uuidv4 } from '@/lib/utils'
 
 export function EditDetails(props: {
-  details: Detail
+  details: Detail | null
   onDetailsSave: () => void
 }) {
   const [open, setOpen] = useState(false)
@@ -42,8 +42,8 @@ export function EditDetails(props: {
   const form = useForm({
     defaultValues: {
       id: props.details?.id ?? uuidv4(),
-      startDateTime: props.details.startDateTime ?? '',
-      endDateTime: props.details.endDateTime ?? '',
+      startDateTime: props.details?.startDateTime ?? null,
+      endDateTime: props.details?.endDateTime ?? null,
       address1: props.details?.address1 ?? '',
       address2: props.details?.address2 ?? '',
       address3: props.details?.address3 ?? '',
