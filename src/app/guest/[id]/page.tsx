@@ -11,7 +11,8 @@ import {
   getStarterRecords,
   getTimingRecords,
   getTaxiRecords,
-  getHotelRecords
+  getHotelRecords,
+  getColourRecords
 } from '@/server/service'
 import { GuestResponse } from './_components/guest-response'
 import { redirect } from 'next/navigation'
@@ -30,6 +31,8 @@ export default async function Guest(props: {
   const images = (await getImagesRecord()) || []
   const taxis = (await getTaxiRecords()) || []
   const hotels = (await getHotelRecords()) || []
+  const colours = (await getColourRecords()) || []
+
   if (!details) {
     redirect('/')
   }
@@ -67,6 +70,7 @@ export default async function Guest(props: {
         images={images}
         taxis={taxis}
         hotels={hotels}
+        colours={colours}
       />
       <Fab />
     </div>

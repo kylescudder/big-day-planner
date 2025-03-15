@@ -11,7 +11,8 @@ import {
   type Images,
   Detail,
   Hotel,
-  Taxi
+  Taxi,
+  Colour
 } from '@/server/db/schema'
 import { useState } from 'react'
 import { Timings } from './timings'
@@ -34,6 +35,7 @@ export function GuestResponse(props: {
   images: Images[]
   taxis: Taxi[]
   hotels: Hotel[]
+  colours: Colour[]
 }) {
   const [rsvp, setRSVP] = useState(false)
   const [rsvpAnswer, setRsvpAnswer] = useState(
@@ -125,7 +127,7 @@ export function GuestResponse(props: {
             className='float-end w-full relative -top-[1px] h-auto'
           />
           <Section id='details' className='pb-12'>
-            <Details details={props.details} />
+            <Details details={props.details} colours={props.colours} />
           </Section>
           <Section id='taxis' className='pb-12'>
             <Taxis taxis={props.taxis} />
