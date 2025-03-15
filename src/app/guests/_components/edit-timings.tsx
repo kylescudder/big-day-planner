@@ -72,7 +72,10 @@ export function EditTimings(props: {
   }
 
   const renderTimingItem = (timing: Timing) => (
-    <li key={timing.id} className='flex items-center justify-between py-2'>
+    <li
+      key={timing.id}
+      className='flex items-center justify-between py-2 px-4 hover:bg-muted/50 rounded-md'
+    >
       <span>
         {format(new Date(timing.time), 'HH:mm')} - {timing.event}
       </span>
@@ -84,17 +87,17 @@ export function EditTimings(props: {
         />
       )}
       <Button
-        variant='outline'
-        className='ml-2'
+        variant='ghost'
+        size='icon'
         onClick={() => handleTimingDelete(timing)}
         aria-label='Delete timing'
       >
-        <IconTrash />
+        <IconTrash className='h-4 w-4' />
       </Button>
     </li>
   )
 
-  const listStyle = 'overflow-y-auto max-h-64' // Set max height and enable scrolling
+  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4'
 
   if (isDesktop) {
     return (
@@ -105,12 +108,20 @@ export function EditTimings(props: {
             Edit Timings
           </Button>
         </DialogTrigger>
-        <DialogContent className='max-w-7xl'>
+        <DialogContent className='sm:max-w-[500px]'>
           <DialogHeader>
             <DialogTitle>Edit Timings</DialogTitle>
             <DialogDescription>Edit the timings for the day.</DialogDescription>
           </DialogHeader>
-          <ul className={listStyle}>{currentTimings.map(renderTimingItem)}</ul>
+          {currentTimings.length > 0 ? (
+            <ul className={listStyle}>
+              {currentTimings.map(renderTimingItem)}
+            </ul>
+          ) : (
+            <div className='text-center py-4 text-muted-foreground'>
+              No timings added yet. Add your first timing below.
+            </div>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
               <EditTimingsForm form={form} />
@@ -142,7 +153,13 @@ export function EditTimings(props: {
           <DrawerTitle>Edit Timings</DrawerTitle>
           <DrawerDescription>Edit the timings for the day.</DrawerDescription>
         </DrawerHeader>
-        <ul className={listStyle}>{currentTimings.map(renderTimingItem)}</ul>
+        {currentTimings.length > 0 ? (
+          <ul className={listStyle}>{currentTimings.map(renderTimingItem)}</ul>
+        ) : (
+          <div className='text-center py-4 text-muted-foreground'>
+            No timings added yet. Add your first timing below.
+          </div>
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
             <EditTimingsForm form={form} />

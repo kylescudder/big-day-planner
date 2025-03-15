@@ -30,8 +30,8 @@ export function EditTimingsForm(props: { form: any }) {
   const displayedLogoImage = uploadedLogoImage
 
   return (
-    <div className='grid grid-cols-12 gap-4 p-4'>
-      <div className='col-span-4'>
+    <div className='gap-4 p-4'>
+      <div>
         <FormField
           control={props.form.control}
           name='time'

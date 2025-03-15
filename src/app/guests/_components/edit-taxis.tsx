@@ -30,8 +30,6 @@ import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
 import { deleteTaxiRecord, updateTaxiRecord } from '@/server/service'
 import { Taxi } from '@/server/db/schema'
-import { format } from 'date-fns'
-import { env } from '@/env'
 
 export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
   const [open, setOpen] = useState(false)
@@ -65,21 +63,24 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
   }
 
   const renderTaxiItem = (taxi: Taxi) => (
-    <li key={taxi.id} className='flex items-center justify-between py-2'>
+    <li
+      key={taxi.id}
+      className='flex items-center justify-between py-2 px-4 hover:bg-muted/50 rounded-md'
+    >
       <span>{taxi.name}</span>
       <span>{taxi.phone}</span>
       <Button
-        variant='outline'
-        className='ml-2'
+        variant='ghost'
+        size='icon'
         onClick={() => handleTaxiDelete(taxi)}
         aria-label='Delete taxi'
       >
-        <IconTrash />
+        <IconTrash className='h-4 w-4' />
       </Button>
     </li>
   )
 
-  const listStyle = 'overflow-y-auto max-h-64' // Set max height and enable scrolling
+  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4'
 
   if (isDesktop) {
     return (
@@ -90,12 +91,18 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
             Edit Taxis
           </Button>
         </DialogTrigger>
-        <DialogContent className='max-w-7xl'>
+        <DialogContent className='sm:max-w-[500px]'>
           <DialogHeader>
             <DialogTitle>Edit Taxis</DialogTitle>
             <DialogDescription>Edit the taxis for the day.</DialogDescription>
           </DialogHeader>
-          <ul className={listStyle}>{currentTaxis.map(renderTaxiItem)}</ul>
+          {currentTaxis.length > 0 ? (
+            <ul className={listStyle}>{currentTaxis.map(renderTaxiItem)}</ul>
+          ) : (
+            <div className='text-center py-4 text-muted-foreground'>
+              No taxis added yet. Add your first taxi below.
+            </div>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
               <EditTaxisForm form={form} />
@@ -127,7 +134,13 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
           <DrawerTitle>Edit Taxis</DrawerTitle>
           <DrawerDescription>Edit the taxis for the day.</DrawerDescription>
         </DrawerHeader>
-        <ul className={listStyle}>{currentTaxis.map(renderTaxiItem)}</ul>
+        {currentTaxis.length > 0 ? (
+          <ul className={listStyle}>{currentTaxis.map(renderTaxiItem)}</ul>
+        ) : (
+          <div className='text-center py-4 text-muted-foreground'>
+            No taxis added yet. Add your first taxi below.
+          </div>
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
             <EditTaxisForm form={form} />

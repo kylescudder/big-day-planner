@@ -68,21 +68,24 @@ export function EditHotels(props: {
   }
 
   const renderHotelItem = (hotel: Hotel) => (
-    <li key={hotel.id} className='flex items-center justify-between py-2'>
+    <li
+      key={hotel.id}
+      className='flex items-center justify-between py-2 px-4 hover:bg-muted/50 rounded-md'
+    >
       <span>{hotel.name}</span>
       <span>{hotel.url}</span>
       <Button
-        variant='outline'
-        className='ml-2'
+        variant='ghost'
+        size='icon'
         onClick={() => handleHotelDelete(hotel)}
         aria-label='Delete hotel'
       >
-        <IconTrash />
+        <IconTrash className='h-4 w-4' />
       </Button>
     </li>
   )
 
-  const listStyle = 'overflow-y-auto max-h-64' // Set max height and enable scrolling
+  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4'
 
   if (isDesktop) {
     return (
@@ -93,12 +96,18 @@ export function EditHotels(props: {
             Edit Hotels
           </Button>
         </DialogTrigger>
-        <DialogContent className='max-w-7xl'>
+        <DialogContent className='sm:max-w-[500px]'>
           <DialogHeader>
             <DialogTitle>Edit Hotels</DialogTitle>
             <DialogDescription>Edit the hotels for the day.</DialogDescription>
           </DialogHeader>
-          <ul className={listStyle}>{currentHotels.map(renderHotelItem)}</ul>
+          {currentHotels.length > 0 ? (
+            <ul className={listStyle}>{currentHotels.map(renderHotelItem)}</ul>
+          ) : (
+            <div className='text-center py-4 text-muted-foreground'>
+              No hotels added yet. Add your first hotel below.
+            </div>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
               <EditHotelsForm form={form} />
@@ -130,7 +139,13 @@ export function EditHotels(props: {
           <DrawerTitle>Edit Hotels</DrawerTitle>
           <DrawerDescription>Edit the hotels for the day.</DrawerDescription>
         </DrawerHeader>
-        <ul className={listStyle}>{currentHotels.map(renderHotelItem)}</ul>
+        {currentHotels.length > 0 ? (
+          <ul className={listStyle}>{currentHotels.map(renderHotelItem)}</ul>
+        ) : (
+          <div className='text-center py-4 text-muted-foreground'>
+            No hotels added yet. Add your first hotel below.
+          </div>
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
             <EditHotelsForm form={form} />

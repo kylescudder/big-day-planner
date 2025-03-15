@@ -71,6 +71,7 @@ export default async function GuestsPage() {
         timings={timings}
         taxis={taxis}
         hotels={hotels}
+        colours={colours}
       />
     </div>
   )
