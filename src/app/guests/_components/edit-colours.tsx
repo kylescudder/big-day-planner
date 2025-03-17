@@ -24,7 +24,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconClock, IconTrash } from '@tabler/icons-react'
+import { IconColorFilter, IconTrash } from '@tabler/icons-react'
 import { EditColoursForm } from './form/edit-colours-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -99,7 +99,7 @@ export function EditColours(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconClock className='mr-2 h-4 w-4' />
+            <IconColorFilter className='mr-2 h-4 w-4' />
             Edit Colours
           </Button>
         </DialogTrigger>
@@ -139,7 +139,7 @@ export function EditColours(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconClock className='mr-2 h-4 w-4' />
+          <IconColorFilter className='mr-2 h-4 w-4' />
           Edit Colours
         </Button>
       </DrawerTrigger>

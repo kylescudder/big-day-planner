@@ -24,7 +24,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconClock, IconTrash } from '@tabler/icons-react'
+import { IconCar, IconTrash } from '@tabler/icons-react'
 import { EditTaxisForm } from './form/edit-taxis-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -87,7 +87,7 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconClock className='pr-2' />
+            <IconCar className='pr-2' />
             Edit Taxis
           </Button>
         </DialogTrigger>
@@ -125,7 +125,7 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconClock className='pr-2' />
+          <IconCar className='pr-2' />
           Edit Taxis
         </Button>
       </DrawerTrigger>

@@ -24,7 +24,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconClock, IconTrash } from '@tabler/icons-react'
+import { IconBowlSpoon, IconTrash } from '@tabler/icons-react'
 import { EditHotelsForm } from './form/edit-hotels-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -92,7 +92,7 @@ export function EditHotels(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconClock className='pr-2' />
+            <IconBowlSpoon className='pr-2' />
             Edit Hotels
           </Button>
         </DialogTrigger>
@@ -130,7 +130,7 @@ export function EditHotels(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconClock className='pr-2' />
+          <IconBowlSpoon className='pr-2' />
           Edit Hotels
         </Button>
       </DrawerTrigger>
