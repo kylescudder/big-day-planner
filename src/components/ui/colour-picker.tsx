@@ -75,8 +75,8 @@ export function ColourPicker({
     if (!colourPlaneRef.current) return
 
     const rect = colourPlaneRef.current.getBoundingClientRect()
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+    const clientX = 'touches' in e ? e.touches[0]!.clientX : e.clientX
+    const clientY = 'touches' in e ? e.touches[0]!.clientY : e.clientY
 
     const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
     const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
@@ -210,7 +210,7 @@ export function ColourPicker({
                 max={360}
                 step={1}
                 className='[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_.bg-primary]:bg-transparent [&_.bg-secondary]:bg-transparent'
-                onValueChange={([h]) => updateHSL(h, hsl.s, hsl.l)}
+                onValueChange={([h]) => updateHSL(h!, hsl.s, hsl.l)}
                 style={{
                   backgroundImage: `linear-gradient(to right, 
                     hsl(0, 100%, 50%),
