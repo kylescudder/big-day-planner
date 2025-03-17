@@ -20,32 +20,42 @@ export function RSVP(props: {
     props.onRsvpAnswer(rsvp, rsvpAnswer)
   }
 
-  const daysDifference = differenceInDays(
-    props.details.startDateTime,
-    new Date()
-  )
-
   return (
     <div>
       {(!rsvp && !rsvpAnswer) || (rsvpAnswer && rsvp) ? (
         <section>
-          {rsvp ? (
-            <p className='text-5xl pt-14'>{daysDifference} days to go</p>
-          ) : (
-            <p className='text-5xl pt-14'>rsvp</p>
-          )}
+          {props.details.startDateTime ? (
+            <div>
+              {rsvp ? (
+                <p className='text-5xl pt-14'>
+                  {' '}
+                  {differenceInDays(
+                    props.details.startDateTime,
+                    new Date()
+                  )}{' '}
+                  days to go
+                </p>
+              ) : (
+                <p className='text-5xl pt-14'>rsvp</p>
+              )}
+            </div>
+          ) : null}
           <div className='text-lg'>
-            <p
-              className={`${props.details.startDateTime ? '' : 'hidden'} pt-4 text-primary`}
-            >
-              {format(props.details.startDateTime, 'MMMM dd, yyyy')}
-            </p>
-            <p
-              className={`${props.details.startDateTime && props.details.endDateTime ? '' : 'hidden'} text-primary`}
-            >
-              {format(props.details.startDateTime, 'hh:mmaaa')} -{' '}
-              {format(props.details.endDateTime, 'hh:mmaaa')}
-            </p>
+            {props.details.startDateTime && props.details.endDateTime ? (
+              <div>
+                <p
+                  className={`${props.details.startDateTime ? '' : 'hidden'} pt-4 text-primary`}
+                >
+                  {format(props.details.startDateTime, 'MMMM dd, yyyy')}
+                </p>
+                <p
+                  className={`${props.details.startDateTime && props.details.endDateTime ? '' : 'hidden'} text-primary`}
+                >
+                  {format(props.details.startDateTime, 'hh:mmaaa')} -{' '}
+                  {format(props.details.endDateTime, 'hh:mmaaa')}
+                </p>
+              </div>
+            ) : null}
             <div>
               <p
                 className={`${props.details.address1 ? '' : 'hidden'} pt-4 text-primary`}
