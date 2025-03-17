@@ -6,6 +6,7 @@ import { env } from '@/env'
 import { Images } from '@/server/db/schema'
 import { deleteImageRecord } from '@/server/service'
 import { IconTrash } from '@tabler/icons-react'
+import { LOADIPHLPAPI } from 'dns'
 import { useEffect, useState } from 'react'
 
 export function EditImagesForm(props: {
@@ -73,6 +74,32 @@ export function EditImagesForm(props: {
     console.log('Uploaded RSVP Image:', uploadedRSVPImage)
   }, [uploadedRSVPImage])
 
+  useEffect(() => {
+    console.log('Uploaded Footer Image:', uploadedFooterImage)
+  }, [uploadedFooterImage])
+
+  const renderImageItem = (image: Images, type: ImageType) => (
+    <div className='flex items-center gap-4'>
+      {image && (
+        <img
+          src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${image.key}`}
+          alt='Logo'
+          className='w-24 h-24 object-contain'
+        />
+      )}
+      <Button
+        variant='outline'
+        className={`ml-2 ${image == undefined ? `hidden` : ``}`}
+        onClick={() => deleteImage(image, type)}
+        aria-label={`Delete ${type.toLowerCase()} image`}
+      >
+        <IconTrash />
+      </Button>
+    </div>
+  )
+
+  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4'
+
   return (
     <div className='grid gap-4 p-4'>
       <div className='flex flex-col gap-4'>
@@ -85,23 +112,11 @@ export function EditImagesForm(props: {
             disabled={uploadedLogoImage !== undefined}
             type={ImageType.LOGO}
           />
-          <div className='flex items-center gap-4'>
-            {displayedLogoImage && (
-              <img
-                src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${displayedLogoImage.key}`}
-                alt='Logo'
-                className='w-24 h-24 object-contain'
-              />
-            )}
-            <Button
-              variant='outline'
-              className={`ml-2 ${displayedLogoImage == undefined ? `hidden` : ``}`}
-              onClick={() => deleteImage(displayedLogoImage, ImageType.LOGO)}
-              aria-label='Delete logo image'
-            >
-              <IconTrash />
-            </Button>
-          </div>
+          {displayedLogoImage ? (
+            <ul className={listStyle}>
+              {renderImageItem(displayedLogoImage, ImageType.LOGO)}
+            </ul>
+          ) : null}
         </div>
 
         <div className='flex items-center'>
@@ -113,23 +128,11 @@ export function EditImagesForm(props: {
             disabled={uploadedRSVPImage !== undefined}
             type={ImageType.RSVP}
           />
-          <div className='flex items-center gap-4'>
-            {displayedRSVPImage && (
-              <img
-                src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${displayedRSVPImage.key}`}
-                alt='RSVP'
-                className='w-24 h-24 object-contain'
-              />
-            )}
-            <Button
-              variant='outline'
-              className={`ml-2 ${displayedRSVPImage == undefined ? `hidden` : ``}`}
-              onClick={() => deleteImage(displayedRSVPImage, ImageType.RSVP)}
-              aria-label='Delete RSVP image'
-            >
-              <IconTrash />
-            </Button>
-          </div>
+          {displayedRSVPImage ? (
+            <ul className={listStyle}>
+              {renderImageItem(displayedRSVPImage, ImageType.RSVP)}
+            </ul>
+          ) : null}
         </div>
 
         <div className='flex items-center'>
@@ -141,25 +144,11 @@ export function EditImagesForm(props: {
             disabled={uploadedFooterImage !== undefined}
             type={ImageType.FOOTER}
           />
-          <div className='flex items-center gap-4'>
-            {displayedFooterImage && (
-              <img
-                src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${displayedFooterImage.key}`}
-                alt='Footer'
-                className='w-24 h-24 object-contain'
-              />
-            )}
-            <Button
-              variant='outline'
-              className={`ml-2 ${displayedFooterImage == undefined ? `hidden` : ``}`}
-              onClick={() =>
-                deleteImage(displayedFooterImage, ImageType.FOOTER)
-              }
-              aria-label='Delete footer image'
-            >
-              <IconTrash />
-            </Button>
-          </div>
+          {displayedFooterImage ? (
+            <ul className={listStyle}>
+              {renderImageItem(displayedFooterImage, ImageType.FOOTER)}
+            </ul>
+          ) : null}
         </div>
       </div>
     </div>

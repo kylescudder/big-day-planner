@@ -58,7 +58,7 @@ export function EditImages(props: {
             Edit Images
           </Button>
         </DialogTrigger>
-        <DialogContent className='max-w-7xl'>
+        <DialogContent className='sm:max-w-[500px]'>
           <DialogHeader>
             <DialogTitle>Edit Images</DialogTitle>
             <DialogDescription>

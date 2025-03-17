@@ -88,7 +88,7 @@ export function EditMeals(props: {
             Edit Meals
           </Button>
         </DialogTrigger>
-        <DialogContent className='max-w-7xl'>
+        <DialogContent className='sm:max-w-[500px]'>
           <DialogHeader>
             <DialogTitle>Edit Meals</DialogTitle>
             <DialogDescription>Edit the meals of the day.</DialogDescription>
@@ -99,7 +99,7 @@ export function EditMeals(props: {
           />
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant='outline'>Cancel</Button>
+              <Button variant='outline'>Close</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
@@ -127,7 +127,7 @@ export function EditMeals(props: {
         <DrawerFooter>
           <DrawerClose asChild>
             <Button className='w-full' variant='outline'>
-              Cancel
+              Close
             </Button>
           </DrawerClose>
         </DrawerFooter>
