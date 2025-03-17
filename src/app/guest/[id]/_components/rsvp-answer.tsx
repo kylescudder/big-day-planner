@@ -33,7 +33,9 @@ export function RSVPAnswer(props: {
     }
   })
 
-  const submissionCutoff = subMonths(props.details.startDateTime, 3)
+  if (props.details.startDateTime) {
+    const submissionCutoff = subMonths(props.details.startDateTime, 3)
+  }
 
   async function onSubmit(guests: Guest[]) {
     for (const [key, value] of Object.entries(guests)) {
@@ -133,10 +135,12 @@ export function RSVPAnswer(props: {
             ))}
           </div>
           <div className='flex justify-between items-center py-10'>
-            <p className='text-xs'>
-              We kindly ask you let us know by{' '}
-              {format(submissionCutoff, 'dd/MM/yyyy')}
-            </p>
+            {props.details.startDateTime ? (
+              <p className='text-xs'>
+                we kindly ask you let us know by{' '}
+                {format(props.details.startDateTime, 'dd/MM/yyyy')}
+              </p>
+            ) : null}
             <Button
               type='submit'
               size='xs'
