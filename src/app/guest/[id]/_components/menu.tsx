@@ -28,10 +28,12 @@ export function Menu(props: {
         />
       </div>
       <div>
-        <p className='text-center pt-4'>
-          we kindly ask you to make your choices by{' '}
-          {format(props.details.startDateTime, 'dd/MM/yyyy')}
-        </p>
+        {props.details.startDateTime ? (
+          <p className='text-center pt-4'>
+            we kindly ask you to make your choices by{' '}
+            {format(props.details.startDateTime, 'dd/MM/yyyy')}
+          </p>
+        ) : null}
       </div>
     </section>
   )
