@@ -80,7 +80,7 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
     </li>
   )
 
-  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4'
+  const listStyle = 'max-h-64 space-y-1 my-4'
 
   if (isDesktop) {
     return (
