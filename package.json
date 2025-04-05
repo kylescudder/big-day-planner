@@ -65,7 +65,7 @@
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "latest",
     "tailwindcss": "next",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   },
   "ct3aMetadata": {
     "initVersion": "7.30.2"
