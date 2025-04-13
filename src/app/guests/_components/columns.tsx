@@ -40,7 +40,7 @@ export const getGuestColumns = (props: {
     enableHiding: false
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'surname',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Name' />
     ),
