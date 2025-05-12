@@ -60,7 +60,7 @@
     "@types/react-dom": "npm:types-react-dom@19.0.0",
     "drizzle-kit": "0.31.1",
     "husky": "9.1.7",
-    "pg": "8.15.6",
+    "pg": "8.16.0",
     "postcss": "8.5.3",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "latest",
