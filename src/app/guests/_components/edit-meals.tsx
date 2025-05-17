@@ -44,7 +44,7 @@ export function EditMeals(props: {
 
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
-  const form = useForm<Meals>({
+  const form = useForm({
     defaultValues: {
       starters: props.starters ?? [],
       mains: props.mains ?? [],
