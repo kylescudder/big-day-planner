@@ -56,8 +56,8 @@
   "devDependencies": {
     "@tailwindcss/postcss": "next",
     "@types/node": "22.15.18",
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0",
+    "@types/react": "19.1.4",
+    "@types/react-dom": "19.1.4",
     "drizzle-kit": "0.31.1",
     "husky": "9.1.7",
     "pg": "8.16.0",

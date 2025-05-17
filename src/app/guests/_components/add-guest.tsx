@@ -47,6 +47,7 @@ export function AddGuest(props: {
       id: uuidv4(),
       forename: '',
       surname: '',
+      guestKey: '',
       email: '',
       phone: '',
       address1: '',

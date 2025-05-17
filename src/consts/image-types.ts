@@ -2,5 +2,6 @@ export enum ImageType {
   LOGO = 'logo',
   FAVICON = 'favicon',
   RSVP = 'rsvp',
-  FOOTER = 'footer'
+  FOOTER = 'footer',
+  LANDING = 'landing'
 }

@@ -363,3 +363,17 @@ export async function updateColours(colourData: Colour) {
 export async function deleteColours(colour: Colour) {
   await db.delete(colours).where(eq(colours.id, colour.id))
 }
+
+export const getGuestByKey = async (
+  guestKey: string
+): Promise<Guest[] | null> => {
+  const result = await db.query.guests.findMany({
+    where(fields, operators) {
+      return operators.eq(fields.guestKey, guestKey)
+    }
+  })
+  if (result.length == 0) {
+    return null
+  }
+  return result
+}

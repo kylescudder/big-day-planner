@@ -34,6 +34,7 @@ export function AddGuestForm(props: {
   const [addressSearched, setAddressSearched] = useState(props.addressSearched)
   const [addressList, setAddressList] = useState<Address[]>(props.addressList)
   const [guestList] = useState<Guest[]>(props.guestList)
+  const [linkedGuestId, setLinkedGuestId] = useState<string | null>(null)
 
   const handlePostcodeLookup = async () => {
     const postcode = props.form.getValues('postcode')
@@ -55,6 +56,10 @@ export function AddGuestForm(props: {
 
   const handleLinkSelection = async (id: string) => {
     const guestData = await getGuestRecord(id)
+
+    setLinkedGuestId(id || null)
+
+    props.form.setValue('guestKey', guestData?.guestKey ?? '')
     props.form.setValue('parentId', guestData?.id ?? null)
   }
 
@@ -115,6 +120,27 @@ export function AddGuestForm(props: {
                 ))}
               </SelectContent>
             </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={props.form.control}
+        name='guestKey'
+        rules={{ required: 'Guest Key is required' }}
+        render={({ field }: { field: FieldValues }) => (
+          <FormItem>
+            <FormLabel htmlFor='guestKey'>Guest Key</FormLabel>
+            <FormControl>
+              <div className='items-center gap-4'>
+                <Input
+                  {...field}
+                  id='guestKey'
+                  className='text-base'
+                  readOnly={!!linkedGuestId}
+                />
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}

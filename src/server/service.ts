@@ -35,7 +35,8 @@ import {
   getHotels,
   updateColours,
   deleteColours,
-  getColours
+  getColours,
+  getGuestByKey
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import {
@@ -234,4 +235,11 @@ export async function updateColourRecord(colour: Colour) {
 
 export async function deleteColourRecord(colour: Colour) {
   return await deleteColours(colour)
+}
+
+export async function getGuestByKeyRecord(guestKey: string) {
+  const guest = await getGuestByKey(guestKey)
+  if (guest != null) {
+    return guest
+  }
 }
