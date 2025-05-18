@@ -37,9 +37,12 @@ export function GuestKeyScreen({
   })
 
   async function onSubmit(values: { guestKey: string }) {
-    const guest: Guest[] = await getGuestByKeyRecord(values.guestKey)
-    if (guest != undefined) {
-      redirect(`/guest/${guest[0].id}`)
+    const guest: Guest[] | undefined = await getGuestByKeyRecord(
+      values.guestKey
+    )
+
+    if (guest != undefined && guest.length > 0) {
+      redirect(`/guest/${guest[0]!.id}`)
     }
     form.setError('guestKey', {
       type: 'manual',
