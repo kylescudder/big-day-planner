@@ -22,16 +22,18 @@ export async function POST(req: Request) {
       )
     }
 
+    const emailTemplate = await EmailTemplate({
+      forename: emailData.forename,
+      rsvpAnswer: emailData.rsvpAnswer,
+      bride: emailData.bride,
+      groom: emailData.groom
+    })
+
     const { data, error } = await resend.emails.send({
       from: `${emailData.bride} & ${emailData.groom} <wedding@kylescudder.co.uk>`,
       to: [`${emailData.email}`],
       subject: `Thank you for your has submitted you RSVP!`,
-      react: EmailTemplate({
-        forename: emailData.forename,
-        rsvpAnswer: emailData.rsvpAnswer,
-        bride: emailData.bride,
-        groom: emailData.groom
-      })
+      react: emailTemplate
     })
 
     if (error) {
