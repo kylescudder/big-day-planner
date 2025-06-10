@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "next",
-    "@types/node": "22.15.23",
+    "@types/node": "22.15.31",
     "@types/react": "19.1.4",
     "@types/react-dom": "19.1.4",
     "drizzle-kit": "0.31.1",
