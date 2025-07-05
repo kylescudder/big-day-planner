@@ -51,7 +51,7 @@
     "tailwindcss-animate": "1.0.7",
     "uploadthing": "7.7.3",
     "vaul": "1.1.2",
-    "zod": "3.25.67"
+    "zod": "3.25.74"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "next",
