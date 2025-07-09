@@ -6,6 +6,7 @@ import {
   getAddressList,
   getAddress,
   createGuest,
+  updateGuest,
   getGuest,
   getGuestAndLinkedGuest,
   updateGuestSong,
@@ -79,6 +80,14 @@ export async function createGuestRecord(guest: Guest) {
   if (!user.userId) throw new Error('Unauthorized')
 
   return await createGuest(guest)
+}
+
+export async function updateGuestRecord(guest: Guest) {
+  const user = await auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updateGuest(guest)
 }
 
 export async function updateRSVP(guest: Guest) {

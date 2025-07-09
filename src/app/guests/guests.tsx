@@ -18,7 +18,6 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { getGuestColumns } from './_components/columns'
-import { AddGuest } from './_components/add-guest'
 import { EditDetails } from './_components/edit-details'
 import { deleteGuestRecord } from '@/server/service'
 import { EditEspoused } from './_components/edit-espoused'
@@ -28,6 +27,7 @@ import { EditMeals } from './_components/edit-meals'
 import { EditTaxis } from './_components/edit-taxis'
 import { EditHotels } from './_components/edit-hotels'
 import { EditColours } from './_components/edit-colours'
+import { AddGuestModal } from '@/app/guests/_components/form/add-guest-modal'
 
 export default function Guests(props: {
   details: Detail | null
@@ -53,7 +53,20 @@ export default function Guests(props: {
     setGuests((prevGuests) => prevGuests.filter((g) => g.id !== guest.id))
   }
 
-  const columns = useMemo(() => getGuestColumns({ onDelete }), [])
+  const onEdit = (updated: Guest) => {
+    toast('Guest updated!', { duration: 2000 })
+    setGuests((cur) => cur.map((g) => (g.id === updated.id ? updated : g)))
+  }
+
+  const columns = useMemo(
+    () =>
+      getGuestColumns({
+        guests,
+        onDelete,
+        onEdit
+      }),
+    [guests]
+  )
 
   useEffect(() => {
     if (props.data) {
@@ -75,7 +88,10 @@ export default function Guests(props: {
 
   return (
     <div>
-      <AddGuest guests={guests} onNewGuest={onNewGuest} />
+      <AddGuestModal
+        guests={guests}
+        onNewGuest={(g) => setGuests((c) => [...c, g])}
+      />
       <EditDetails
         details={props.details}
         onDetailsSave={() => onSave('Details')}

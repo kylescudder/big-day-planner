@@ -1,5 +1,7 @@
+// app/guests/_components/columns.tsx
 'use client'
 
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -12,11 +14,20 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { IconDots } from '@tabler/icons-react'
 import { type ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
-import { type Guest } from '@/server/db/schema'
+import type { Guest } from '@/server/db/schema'
+import { EditGuestModal } from '@/app/guests/_components/form/edit-guest-modal'
 
-export const getGuestColumns = (props: {
+export interface GuestColumnsProps {
+  guests: Guest[]
   onDelete: (guest: Guest) => Promise<void>
-}): ColumnDef<Guest>[] => [
+  onEdit: (updated: Guest) => void
+}
+
+export const getGuestColumns = ({
+  guests,
+  onDelete,
+  onEdit
+}: GuestColumnsProps): ColumnDef<Guest>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -25,14 +36,14 @@ export const getGuestColumns = (props: {
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && 'indeterminate')
         }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(val) => table.toggleAllPageRowsSelected(!!val)}
         aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onCheckedChange={(val) => row.toggleSelected(!!val)}
         aria-label='Select row'
       />
     ),
@@ -45,13 +56,10 @@ export const getGuestColumns = (props: {
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => {
-      const name = `${String(row.original.forename)} ${String(row.original.surname)}`
-      return (
-        <div>
-          <div className='font-medium'>{name}</div>
-        </div>
-      )
-    }
+      const name = `${row.original.forename} ${row.original.surname}`
+      return <div className='font-medium'>{name}</div>
+    },
+    accessorFn: (row) => `${row.forename} ${row.surname}`
   },
   {
     accessorKey: 'email',
@@ -70,33 +78,48 @@ export const getGuestColumns = (props: {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="RSVP'd" />
     ),
-    cell: ({ row }) => {
-      return (
-        <div className='text-right font-medium'>
-          {row.getValue('rsvpd') ? 'Yes' : 'No'}
-        </div>
-      )
-    }
+    cell: ({ row }) => (
+      <div className='text-right font-medium'>
+        {row.getValue('rsvpd') ? 'Yes' : 'No'}
+      </div>
+    )
   },
   {
     id: 'actions',
     cell: ({ row }) => {
       const guest = row.original
+      const [editOpen, setEditOpen] = useState(false)
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <IconDots className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => props.onDelete(guest)}>
-              Delete guest
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <span className='sr-only'>Open menu</span>
+                <IconDots className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+              <DropdownMenuItem onClick={() => setEditOpen(true)}>
+                Edit guest
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => void onDelete(guest)}>
+                Delete guest
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <EditGuestModal
+            guest={guest}
+            guests={guests}
+            open={editOpen}
+            onOpenChange={setEditOpen}
+            onGuestUpdate={onEdit}
+          />
+        </>
       )
     }
   }
