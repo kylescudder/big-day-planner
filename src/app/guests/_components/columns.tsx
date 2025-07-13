@@ -1,4 +1,3 @@
-// app/guests/_components/columns.tsx
 'use client'
 
 import { useState } from 'react'
@@ -51,7 +50,7 @@ export const getGuestColumns = ({
     enableHiding: false
   },
   {
-    accessorKey: 'surname',
+    accessorKey: 'name',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Name' />
     ),
