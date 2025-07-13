@@ -28,6 +28,19 @@ export function EditTaxisForm(props: { form: any }) {
         />
         <FormField
           control={props.form.control}
+          name='description'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor='description'>Description</FormLabel>
+              <FormControl>
+                <Input {...field} id='description' className='text-base' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={props.form.control}
           name='phone'
           rules={{ required: 'Phone number is required' }}
           render={({ field }: { field: FieldValues }) => (

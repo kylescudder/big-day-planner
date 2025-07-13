@@ -126,6 +126,7 @@ export const taxis = createTable('taxi', {
     .primaryKey()
     .$defaultFn(() => uuidv4()),
   name: varchar('name').notNull(),
+  description: varchar('description', { length: 256 }),
   phone: varchar('phone').notNull()
 })
 

@@ -27,6 +27,7 @@ export function Taxis(props: { taxis: Taxi[] | null }) {
                   <div key={index} className='pb-5'>
                     <div className='flex flex-col items-center'>
                       <p>{taxi.name}</p>
+                      <p>{taxi.description}</p>
                       <a
                         className='hover:underline text-primary'
                         href={`tel:${taxi.phone}`}

@@ -356,6 +356,7 @@ export async function updateTaxis(taxiData: Taxi) {
       target: [taxis.id],
       set: {
         name: taxiData.name,
+        description: taxiData.description,
         phone: taxiData.phone
       }
     })
