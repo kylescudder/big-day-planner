@@ -31,6 +31,7 @@ export function Hotels(props: { hotels: Hotel[] | null }) {
                       <p>{hotel.name}</p>
                       <a
                         className='hover:underline text-primary'
+                        target='_blank'
                         href={hotel.url}
                       >
                         find it here
