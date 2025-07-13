@@ -21,7 +21,7 @@ export function RSVPAnswer(props: {
   onRsvpAnswer: (rsp: boolean, rsvpAnswer: boolean) => void
   details: Detail
 }) {
-  const [rsvpAnswerNo, setRsvpAnswerNo] = useState<boolean>(
+  const [rsvpAnswerNo, _] = useState<boolean>(
     props.guestData.every(
       (guest) => guest.rsvpAnswer === false && guest.rsvp === true
     )
@@ -32,10 +32,6 @@ export function RSVPAnswer(props: {
       ...props.guestData
     }
   })
-
-  if (props.details.startDateTime) {
-    const submissionCutoff = subMonths(props.details.startDateTime, 3)
-  }
 
   async function onSubmit(guests: Guest[]) {
     for (const [key, value] of Object.entries(guests)) {
@@ -135,10 +131,10 @@ export function RSVPAnswer(props: {
             ))}
           </div>
           <div className='flex justify-between items-center py-10'>
-            {props.details.startDateTime ? (
+            {props.details.rsvpDeadlineDateTime ? (
               <p className='text-xs'>
                 we kindly ask you let us know by{' '}
-                {format(props.details.startDateTime, 'dd/MM/yyyy')}
+                {format(props.details.rsvpDeadlineDateTime, 'dd/MM/yyyy')}
               </p>
             ) : null}
             <Button

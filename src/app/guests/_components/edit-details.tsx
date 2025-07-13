@@ -55,7 +55,9 @@ export function EditDetails(props: {
       adultsOnlyText: props.details?.adultsOnlyText ?? '',
       dresscode: props.details?.dresscode ?? '',
       registryMessage: props.details?.registryMessage ?? '',
-      songRequest: props.details?.songRequest ?? false
+      songRequest: props.details?.songRequest ?? false,
+      rsvpDeadlineDateTime: props.details?.rsvpDeadlineDateTime ?? null,
+      menuDeadlineDateTime: props.details?.menuDeadlineDateTime ?? null
     }
   })
 

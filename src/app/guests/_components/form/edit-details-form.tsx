@@ -256,6 +256,42 @@ export function EditDetailsForm(props: { form: any }) {
             </FormItem>
           )}
         />
+        <FormField
+          control={props.form.control}
+          name='rsvpDeadlineDateTime'
+          render={({ field }) => (
+            <FormItem className='flex w-72 flex-col gap-2'>
+              <FormLabel htmlFor='datetime'>RSVP Deadline Date time</FormLabel>
+              <FormControl>
+                <DateTimePicker
+                  displayFormat={{ hour24: 'dd/MM/yyyy hh:mmaaa' }}
+                  locale={enGB}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={props.form.control}
+          name='menuDeadlineDateTime'
+          render={({ field }) => (
+            <FormItem className='flex w-72 flex-col gap-2'>
+              <FormLabel htmlFor='datetime'>Menu Deadline Date time</FormLabel>
+              <FormControl>
+                <DateTimePicker
+                  displayFormat={{ hour24: 'dd/MM/yyyy hh:mmaaa' }}
+                  locale={enGB}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
     </div>
   )

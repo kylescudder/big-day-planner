@@ -24,7 +24,7 @@ import {
   type Timing,
   timings
 } from './db/schema'
-import { asc, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { env } from '@/env'
 import { type AddressData, type Suggestions } from '@/types/address'
 
@@ -258,7 +258,9 @@ export async function updateDetails(detail: Detail) {
         dresscode: detail.dresscode,
         registryMessage: detail.registryMessage,
         startDateTime: detail.startDateTime,
-        endDateTime: detail.endDateTime
+        endDateTime: detail.endDateTime,
+        rsvpDeadlineDateTime: detail.rsvpDeadlineDateTime,
+        menuDeadlineDateTime: detail.menuDeadlineDateTime
       }
     })
 }

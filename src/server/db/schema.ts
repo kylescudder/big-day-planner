@@ -45,8 +45,8 @@ export const details = createTable('detail', {
   id: uuid('id')
     .primaryKey()
     .$defaultFn(() => uuidv4()),
-  startDateTime: timestamp('startDateTime'),
-  endDateTime: timestamp('endDateTime'),
+  startDateTime: timestamp('start_date_time'),
+  endDateTime: timestamp('end_date_time'),
   address1: varchar('address1', { length: 256 }).notNull(),
   address2: varchar('address2', { length: 256 }),
   address3: varchar('address3', { length: 256 }),
@@ -58,7 +58,9 @@ export const details = createTable('detail', {
   adultsOnlyText: varchar('adults_only_text', { length: 256 }),
   dresscode: varchar('dresscode', { length: 256 }),
   registryMessage: varchar('registryMessage', { length: 500 }),
-  songRequest: boolean('song_request')
+  songRequest: boolean('song_request'),
+  rsvpDeadlineDateTime: timestamp('rsvp_deadline_date_time'),
+  menuDeadlineDateTime: timestamp('menu_deadline_date_time')
 })
 export type Detail = typeof details.$inferSelect
 

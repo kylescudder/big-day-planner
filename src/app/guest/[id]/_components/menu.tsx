@@ -27,10 +27,10 @@ export function Menu(props: {
         />
       </div>
       <div>
-        {props.details.startDateTime ? (
+        {props.details.menuDeadlineDateTime ? (
           <p className='text-center pt-4 text-lg'>
             we kindly ask you to make your choices by{' '}
-            {format(props.details.startDateTime, 'dd/MM/yyyy')}
+            {format(props.details.menuDeadlineDateTime, 'dd/MM/yyyy')}
           </p>
         ) : null}
       </div>
