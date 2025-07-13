@@ -5,24 +5,26 @@ export function Details(props: { details: Detail; colours: Colour[] }) {
     <div>
       <p className='text-5xl pt-14'>details</p>
       <div
-        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.detailsTextSubheader ? '' : 'hidden'}`}
+        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl text-lg ${props.details.detailsTextSubheader ? '' : 'hidden'}`}
       >
-        <p className='py-2'>{props.details.detailsTextSubheader}</p>
+        <p className='py-2 text-lg'>{props.details.detailsTextSubheader}</p>
       </div>
       <div
-        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.adultsOnlyText ? '' : 'hidden'}`}
+        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl text-lg ${props.details.adultsOnlyText ? '' : 'hidden'}`}
       >
-        <p className='py-2'>{props.details.adultsOnlyText}</p>
+        <p className='py-2 text-lg'>{props.details.adultsOnlyText}</p>
       </div>
       <div
-        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.detailsText ? '' : 'hidden'}`}
+        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl text-lg ${props.details.detailsText ? '' : 'hidden'}`}
       >
-        <p className='py-2'>{props.details.detailsText}</p>
+        <p className='py-2 text-lg'>{props.details.detailsText}</p>
       </div>
       <div
-        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.dresscode ? '' : 'hidden'}`}
+        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl text-lg ${props.details.dresscode ? '' : 'hidden'}`}
       >
-        <p className='py-2 whitespace-pre-line'>{props.details.dresscode}</p>
+        <p className='py-2 whitespace-pre-line text-lg'>
+          {props.details.dresscode}
+        </p>
         <div
           className={`flex flex-wrap justify-center gap-4 mt-10 p-2 ${
             props.colours.length > 0 ? '' : 'hidden'
@@ -39,9 +41,9 @@ export function Details(props: { details: Detail; colours: Colour[] }) {
         </div>
       </div>
       <div
-        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.registryMessage ? '' : 'hidden'}`}
+        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl text-lg ${props.details.registryMessage ? '' : 'hidden'}`}
       >
-        <p className='py-2'>{props.details.registryMessage}</p>
+        <p className='py-2 text-lg'>{props.details.registryMessage}</p>
       </div>
     </div>
   )

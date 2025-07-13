@@ -44,12 +44,12 @@ export function RSVP(props: {
             {props.details.startDateTime && props.details.endDateTime ? (
               <div>
                 <p
-                  className={`${props.details.startDateTime ? '' : 'hidden'} pt-4 text-primary`}
+                  className={`${props.details.startDateTime ? '' : 'hidden'} pt-4 text-primary text-lg`}
                 >
                   {format(props.details.startDateTime, 'MMMM dd, yyyy')}
                 </p>
                 <p
-                  className={`${props.details.startDateTime && props.details.endDateTime ? '' : 'hidden'} text-primary`}
+                  className={`${props.details.startDateTime && props.details.endDateTime ? '' : 'hidden'} text-primary text-lg`}
                 >
                   {format(props.details.startDateTime, 'hh:mmaaa')} -{' '}
                   {format(props.details.endDateTime, 'hh:mmaaa')}
@@ -58,39 +58,49 @@ export function RSVP(props: {
             ) : null}
             <div>
               <p
-                className={`${props.details.address1 ? '' : 'hidden'} pt-4 text-primary`}
+                className={`${props.details.address1 ? '' : 'hidden'} pt-4 text-primary text-lg`}
               >
                 {props.details.address1}
               </p>
               <div
                 className={`${props.details.address2 || props.details.address3 ? 'flex items-center space-x-2' : 'hidden'}`}
               >
-                <p className={`${props.details.address2 ? '' : 'hidden'}`}>
+                <p
+                  className={`${props.details.address2 ? '' : 'hidden'} text-lg`}
+                >
                   {props.details.address2}
                   {props.details.address2 && <span>,</span>}
                 </p>
-                <p className={`${props.details.address3 ? '' : 'hidden'}`}>
+                <p
+                  className={`${props.details.address3 ? '' : 'hidden'} text-lg`}
+                >
                   {props.details.address3}
                   {props.details.address3 && <span>,</span>}
                 </p>
               </div>
               <span
-                className={`${!props.details.postcode && !props.details.town && !props.details.county ? 'hidden' : ''}`}
+                className={`${!props.details.postcode && !props.details.town && !props.details.county ? 'hidden' : ''} text-lg`}
               >
                 <div className='flex items-center space-x-2'>
-                  <p className={`${props.details.town ? '' : 'hidden'}`}>
+                  <p
+                    className={`${props.details.town ? '' : 'hidden'} text-lg`}
+                  >
                     {props.details.town}
                     {props.details.town && props.details.county && (
                       <span>,</span>
                     )}
                   </p>
-                  <p className={`${props.details.county ? '' : 'hidden'}`}>
+                  <p
+                    className={`${props.details.county ? '' : 'hidden'} text-lg`}
+                  >
                     {props.details.county}
                     {props.details.county && props.details.postcode && (
                       <span>,</span>
                     )}
                   </p>
-                  <p className={`${props.details.postcode ? '' : 'hidden'}`}>
+                  <p
+                    className={`${props.details.postcode ? '' : 'hidden'} text-lg`}
+                  >
                     {props.details.postcode}
                   </p>
                 </div>

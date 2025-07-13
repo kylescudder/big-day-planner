@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { MenuForm } from './menu-form'
 import {
   type Pudding,
@@ -29,7 +28,7 @@ export function Menu(props: {
       </div>
       <div>
         {props.details.startDateTime ? (
-          <p className='text-center pt-4'>
+          <p className='text-center pt-4 text-lg'>
             we kindly ask you to make your choices by{' '}
             {format(props.details.startDateTime, 'dd/MM/yyyy')}
           </p>

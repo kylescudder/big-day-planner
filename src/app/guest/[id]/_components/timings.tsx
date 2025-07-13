@@ -22,7 +22,7 @@ export function Timings(props: { timings: Timing[] | null }) {
                 <p className='text-3xl'>
                   {format(new Date(timing.time), 'ha').toLowerCase()}
                 </p>
-                <p>{timing.event}</p>
+                <p className='text-lg'>{timing.event}</p>
               </div>
             </div>
           ))}

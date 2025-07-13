@@ -12,13 +12,15 @@ export function Taxis(props: { taxis: Taxi[] | null }) {
       <div
         className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl`}
       >
-        <p>
+        <p className='text-lg'>
           for those who will be staying close or not driving, here are a list of
           local taxi numbers
         </p>
         <Collapsible className='w-full space-y-2'>
           <CollapsibleTrigger className='w-full'>
-            <Button variant='default'>taxi</Button>
+            <Button className='text-lg' variant='default'>
+              taxi
+            </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className='overflow-hidden transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down'>
             <div className='relative z-10'>

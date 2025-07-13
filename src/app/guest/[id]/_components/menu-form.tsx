@@ -42,7 +42,7 @@ export function MenuForm(props: {
   })
 
   async function onSubmit(guests: Guest[]) {
-    for (const [key, value] of Object.entries(guests)) {
+    for (const [_, value] of Object.entries(guests)) {
       const guest = {
         ...value,
         updatedAt: new Date()
@@ -71,8 +71,8 @@ export function MenuForm(props: {
     setAllMenuChosen(true)
   }
 
-  return allMenuChosen === true ? (
-    <p className='pb-3 pt-10'>Thanks for submitting your menu choice</p>
+  return allMenuChosen ? (
+    <p className='py-2'>Thanks for submitting your menu choice</p>
   ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -221,7 +221,6 @@ export function MenuForm(props: {
                       <div className='items-center gap-4'>
                         <Textarea
                           {...field}
-                          value=''
                           id='dietaryRequirements'
                           className='text-base'
                           variant='ghost'
