@@ -150,9 +150,7 @@ export function MenuForm(props: {
                                     />
                                   </FormControl>
                                 </FormItem>
-                                {index !== props.starters.length - 1 && (
-                                  <p>or</p>
-                                )}
+                                {index !== props.mains.length - 1 && <p>or</p>}
                               </div>
                             ))}
                           </RadioGroup>
@@ -193,7 +191,7 @@ export function MenuForm(props: {
                                     />
                                   </FormControl>
                                 </FormItem>
-                                {index !== props.starters.length - 1 && (
+                                {index !== props.puddings.length - 1 && (
                                   <p>or</p>
                                 )}
                               </div>
