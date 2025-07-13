@@ -33,6 +33,7 @@ export const guests = createTable('guest', {
   rsvpAnswer: boolean('rsvp_answer'),
   parentId: uuid('parentId'),
   dietaryRequirements: varchar('dietaryRequirements', { length: 256 }),
+  guestKey: varchar('guestKey', { length: 20 }).notNull(),
   createdAt: timestamp('created_at')
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

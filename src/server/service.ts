@@ -6,6 +6,7 @@ import {
   getAddressList,
   getAddress,
   createGuest,
+  updateGuest,
   getGuest,
   getGuestAndLinkedGuest,
   updateGuestSong,
@@ -35,7 +36,8 @@ import {
   getHotels,
   updateColours,
   deleteColours,
-  getColours
+  getColours,
+  getGuestByKey
 } from '@/server/repository'
 import { auth } from '@clerk/nextjs/server'
 import {
@@ -78,6 +80,14 @@ export async function createGuestRecord(guest: Guest) {
   if (!user.userId) throw new Error('Unauthorized')
 
   return await createGuest(guest)
+}
+
+export async function updateGuestRecord(guest: Guest) {
+  const user = await auth()
+
+  if (!user.userId) throw new Error('Unauthorized')
+
+  return await updateGuest(guest)
 }
 
 export async function updateRSVP(guest: Guest) {
@@ -234,4 +244,11 @@ export async function updateColourRecord(colour: Colour) {
 
 export async function deleteColourRecord(colour: Colour) {
   return await deleteColours(colour)
+}
+
+export async function getGuestByKeyRecord(guestKey: string) {
+  const guest = await getGuestByKey(guestKey)
+  if (guest != null) {
+    return guest
+  }
 }

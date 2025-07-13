@@ -18,15 +18,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
     }
 
+    const emailTemplate = await EmailTemplate({
+      forename: emailData.forename,
+      rsvpAnswer: emailData.rsvpAnswer
+    })
+
     const { data, error } = await resend.emails.send({
       from: 'The Wedding Site <wedding@kylescudder.co.uk>',
       to: [`${emailData.groomEmail}`, `${emailData.brideEmail}`],
       subject: `${emailData.forename} has submitted their RSVP!`,
       text: 'Hello world',
-      react: EmailTemplate({
-        forename: emailData.forename,
-        rsvpAnswer: emailData.rsvpAnswer
-      })
+      react: emailTemplate
     })
 
     if (error) {

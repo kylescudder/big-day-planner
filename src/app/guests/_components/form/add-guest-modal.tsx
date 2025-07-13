@@ -1,19 +1,7 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger
-} from '@/components/ui/drawer'
-import { IconUserPlus } from '@tabler/icons-react'
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { useForm } from 'react-hook-form'
 import {
   Dialog,
   DialogClose,
@@ -24,29 +12,38 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { AddGuestForm } from './form/add-guest-form'
-import { type Guest } from '@/server/db/schema'
+import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { uuidv4 } from '@/lib/utils'
-import { useForm } from 'react-hook-form'
 import { createGuestRecord } from '@/server/service'
+import { Guest } from '@/server/db/schema'
+import { GuestFormFields } from './guest-form-fields'
 import { Address } from '@/types/address'
+import { IconUserPlus } from '@tabler/icons-react'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from '@/components/ui/drawer'
+import { useMediaQuery } from '@/hooks/use-media-query'
+import { uuidv4 } from '@/lib/utils'
 
-export function AddGuest(props: {
+export interface AddGuestModalProps {
   guests: Guest[]
-  onNewGuest: (newGuest: Guest) => void
-}) {
-  const [open, setOpen] = useState(false)
-  const [addressSearched, setAddressSearched] = useState(false)
-  const [addressList, setAddressList] = useState<Address[]>([])
+  onNewGuest: (g: Guest) => void
+}
 
-  const isDesktop = useMediaQuery('(min-width: 768px)')
-
-  const form = useForm({
+export function AddGuestModal({ guests, onNewGuest }: AddGuestModalProps) {
+  const form = useForm<Guest>({
     defaultValues: {
       id: uuidv4(),
       forename: '',
       surname: '',
+      guestKey: '',
       email: '',
       phone: '',
       address1: '',
@@ -63,27 +60,30 @@ export function AddGuest(props: {
       rsvp: false,
       rsvpAnswer: false,
       dietaryRequirements: '',
-      parentId: null as string | null,
+      parentId: null,
       createdAt: new Date(),
       updatedAt: new Date()
     }
   })
 
-  async function onSubmit(values: Guest) {
-    const newGuest = {
+  const [open, setOpen] = useState(false)
+  const [addressList, setAddressList] = useState<Address[]>([])
+  const [addressSearched, setAddressSearched] = useState(false)
+
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  const onSubmit = async (values: Guest) => {
+    const newGuest: Guest = {
       ...values,
-      songChoice: '',
-      rsvp: false,
-      rsvpAnswer: false,
       createdAt: new Date(),
       updatedAt: new Date()
     }
     await createGuestRecord(newGuest)
+    onNewGuest(newGuest)
+    form.reset()
     setAddressList([])
     setAddressSearched(false)
-    props.onNewGuest(newGuest)
     setOpen(false)
-    form.reset()
   }
 
   if (isDesktop) {
@@ -99,21 +99,19 @@ export function AddGuest(props: {
           <DialogHeader>
             <DialogTitle>Add Guest</DialogTitle>
             <DialogDescription>
-              Add the guests required information.
+              Fill in the guest details below.
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-              <AddGuestForm
+              <GuestFormFields
                 form={form}
-                addressSearched={addressSearched}
-                addressList={addressList}
-                guestList={props.guests}
+                guestList={guests}
+                initialAddressList={addressList}
+                initialAddressSearched={addressSearched}
               />
               <DialogFooter>
-                <Button type='submit'>
-                  <p>Save changes</p>
-                </Button>
+                <Button type='submit'>Save</Button>
                 <DialogClose asChild>
                   <Button className='w-full' variant='outline'>
                     Cancel
@@ -126,7 +124,6 @@ export function AddGuest(props: {
       </Dialog>
     )
   }
-
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
@@ -139,16 +136,16 @@ export function AddGuest(props: {
         <DrawerHeader>
           <DrawerTitle>Add Guest</DrawerTitle>
           <DrawerDescription>
-            Add the guests required information.
+            Fill in the guest details below.
           </DrawerDescription>
         </DrawerHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-            <AddGuestForm
+            <GuestFormFields
               form={form}
-              addressSearched={addressSearched}
-              addressList={addressList}
-              guestList={props.guests}
+              guestList={guests}
+              initialAddressList={addressList}
+              initialAddressSearched={addressSearched}
             />
             <DrawerFooter>
               <Button type='submit'>

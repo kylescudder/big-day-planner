@@ -6,7 +6,6 @@ import { env } from '@/env'
 import { Images } from '@/server/db/schema'
 import { deleteImageRecord } from '@/server/service'
 import { IconTrash } from '@tabler/icons-react'
-import { LOADIPHLPAPI } from 'dns'
 import { useEffect, useState } from 'react'
 
 export function EditImagesForm(props: {
@@ -30,6 +29,15 @@ export function EditImagesForm(props: {
     (image) => image.type === ImageType.FOOTER
   )[0]
 
+  // --- Landing Page Image ---
+  const landingImage = props.images.filter(
+    (image) => image.type === ImageType.LANDING
+  )[0]
+  const [uploadedLandingImage, setUploadedLandingImage] = useState<
+    Images | undefined
+  >(landingImage)
+  const displayedLandingImage = uploadedLandingImage || landingImage
+
   const [uploadedRSVPImage, setUploadedRSVPImage] = useState<
     Images | undefined
   >(rsvpImage)
@@ -42,7 +50,6 @@ export function EditImagesForm(props: {
 
   const handleLogoUpload = (image: Images) => {
     setUploadedLogoImage(image)
-    // Create a new array with all existing images plus the new one
     props.setUploadedImages([...props.images, image])
   }
 
@@ -54,6 +61,11 @@ export function EditImagesForm(props: {
     setUploadedFooterImage(image)
     props.setUploadedImages([...props.images, image])
   }
+  // --- Landing Page Upload Handler ---
+  const handleLandingUpload = (image: Images) => {
+    setUploadedLandingImage(image)
+    props.setUploadedImages([...props.images, image])
+  }
 
   const deleteImage = (image: Images | undefined, type: ImageType) => {
     if (image != undefined) {
@@ -61,10 +73,15 @@ export function EditImagesForm(props: {
         setUploadedLogoImage(undefined)
       } else if (type === ImageType.RSVP) {
         setUploadedRSVPImage(undefined)
+      } else if (type === ImageType.FOOTER) {
+        setUploadedFooterImage(undefined)
+      } else if (type === ImageType.LANDING) {
+        setUploadedLandingImage(undefined)
       }
       deleteImageRecord(image)
     }
   }
+
   // Use useEffect to log the state when it changes
   useEffect(() => {
     console.log('Uploaded Logo Image:', uploadedLogoImage)
@@ -78,12 +95,16 @@ export function EditImagesForm(props: {
     console.log('Uploaded Footer Image:', uploadedFooterImage)
   }, [uploadedFooterImage])
 
+  useEffect(() => {
+    console.log('Uploaded Landing Image:', uploadedLandingImage)
+  }, [uploadedLandingImage])
+
   const renderImageItem = (image: Images, type: ImageType) => (
     <div className='flex items-center gap-4'>
       {image && (
         <img
           src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${image.key}`}
-          alt='Logo'
+          alt={type}
           className='w-24 h-24 object-contain'
         />
       )}
@@ -147,6 +168,23 @@ export function EditImagesForm(props: {
           {displayedFooterImage ? (
             <ul className={listStyle}>
               {renderImageItem(displayedFooterImage, ImageType.FOOTER)}
+            </ul>
+          ) : null}
+        </div>
+
+        {/* --- Landing Page Image Uploader --- */}
+        <div className='flex items-center'>
+          <Label htmlFor='landing'>Landing Page Image</Label>
+        </div>
+        <div className='flex items-center justify-between'>
+          <UploadThingImageLogo
+            onUploadCompleteAction={handleLandingUpload}
+            disabled={uploadedLandingImage !== undefined}
+            type={ImageType.LANDING}
+          />
+          {displayedLandingImage ? (
+            <ul className={listStyle}>
+              {renderImageItem(displayedLandingImage, ImageType.LANDING)}
             </ul>
           ) : null}
         </div>

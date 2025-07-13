@@ -1,28 +1,28 @@
 import 'server-only'
-import { db } from '@/server/db/index'
+import { db } from '@/server/db'
 import {
-  type Guest,
-  guests,
-  type Starter,
-  type Main,
-  type Pudding,
+  Colour,
+  colours,
   type Detail,
   details,
   Espoused,
   espoused,
-  images,
-  type Timing,
-  timings,
-  Images,
-  starters,
-  mains,
-  puddings,
-  Taxi,
-  taxis,
+  type Guest,
+  guests,
   Hotel,
   hotels,
-  Colour,
-  colours
+  images,
+  Images,
+  type Main,
+  mains,
+  type Pudding,
+  puddings,
+  type Starter,
+  starters,
+  Taxi,
+  taxis,
+  type Timing,
+  timings
 } from './db/schema'
 import { asc, eq } from 'drizzle-orm'
 import { env } from '@/env'
@@ -60,6 +60,31 @@ export async function createGuest(guest: Guest) {
   return await db.insert(guests).values(guest).execute()
 }
 
+export async function updateGuest(guest: Guest) {
+  await db
+    .update(guests)
+    .set({
+      forename: guest.forename,
+      surname: guest.surname,
+      email: guest.email,
+      phone: guest.phone,
+      address1: guest.address1,
+      address2: guest.address2,
+      address3: guest.address3,
+      town: guest.town,
+      county: guest.county,
+      postcode: guest.postcode,
+      song: guest.song,
+      artist: guest.artist,
+      starterId: guest.starterId,
+      mainId: guest.mainId,
+      puddingId: guest.puddingId,
+      dietaryRequirements: guest.dietaryRequirements,
+      guestKey: guest.guestKey
+    })
+    .where(eq(guests.id, guest.id))
+}
+
 export async function updateGuestSong(guest: Guest) {
   await db
     .update(guests)
@@ -89,16 +114,14 @@ export const getAddressList = async (
   const response = await fetch(
     `${env.GETADDRESS_URL}/autocomplete/${postcode}?api-key=${env.GETADDRESS_API_KEY}`
   )
-  const data = (await response.json()) as Suggestions
-  return data
+  return (await response.json()) as Suggestions
 }
 
 export const getAddress = async (addressUrl: string) => {
   const response = await fetch(
     `${env.GETADDRESS_URL}/${addressUrl}?api-key=${env.GETADDRESS_API_KEY}`
   )
-  const data = (await response.json()) as AddressData
-  return data
+  return (await response.json()) as AddressData
 }
 
 export const getStarters = async (): Promise<Starter[]> => {
@@ -250,7 +273,7 @@ export async function updateImage(imageData: Images) {
       .insert(images)
       .values(imageData)
       .onConflictDoUpdate({
-        target: [images.id],
+        target: [images.type],
         set: {
           type: imageData.type,
           key: imageData.key
@@ -362,4 +385,18 @@ export async function updateColours(colourData: Colour) {
 
 export async function deleteColours(colour: Colour) {
   await db.delete(colours).where(eq(colours.id, colour.id))
+}
+
+export const getGuestByKey = async (
+  guestKey: string
+): Promise<Guest[] | null> => {
+  const result = await db.query.guests.findMany({
+    where(fields, operators) {
+      return operators.eq(fields.guestKey, guestKey)
+    }
+  })
+  if (result.length == 0) {
+    return null
+  }
+  return result
 }
