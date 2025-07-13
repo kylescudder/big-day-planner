@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import UploadThingImageLogo from '@/components/ui/upload-thing'
+import UploadThingImage from '@/components/ui/upload-thing'
 import { ImageType } from '@/consts/image-types'
 import { env } from '@/env'
 import { Images } from '@/server/db/schema'
@@ -128,7 +128,7 @@ export function EditImagesForm(props: {
           <Label htmlFor='logo'>Logo</Label>
         </div>
         <div className='flex items-center justify-between'>
-          <UploadThingImageLogo
+          <UploadThingImage
             onUploadCompleteAction={handleLogoUpload}
             disabled={uploadedLogoImage !== undefined}
             type={ImageType.LOGO}
@@ -144,7 +144,7 @@ export function EditImagesForm(props: {
           <Label htmlFor='rsvp'>RSVP</Label>
         </div>
         <div className='flex items-center justify-between'>
-          <UploadThingImageLogo
+          <UploadThingImage
             onUploadCompleteAction={handleRSVPUpload}
             disabled={uploadedRSVPImage !== undefined}
             type={ImageType.RSVP}
@@ -160,7 +160,7 @@ export function EditImagesForm(props: {
           <Label htmlFor='footer'>Footer</Label>
         </div>
         <div className='flex items-center justify-between'>
-          <UploadThingImageLogo
+          <UploadThingImage
             onUploadCompleteAction={handleFooterUpload}
             disabled={uploadedFooterImage !== undefined}
             type={ImageType.FOOTER}
@@ -177,7 +177,7 @@ export function EditImagesForm(props: {
           <Label htmlFor='landing'>Landing Page Image</Label>
         </div>
         <div className='flex items-center justify-between'>
-          <UploadThingImageLogo
+          <UploadThingImage
             onUploadCompleteAction={handleLandingUpload}
             disabled={uploadedLandingImage !== undefined}
             type={ImageType.LANDING}
