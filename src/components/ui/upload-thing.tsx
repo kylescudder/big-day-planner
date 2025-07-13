@@ -2,17 +2,19 @@
 import { useState } from 'react'
 import { UploadButton } from '@/utils/uploadthing'
 import { twMerge } from 'tailwind-merge'
-import { uuidv4 } from '@/lib/utils'
+import { cn, uuidv4 } from '@/lib/utils'
 import { ImageType } from '@/consts/image-types'
 import { Images } from '@/server/db/schema'
 
 interface UploadThingImageLogoProps {
+  className?: string | undefined
   onUploadCompleteAction: (image: Images) => void
   disabled?: boolean
   type: ImageType
 }
 
-export default function UploadThingImageLogo({
+export default function UploadThingImage({
+  className,
   onUploadCompleteAction,
   disabled = false,
   type
@@ -20,7 +22,7 @@ export default function UploadThingImageLogo({
   const [isUploaded, setIsUploaded] = useState(false)
 
   return (
-    <main className='flex flex-col items-center justify-between'>
+    <main className={cn('flex flex-col ', className)}>
       <UploadButton
         disabled={disabled}
         appearance={{

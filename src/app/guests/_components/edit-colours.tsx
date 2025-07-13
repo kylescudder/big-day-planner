@@ -37,7 +37,6 @@ export function EditColours(props: {
 }) {
   const [open, setOpen] = useState(false)
   const [currentColours, setCurrentColours] = useState<Colour[]>(props.colours)
-
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const form = useForm({
@@ -50,12 +49,12 @@ export function EditColours(props: {
   async function onSubmit(values: Colour) {
     const newColour = {
       ...values,
-      id: uuidv4() // Ensure a new ID is generated for the new colour
+      id: uuidv4()
     }
     const updatedColours = [...currentColours, newColour]
     setCurrentColours(updatedColours)
-    await updateColourRecord(newColour) // Assuming this function updates the record
-    props.onColoursSave() // Call the callback function
+    await updateColourRecord(newColour)
+    props.onColoursSave()
     form.reset({
       id: uuidv4(),
       hex: '#ffffff'
@@ -69,30 +68,58 @@ export function EditColours(props: {
     )
   }
 
-  const renderColourItem = (colour: Colour) => (
+  const ColourItem = (colour: Colour) => (
     <li
       key={colour.id}
-      className='flex items-center justify-between py-2 px-4 hover:bg-muted/50 rounded-md'
+      className='flex flex-col space-y-2 p-4 hover:bg-muted/50 rounded-md'
     >
-      <div className='flex items-center gap-2'>
-        <div
-          className='w-6 h-6 rounded-md border'
-          style={{ backgroundColor: colour.hex }}
-        ></div>
-        <span className='font-mono'>{colour.hex}</span>
+      <div className='flex items-center justify-between'>
+        <div className='space-y-1'>
+          <span
+            className='w-6 h-6 rounded-md border'
+            style={{ backgroundColor: colour.hex }}
+          />
+          <p className='font-mono'>{colour.hex}</p>
+        </div>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => handleColourDelete(colour)}
+          aria-label='Delete colour'
+        >
+          <IconTrash className='h-4 w-4' />
+        </Button>
       </div>
-      <Button
-        variant='ghost'
-        size='icon'
-        onClick={() => handleColourDelete(colour)}
-        aria-label='Delete colour'
-      >
-        <IconTrash className='h-4 w-4' />
-      </Button>
     </li>
   )
 
-  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4' // Set max height and enable scrolling
+  const ColoursList = () => (
+    <div className='py-4'>
+      {currentColours.length > 0 ? (
+        <ul className='space-y-2 max-h-[400px] overflow-y-auto'>
+          {currentColours.map(ColourItem)}
+        </ul>
+      ) : (
+        <div className='text-center py-4 text-muted-foreground'>
+          No colours added yet. Add your first colour below.
+        </div>
+      )}
+    </div>
+  )
+
+  const ColourForm = () => (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <EditColoursForm form={form} />
+        <DialogFooter className='mt-4'>
+          <Button type='submit'>Add Colour</Button>
+          <DialogClose asChild>
+            <Button variant='outline'>Close</Button>
+          </DialogClose>
+        </DialogFooter>
+      </form>
+    </Form>
+  )
 
   if (isDesktop) {
     return (
@@ -110,26 +137,8 @@ export function EditColours(props: {
               Add or remove colours from your palette.
             </DialogDescription>
           </DialogHeader>
-          {currentColours.length > 0 ? (
-            <ul className={listStyle}>
-              {currentColours.map(renderColourItem)}
-            </ul>
-          ) : (
-            <div className='text-center py-4 text-muted-foreground'>
-              No colours added yet. Add your first colour below.
-            </div>
-          )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-              <EditColoursForm form={form} />
-              <DialogFooter className='mt-4'>
-                <Button type='submit'>Add Colour</Button>
-                <DialogClose asChild>
-                  <Button variant='outline'>Close</Button>
-                </DialogClose>
-              </DialogFooter>
-            </form>
-          </Form>
+          <ColoursList />
+          <ColourForm />
         </DialogContent>
       </Dialog>
     )
@@ -151,26 +160,8 @@ export function EditColours(props: {
           </DrawerDescription>
         </DrawerHeader>
         <div className='px-4'>
-          {currentColours.length > 0 ? (
-            <ul className={listStyle}>
-              {currentColours.map(renderColourItem)}
-            </ul>
-          ) : (
-            <div className='text-center py-4 text-muted-foreground'>
-              No colours added yet. Add your first colour below.
-            </div>
-          )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-              <EditColoursForm form={form} />
-              <DrawerFooter className='mt-4'>
-                <Button type='submit'>Add Colour</Button>
-                <DrawerClose asChild>
-                  <Button variant='outline'>Close</Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </form>
-          </Form>
+          <ColoursList />
+          <ColourForm />
         </div>
       </DrawerContent>
     </Drawer>
