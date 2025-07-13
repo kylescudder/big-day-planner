@@ -14,7 +14,7 @@ import { Detail, Espoused, type Guest } from '@/server/db/schema'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useForm } from 'react-hook-form'
 import { getEspousedRecord, updateRSVP } from '@/server/service'
-import { format, subMonths } from 'date-fns'
+import { format } from 'date-fns'
 
 export function RSVPAnswer(props: {
   guestData: Guest[]
@@ -34,7 +34,7 @@ export function RSVPAnswer(props: {
   })
 
   async function onSubmit(guests: Guest[]) {
-    for (const [key, value] of Object.entries(guests)) {
+    for (const [_, value] of Object.entries(guests)) {
       const guest = {
         ...value,
         rsvp: true,
@@ -79,7 +79,7 @@ export function RSVPAnswer(props: {
     }
   }
 
-  return rsvpAnswerNo === true ? (
+  return rsvpAnswerNo ? (
     <p className='pb-3'>thanks for letting us know, you&apos;ll be missed!</p>
   ) : (
     <>
