@@ -45,7 +45,11 @@ export async function getGuestAndLinkedGuest(id: string) {
   if (parentIds.length > 0) {
     const additionalResults = await db.query.guests.findMany({
       where(fields, operators) {
-        return operators.or(...parentIds.map((pid) => eq(fields.id, pid)))
+        return operators.or(
+          ...parentIds.map((pid: string | null) => {
+            return pid ? eq(fields.id, pid) : undefined
+          })
+        )
       }
     })
 
