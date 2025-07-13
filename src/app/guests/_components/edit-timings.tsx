@@ -39,7 +39,6 @@ export function EditTimings(props: {
 }) {
   const [open, setOpen] = useState(false)
   const [currentTimings, setCurrentTimings] = useState<Timing[]>(props.timings)
-
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const form = useForm({
@@ -55,12 +54,12 @@ export function EditTimings(props: {
   async function onSubmit(values: Timing) {
     const newTiming = {
       ...values,
-      id: uuidv4() // Ensure a new ID is generated for the new timing
+      id: uuidv4()
     }
     const updatedTimings = [...currentTimings, newTiming]
     setCurrentTimings(updatedTimings)
-    await updateTimingRecord(newTiming) // Assuming this function updates the record
-    props.onTimingsSave // Pass the updated timings back
+    await updateTimingRecord(newTiming)
+    props.onTimingsSave()
     form.reset()
   }
 
@@ -71,33 +70,76 @@ export function EditTimings(props: {
     )
   }
 
-  const renderTimingItem = (timing: Timing) => (
+  const TimingItem = (timing: Timing) => (
     <li
       key={timing.id}
-      className='flex items-center justify-between py-2 px-4 hover:bg-muted/50 rounded-md'
+      className='flex flex-col space-y-2 p-4 hover:bg-muted/50 rounded-md'
     >
-      <span>
-        {format(new Date(timing.time), 'HH:mm')} - {timing.event}
-      </span>
-      {timing.imageUrl && (
-        <img
-          src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${timing.imageUrl}`}
-          alt='Logo'
-          className='w-24 h-24 object-contain'
-        />
-      )}
-      <Button
-        variant='ghost'
-        size='icon'
-        onClick={() => handleTimingDelete(timing)}
-        aria-label='Delete timing'
-      >
-        <IconTrash className='h-4 w-4' />
-      </Button>
+      <div className='flex items-center justify-between'>
+        <div className='space-y-1'>
+          <p className='font-medium'>
+            {format(new Date(timing.time), 'HH:mm')} - {timing.event}
+          </p>
+          {timing.imageUrl && (
+            <img
+              src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${timing.imageUrl}`}
+              alt='Logo'
+              className='w-24 h-24 object-contain'
+            />
+          )}
+        </div>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => handleTimingDelete(timing)}
+          aria-label='Delete timing'
+        >
+          <IconTrash className='h-4 w-4' />
+        </Button>
+      </div>
     </li>
   )
 
-  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4'
+  const TimingsList = () => (
+    <div className='py-4'>
+      {currentTimings.length > 0 ? (
+        <ul className='space-y-2 max-h-[400px] overflow-y-auto'>
+          {currentTimings.map(TimingItem)}
+        </ul>
+      ) : (
+        <div className='text-center py-4 text-muted-foreground'>
+          No timings added yet. Add your first timing below.
+        </div>
+      )}
+    </div>
+  )
+
+  const TimingsForm = () => (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <EditTimingsForm form={form} />
+        {isDesktop ? (
+          <DialogFooter>
+            <Button type='submit'>
+              <p>Save changes</p>
+            </Button>
+            <DialogClose asChild>
+              <Button variant='outline'>Cancel</Button>
+            </DialogClose>
+          </DialogFooter>
+        ) : (
+          <DrawerFooter>
+            <Button type='submit'>
+              <p>Save changes</p>
+            </Button>
+            <DrawerClose asChild>
+              <Button variant='outline'>Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        )}
+      </form>
+    </Form>
+  )
 
   if (isDesktop) {
     return (
@@ -113,28 +155,8 @@ export function EditTimings(props: {
             <DialogTitle>Edit Timings</DialogTitle>
             <DialogDescription>Edit the timings for the day.</DialogDescription>
           </DialogHeader>
-          {currentTimings.length > 0 ? (
-            <ul className={listStyle}>
-              {currentTimings.map(renderTimingItem)}
-            </ul>
-          ) : (
-            <div className='text-center py-4 text-muted-foreground'>
-              No timings added yet. Add your first timing below.
-            </div>
-          )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-              <EditTimingsForm form={form} />
-              <DialogFooter>
-                <Button type='submit'>
-                  <p>Save changes</p>
-                </Button>
-                <DialogClose asChild>
-                  <Button variant='outline'>Cancel</Button>
-                </DialogClose>
-              </DialogFooter>
-            </form>
-          </Form>
+          <TimingsList />
+          <TimingsForm />
         </DialogContent>
       </Dialog>
     )
@@ -153,26 +175,8 @@ export function EditTimings(props: {
           <DrawerTitle>Edit Timings</DrawerTitle>
           <DrawerDescription>Edit the timings for the day.</DrawerDescription>
         </DrawerHeader>
-        {currentTimings.length > 0 ? (
-          <ul className={listStyle}>{currentTimings.map(renderTimingItem)}</ul>
-        ) : (
-          <div className='text-center py-4 text-muted-foreground'>
-            No timings added yet. Add your first timing below.
-          </div>
-        )}
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-            <EditTimingsForm form={form} />
-            <DrawerFooter>
-              <Button type='submit'>
-                <p>Save changes</p>
-              </Button>
-              <DrawerClose asChild>
-                <Button variant='outline'>Cancel</Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </form>
-        </Form>
+        <TimingsList />
+        <TimingsForm />
       </DrawerContent>
     </Drawer>
   )

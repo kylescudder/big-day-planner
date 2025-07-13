@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/form'
 import { TimePicker } from '@/components/ui/timepicker'
 import { FieldValues } from 'react-hook-form'
-import UploadThingImageLogo from '@/components/ui/upload-thing'
+import UploadThingImage from '@/components/ui/upload-thing'
 import { Images } from '@/server/db/schema'
 import { useEffect, useState } from 'react'
 import { env } from '@/env'
@@ -80,7 +80,7 @@ export function EditTimingsForm(props: { form: any }) {
             </FormItem>
           )}
         />
-        <UploadThingImageLogo
+        <UploadThingImage
           onUploadCompleteAction={setUploadedLogoImage}
           disabled={uploadedLogoImage !== undefined}
           type={ImageType.LOGO}
