@@ -13,8 +13,8 @@ export function Timings(props: { timings: Timing[] | null }) {
                 <img
                   alt={timing.altText ?? ''}
                   src={`https://${env.NEXT_PUBLIC_UT_APP_ID}.ufs.sh/f/${timing.imageUrl}`}
-                  width={100}
-                  height={100}
+                  width={150}
+                  height={150}
                   className='mx-auto'
                 />
               </div>
