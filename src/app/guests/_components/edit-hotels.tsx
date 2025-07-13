@@ -24,7 +24,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconBowlSpoon, IconTrash } from '@tabler/icons-react'
+import { IconBed, IconTrash } from '@tabler/icons-react'
 import { EditHotelsForm } from './form/edit-hotels-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -37,7 +37,6 @@ export function EditHotels(props: {
 }) {
   const [open, setOpen] = useState(false)
   const [currentHotels, setCurrentHotels] = useState<Hotel[]>(props.hotels)
-
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const form = useForm({
@@ -51,12 +50,12 @@ export function EditHotels(props: {
   async function onSubmit(values: Hotel) {
     const newHotel = {
       ...values,
-      id: uuidv4() // Ensure a new ID is generated for the nehotelw
+      id: uuidv4()
     }
     const updatedHotels = [...currentHotels, newHotel]
     setCurrentHotels(updatedHotels)
-    await updateHotelRecord(newHotel) // Assuming this function updates the record
-    props.onHotelsSave // Pass the updated hotels back
+    await updateHotelRecord(newHotel)
+    props.onHotelsSave()
     form.reset()
   }
 
@@ -67,32 +66,71 @@ export function EditHotels(props: {
     )
   }
 
-  const renderHotelItem = (hotel: Hotel) => (
+  const HotelItem = (hotel: Hotel) => (
     <li
       key={hotel.id}
-      className='flex items-center justify-between py-2 px-4 hover:bg-muted/50 rounded-md'
+      className='flex flex-col space-y-2 p-4 hover:bg-muted/50 rounded-md'
     >
-      <span>{hotel.name}</span>
-      <span>{hotel.url}</span>
-      <Button
-        variant='ghost'
-        size='icon'
-        onClick={() => handleHotelDelete(hotel)}
-        aria-label='Delete hotel'
-      >
-        <IconTrash className='h-4 w-4' />
-      </Button>
+      <div className='flex items-center justify-between'>
+        <div className='space-y-1'>
+          <p className='font-medium'>{hotel.name}</p>
+          <p className='text-sm break-all text-muted-foreground'>{hotel.url}</p>
+        </div>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => handleHotelDelete(hotel)}
+          aria-label='Delete hotel'
+        >
+          <IconTrash className='h-4 w-4' />
+        </Button>
+      </div>
     </li>
   )
 
-  const listStyle = 'overflow-y-auto max-h-64 space-y-1 my-4'
+  const HotelsList = () => (
+    <div className='py-4'>
+      {currentHotels.length > 0 ? (
+        <ul className='space-y-2 max-h-[400px] overflow-y-auto'>
+          {currentHotels.map(HotelItem)}
+        </ul>
+      ) : (
+        <div className='text-center py-4 text-muted-foreground'>
+          No hotels added yet. Add your first hotel below.
+        </div>
+      )}
+    </div>
+  )
+
+  const HotelsForm = () => (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <EditHotelsForm form={form} />
+        {isDesktop ? (
+          <DialogFooter>
+            <Button type='submit'>Save changes</Button>
+            <DialogClose asChild>
+              <Button variant='outline'>Close</Button>
+            </DialogClose>
+          </DialogFooter>
+        ) : (
+          <DrawerFooter>
+            <Button type='submit'>Save changes</Button>
+            <DrawerClose asChild>
+              <Button variant='outline'>Close</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        )}
+      </form>
+    </Form>
+  )
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconBowlSpoon className='pr-2' />
+            <IconBed className='mr-2 h-4 w-4' />
             Edit Hotels
           </Button>
         </DialogTrigger>
@@ -101,26 +139,8 @@ export function EditHotels(props: {
             <DialogTitle>Edit Hotels</DialogTitle>
             <DialogDescription>Edit the hotels for the day.</DialogDescription>
           </DialogHeader>
-          {currentHotels.length > 0 ? (
-            <ul className={listStyle}>{currentHotels.map(renderHotelItem)}</ul>
-          ) : (
-            <div className='text-center py-4 text-muted-foreground'>
-              No hotels added yet. Add your first hotel below.
-            </div>
-          )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-              <EditHotelsForm form={form} />
-              <DialogFooter>
-                <Button type='submit'>
-                  <p>Save changes</p>
-                </Button>
-                <DialogClose asChild>
-                  <Button variant='outline'>Close</Button>
-                </DialogClose>
-              </DialogFooter>
-            </form>
-          </Form>
+          <HotelsList />
+          <HotelsForm />
         </DialogContent>
       </Dialog>
     )
@@ -130,7 +150,7 @@ export function EditHotels(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconBowlSpoon className='pr-2' />
+          <IconBed className='mr-2 h-4 w-4' />
           Edit Hotels
         </Button>
       </DrawerTrigger>
@@ -139,26 +159,10 @@ export function EditHotels(props: {
           <DrawerTitle>Edit Hotels</DrawerTitle>
           <DrawerDescription>Edit the hotels for the day.</DrawerDescription>
         </DrawerHeader>
-        {currentHotels.length > 0 ? (
-          <ul className={listStyle}>{currentHotels.map(renderHotelItem)}</ul>
-        ) : (
-          <div className='text-center py-4 text-muted-foreground'>
-            No hotels added yet. Add your first hotel below.
-          </div>
-        )}
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-            <EditHotelsForm form={form} />
-            <DrawerFooter>
-              <Button type='submit'>
-                <p>Save changes</p>
-              </Button>
-              <DrawerClose asChild>
-                <Button variant='outline'>Close</Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </form>
-        </Form>
+        <div className='px-4'>
+          <HotelsList />
+          <HotelsForm />
+        </div>
       </DrawerContent>
     </Drawer>
   )
