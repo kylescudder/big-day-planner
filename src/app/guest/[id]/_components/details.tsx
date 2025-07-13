@@ -1,4 +1,4 @@
-import { Colour, colours, Detail } from '@/server/db/schema'
+import { Colour, Detail } from '@/server/db/schema'
 
 export function Details(props: { details: Detail; colours: Colour[] }) {
   return (
@@ -22,7 +22,7 @@ export function Details(props: { details: Detail; colours: Colour[] }) {
       <div
         className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl ${props.details.dresscode ? '' : 'hidden'}`}
       >
-        <p className='pt-10'>{props.details.dresscode}</p>
+        <p className='pt-10 whitespace-pre-line'>{props.details.dresscode}</p>
         <div
           className={`flex flex-wrap justify-center gap-4 mt-10 p-2 ${
             props.colours.length > 0 ? '' : 'hidden'

@@ -173,7 +173,12 @@ export function EditDetailsForm(props: { form: any }) {
             <FormItem>
               <FormLabel htmlFor='dresscode'>Dress code</FormLabel>
               <FormControl>
-                <Input {...field} id='dresscode' className='text-base' />
+                <Textarea
+                  {...field}
+                  id='dresscode'
+                  placeholder='formal... black tie...'
+                  className='resize-none text-base'
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
