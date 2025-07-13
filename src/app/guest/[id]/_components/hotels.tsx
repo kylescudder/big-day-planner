@@ -31,7 +31,7 @@ export function Hotels(props: { hotels: Hotel[] | null }) {
                         className='hover:underline text-primary'
                         href={hotel.url}
                       >
-                        {hotel.url}
+                        Find it here
                       </a>
                     </div>
                   </div>
