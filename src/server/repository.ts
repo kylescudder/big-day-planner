@@ -33,12 +33,37 @@ export async function getGuests(): Promise<Guest[]> {
 }
 
 export async function getGuestAndLinkedGuest(id: string) {
-  return await db.query.guests.findMany({
+  const initialResults = await db.query.guests.findMany({
     where(fields, operators) {
       return operators.or(eq(fields.id, id), eq(fields.parentId, id))
-    },
-    orderBy: [asc(guests.createdAt)]
+    }
   })
+
+  const parentIds = initialResults
+    .map((guest) => guest.parentId)
+    .filter(Boolean)
+  if (parentIds.length > 0) {
+    const additionalResults = await db.query.guests.findMany({
+      where(fields, operators) {
+        return operators.or(...parentIds.map((pid) => eq(fields.id, pid)))
+      }
+    })
+
+    const allResults = [...initialResults]
+    additionalResults.forEach((guest) => {
+      if (!allResults.some((existing) => existing.id === guest.id)) {
+        allResults.push(guest)
+      }
+    })
+
+    return allResults.sort(
+      (a, b) => (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0)
+    )
+  }
+
+  return initialResults.sort(
+    (a, b) => (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0)
+  )
 }
 
 export async function getGuest(id: string) {
