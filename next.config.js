@@ -20,7 +20,6 @@ const config = {
 
 // Injected content via Sentry wizard below
 import { withSentryConfig } from '@sentry/nextjs'
-import { env } from './src/env.js'
 
 const sentryConfig = {
   // For all available options, see:
