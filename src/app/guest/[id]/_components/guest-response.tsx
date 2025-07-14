@@ -36,6 +36,7 @@ export function GuestResponse(props: {
   taxis: Taxi[]
   hotels: Hotel[]
   colours: Colour[]
+  onGuestDataUpdate?: (guests: Guest[]) => void
 }) {
   const [rsvp, setRSVP] = useState(false)
   const [rsvpAnswer, setRsvpAnswer] = useState(
@@ -52,6 +53,15 @@ export function GuestResponse(props: {
   function onRsvpAnswer(rsvp: boolean, rsvpAnswer: boolean) {
     setRSVP(true)
     setRsvpAnswer(rsvpAnswer)
+
+    if (props.onGuestDataUpdate) {
+      const updatedGuests = props.guestData.map((guest) => ({
+        ...guest,
+        rsvp,
+        rsvpAnswer
+      }))
+      props.onGuestDataUpdate(updatedGuests)
+    }
   }
 
   return (

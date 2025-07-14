@@ -16,10 +16,8 @@ interface EditColoursFormProps {
 }
 
 export function EditColoursForm({ form }: EditColoursFormProps) {
-  // Get the current hex value from the form
   const hexValue = form.watch('hex')
 
-  // Update the form value when the colour picker changes
   const handleColourChange = (value: string) => {
     form.setValue('hex', value, { shouldValidate: true, shouldDirty: true })
   }

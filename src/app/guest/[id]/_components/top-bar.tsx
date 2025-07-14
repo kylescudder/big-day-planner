@@ -7,10 +7,13 @@ import { PAGES } from '@/consts/pages'
 import Image from 'next/image'
 import { IconMenu2 } from '@tabler/icons-react'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
+import { type Guest } from '@/server/db/schema'
 
-const TopBar = () => {
+const TopBar = (props: { guestData: Guest[] }) => {
   const [currentSection, setCurrentSection] = useState<string>('home')
-
+  const showSheet =
+    props.guestData?.[0]?.rsvp && props.guestData?.[0]?.rsvpAnswer
+  console.log('showSheet: ', showSheet)
   useEffect(() => {
     const section = document.getElementById(currentSection)
     const sectionTop =
@@ -28,35 +31,37 @@ const TopBar = () => {
       <div>
         <Image alt='K&R Logo' src='/logo.svg' height={60} width={60} />
       </div>
-      <div>
-        <Sheet key='right'>
-          <SheetTrigger asChild>
-            <IconMenu2 className='text-primary' width={30} height={30} />
-          </SheetTrigger>
-          <SheetContent side='right'>
-            <div className='flex h-full'>
-              <ul className='w-full pt-12'>
-                {PAGES.map((page) => (
-                  <ListItem key={page.id}>
-                    <li>
-                      <SheetPrimitive.Close className='w-full'>
-                        <div
-                          onClick={() => {
-                            setCurrentSection(page.id)
-                          }}
-                          className={`flex items-center w-full h-3/4 text-5xl p-3 hover:bg-secondary/[.5] transition-colors ease-in-out duration-500 rounded-3xl ${currentSection === page.id ? `bg-secondary text-white` : ``}`}
-                        >
-                          {page.text}
-                        </div>
-                      </SheetPrimitive.Close>
-                    </li>
-                  </ListItem>
-                ))}
-              </ul>
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
+      {showSheet ? (
+        <div>
+          <Sheet key='right'>
+            <SheetTrigger asChild>
+              <IconMenu2 className='text-primary' width={30} height={30} />
+            </SheetTrigger>
+            <SheetContent side='right'>
+              <div className='flex h-full'>
+                <ul className='w-full pt-12'>
+                  {PAGES.map((page) => (
+                    <ListItem key={page.id}>
+                      <li>
+                        <SheetPrimitive.Close className='w-full'>
+                          <div
+                            onClick={() => {
+                              setCurrentSection(page.id)
+                            }}
+                            className={`flex items-center w-full h-3/4 text-5xl p-3 hover:bg-secondary/[.5] transition-colors ease-in-out duration-500 rounded-3xl ${currentSection === page.id ? `bg-secondary text-white` : ``}`}
+                          >
+                            {page.text}
+                          </div>
+                        </SheetPrimitive.Close>
+                      </li>
+                    </ListItem>
+                  ))}
+                </ul>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      ) : null}
     </div>
   )
 }
