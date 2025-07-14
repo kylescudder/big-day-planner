@@ -14,7 +14,8 @@ const config = {
         pathname: '/f/*'
       }
     ]
-  }
+  },
+  allowedDevOrigins: ['local-origin.dev', '*.local-origin.dev', '192.168.0.30']
 }
 
 // Injected content via Sentry wizard below
