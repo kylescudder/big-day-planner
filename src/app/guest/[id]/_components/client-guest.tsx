@@ -40,7 +40,7 @@ export function ClientGuestPage(props: ClientGuestPageProps) {
 
   return (
     <div>
-      <TopBar guestData={guestData} />
+      <TopBar guestData={guestData} details={props.details} />
       <div className='flex min-h-screen flex-col items-center overflow-x-hidden pt-10'>
         <Section
           id='home'

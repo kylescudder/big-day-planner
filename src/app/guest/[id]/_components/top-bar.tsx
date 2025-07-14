@@ -7,9 +7,9 @@ import { PAGES } from '@/consts/pages'
 import Image from 'next/image'
 import { IconMenu2 } from '@tabler/icons-react'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
-import { type Guest } from '@/server/db/schema'
+import { Detail, type Guest } from '@/server/db/schema'
 
-const TopBar = (props: { guestData: Guest[] }) => {
+const TopBar = (props: { guestData: Guest[]; details: Detail }) => {
   const [currentSection, setCurrentSection] = useState<string>('home')
   const showSheet =
     props.guestData?.[0]?.rsvp && props.guestData?.[0]?.rsvpAnswer
@@ -41,7 +41,14 @@ const TopBar = (props: { guestData: Guest[] }) => {
               <div className='flex h-full'>
                 <ul className='w-full pt-12'>
                   {PAGES.map((page) => (
-                    <ListItem key={page.id}>
+                    <ListItem
+                      key={page.id}
+                      className={
+                        page.id == 'song-request' && !props.details.songRequest
+                          ? 'hidden'
+                          : ''
+                      }
+                    >
                       <li>
                         <SheetPrimitive.Close className='w-full'>
                           <div
