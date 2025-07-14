@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     })
 
     const { data, error } = await resend.emails.send({
-      from: 'The Wedding Site <wedding@kylescudder.co.uk>',
+      from: 'The Scudders <noreply@scudder.rsvp>',
       to: [`${emailData.groomEmail}`, `${emailData.brideEmail}`],
       subject: `${emailData.forename} has submitted their RSVP!`,
       text: 'Hello world',
