@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { getGuestByKeyRecord } from '@/server/service'
 import { redirect } from 'next/navigation'
+import LoadingPage from '@/components/ui/loading/loading-page'
 
 export function GuestKeyScreen({
   backgroundImage
@@ -22,6 +23,7 @@ export function GuestKeyScreen({
   backgroundImage: Images
 }) {
   const [showOverlay, setShowOverlay] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setShowOverlay(false), 1000)
@@ -37,6 +39,7 @@ export function GuestKeyScreen({
   })
 
   async function onSubmit(values: { guestKey: string }) {
+    setLoading(true)
     const guest: Guest[] | undefined = await getGuestByKeyRecord(
       values.guestKey.toLowerCase()
     )
@@ -55,7 +58,7 @@ export function GuestKeyScreen({
       className='relative min-h-screen flex items-center justify-center bg-cover bg-center'
       style={{ backgroundImage: bgUrl }}
     >
-      {/* Overlay */}
+      {loading && <LoadingPage />}
       <div
         className={`
           fixed inset-0 z-20 bg-cover bg-center
