@@ -118,7 +118,10 @@ export function GuestResponse(props: {
             id='song-request'
             className={`${props.details.songRequest ? '' : 'hidden'} justify-center h-screen`}
           >
-            <SongRequest guestData={props.guestData} />
+            <SongRequest
+              guestData={props.guestData}
+              espoused={props.espoused}
+            />
           </Section>
           <Image
             alt='Divider illustration'

@@ -1,8 +1,8 @@
-import { type Guest } from '@/server/db/schema'
+import { Espoused, type Guest } from '@/server/db/schema'
 import { SongRequestForm } from './song-request-form'
 import Image from 'next/image'
 
-export function SongRequest(props: { guestData: Guest[] }) {
+export function SongRequest(props: { guestData: Guest[]; espoused: Espoused }) {
   return (
     <div className='text-white z-10 relative'>
       <p className='text-3xl pt-14'>song request</p>
@@ -11,7 +11,7 @@ export function SongRequest(props: { guestData: Guest[] }) {
         help but dance to!
       </p>
       {props.guestData.map((guest, index) => (
-        <SongRequestForm key={index} guest={guest} />
+        <SongRequestForm key={index} guest={guest} espoused={props.espoused} />
       ))}
       <div className='columns-2 pt-10'>
         <Image
