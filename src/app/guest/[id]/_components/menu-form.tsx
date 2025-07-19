@@ -29,13 +29,15 @@ export function MenuForm(props: {
   espoused: Espoused
 }) {
   const [allMenuChosen, setAllMenuChosen] = useState<boolean>(
-    props.guestData.every((guest) => {
-      const hasStarter = props.starters.length > 0 ? guest.starterId : true
-      const hasMain = props.mains.length > 0 ? guest.mainId : true
-      const hasPudding = props.puddings.length > 0 ? guest.puddingId : true
+    props.guestData
+      .filter((guest) => guest.rsvp === true && guest.rsvpAnswer === true)
+      .every((guest) => {
+        const hasStarter = props.starters.length > 0 ? guest.starterId : true
+        const hasMain = props.mains.length > 0 ? guest.mainId : true
+        const hasPudding = props.puddings.length > 0 ? guest.puddingId : true
 
-      return hasStarter && hasMain && hasPudding
-    })
+        return hasStarter && hasMain && hasPudding
+      })
   )
   const [loading, setLoading] = useState<boolean>(false)
 
