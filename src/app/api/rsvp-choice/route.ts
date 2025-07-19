@@ -6,6 +6,8 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 interface EmailData {
   forename: string
   rsvpAnswer: boolean
+  bride: string
+  groom: string
   groomEmail: string
   brideEmail: string
 }
@@ -24,7 +26,7 @@ export async function POST(req: Request) {
     })
 
     const { data, error } = await resend.emails.send({
-      from: 'The Scudders <noreply@scudder.rsvp>',
+      from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
       to: [`${emailData.groomEmail}`, `${emailData.brideEmail}`],
       subject: `${emailData.forename} has submitted their RSVP!`,
       text: 'Hello world',

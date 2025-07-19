@@ -19,7 +19,7 @@ import LoadingPage from '@/components/ui/loading/loading-page'
 
 export function RSVPAnswer(props: {
   guestData: Guest[]
-  onRsvpAnswer: (rsp: boolean, rsvpAnswer: boolean) => void
+  onRsvpAnswer: (guests: Guest[]) => void
   details: Detail
 }) {
   const [rsvpAnswerNo, _] = useState<boolean>(
@@ -37,6 +37,7 @@ export function RSVPAnswer(props: {
 
   async function onSubmit(guests: Guest[]) {
     setLoading(true)
+    const updatedGuests: Guest[] = []
     for (const [_, value] of Object.entries(guests)) {
       const guest = {
         ...value,
@@ -60,6 +61,8 @@ export function RSVPAnswer(props: {
         body: JSON.stringify({
           forename: guest.forename,
           rsvpAnswer: guest.rsvpAnswer,
+          bride: espoused.bride,
+          groom: espoused.groom,
           brideEmail: espoused.brideEmail,
           groomEmail: espoused.groomEmail
         })
@@ -78,8 +81,9 @@ export function RSVPAnswer(props: {
           groom: espoused.groom
         })
       })
-      props.onRsvpAnswer(guest.rsvp, guest.rsvpAnswer)
+      updatedGuests.push(guest)
     }
+    props.onRsvpAnswer(updatedGuests)
     setLoading(false)
   }
 

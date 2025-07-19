@@ -35,7 +35,11 @@ export function ClientGuestPage(props: ClientGuestPageProps) {
   const [guestData, setGuestData] = useState(props.initialGuestData)
 
   const handleGuestDataUpdate = (updatedGuests: Guest[]) => {
-    setGuestData(updatedGuests)
+    console.log('Updating guest data:', updatedGuests)
+    const newGuestData = updatedGuests.map((guest) => ({
+      ...guest
+    }))
+    setGuestData(newGuestData)
   }
 
   return (
@@ -45,7 +49,10 @@ export function ClientGuestPage(props: ClientGuestPageProps) {
         <Section
           id='home'
           className={`bg-pink pt-7 h-64 ${
-            !guestData[0]?.rsvpAnswer && guestData[0]?.rsvp ? 'hidden' : ''
+            !guestData.some((guest) => guest.rsvpAnswer) &&
+            guestData.some((guest) => guest.rsvp)
+              ? 'hidden'
+              : ''
           }`}
         >
           <div className='text-5xl'>
@@ -55,11 +62,15 @@ export function ClientGuestPage(props: ClientGuestPageProps) {
             </div>
           </div>
           <p className='text-3xl text-primary pt-10 relative z-10'>
-            {guestData.map((guest, index) =>
-              index === 0
-                ? `hello ${guest.forename.toLowerCase()}`
-                : `\n& ${guest.forename.toLowerCase()}`
-            )}
+            {guestData
+              .filter(
+                (guest) => guest.rsvp === true && guest.rsvpAnswer === true
+              )
+              .map((guest, index) =>
+                index === 0
+                  ? `hello ${guest.forename.toLowerCase()}`
+                  : `\n& ${guest.forename.toLowerCase()}`
+              )}
           </p>
         </Section>
         <GuestResponse

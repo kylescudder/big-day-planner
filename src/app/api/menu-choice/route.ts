@@ -3,31 +3,36 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-interface Guest {
+interface EmailData {
   forename: string
   starter: string
   main: string
   pudding: string
+  bride: string
+  groom: string
 }
 
 export async function POST(req: Request) {
   try {
-    const guest = (await req.json()) as Guest
+    const emailData = (await req.json()) as EmailData
 
-    if (!guest) {
-      return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
+    if (!emailData) {
+      return NextResponse.json(
+        { error: 'Email data not found' },
+        { status: 404 }
+      )
     }
     const emailTemplate = await EmailTemplate({
-      forename: guest.forename,
-      starter: guest.starter,
-      main: guest.main,
-      pudding: guest.pudding
+      forename: emailData.forename,
+      starter: emailData.starter,
+      main: emailData.main,
+      pudding: emailData.pudding
     })
 
     const { data, error } = await resend.emails.send({
-      from: 'The Scudders <noreply@scudder.rsvp>',
+      from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
       to: ['kyle@kylescudder.co.uk'],
-      subject: `${guest.forename} has submitted their menu choice!`,
+      subject: `${emailData.forename} has submitted their menu choice!`,
       text: 'Hello world',
       react: emailTemplate
     })

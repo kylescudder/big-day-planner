@@ -6,18 +6,18 @@ import { format, differenceInDays } from 'date-fns'
 
 export function RSVP(props: {
   guestData: Guest[]
-  onRsvpAnswer: (rsp: boolean, rsvpAnswer: boolean) => void
+  onRsvpAnswer: (guests: Guest[]) => void
   details: Detail
 }) {
   const [rsvpAnswer, setRsvpAnswer] = useState(
-    props.guestData.every((guest) => guest.rsvpAnswer)
+    props.guestData.some((guest) => guest.rsvpAnswer)
   )
-  const [rsvp, setRSVP] = useState(props.guestData.every((guest) => guest.rsvp))
+  const [rsvp, setRsvp] = useState(props.guestData.some((guest) => guest.rsvp))
 
-  function onRsvpAnswer(rsvp: boolean, rsvpAnswer: boolean) {
-    setRsvpAnswer(rsvpAnswer)
-    setRSVP(rsvp)
-    props.onRsvpAnswer(rsvp, rsvpAnswer)
+  function onRsvpAnswer(guests: Guest[]) {
+    setRsvpAnswer(guests.some((guest) => guest.rsvpAnswer))
+    setRsvp(guests.some((guest) => guest.rsvp))
+    props.onRsvpAnswer(guests)
   }
 
   return (
@@ -27,7 +27,7 @@ export function RSVP(props: {
           {props.details.startDateTime ? (
             <div>
               {rsvp ? (
-                <p className='text-5xl pt-14'>
+                <p className='text-5xl'>
                   {' '}
                   {differenceInDays(
                     props.details.startDateTime,
@@ -36,7 +36,7 @@ export function RSVP(props: {
                   days to go
                 </p>
               ) : (
-                <p className='text-5xl pt-14'>rsvp</p>
+                <p className='text-5xl'>rsvp</p>
               )}
             </div>
           ) : null}

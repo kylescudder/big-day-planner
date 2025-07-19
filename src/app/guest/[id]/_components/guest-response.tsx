@@ -40,7 +40,7 @@ export function GuestResponse(props: {
 }) {
   const [rsvp, setRSVP] = useState(false)
   const [rsvpAnswer, setRsvpAnswer] = useState(
-    props.guestData.every((guest) => guest.rsvpAnswer)
+    props.guestData.some((guest) => guest.rsvpAnswer)
   )
   if (
     !rsvp &&
@@ -50,17 +50,17 @@ export function GuestResponse(props: {
     setRSVP(true)
   }
 
-  function onRsvpAnswer(rsvp: boolean, rsvpAnswer: boolean) {
+  function onRsvpAnswer(guests: Guest[]) {
     setRSVP(true)
-    setRsvpAnswer(rsvpAnswer)
+    setRsvpAnswer(props.guestData.some((guest) => guest.rsvpAnswer))
 
     if (props.onGuestDataUpdate) {
-      const updatedGuests = props.guestData.map((guest) => ({
+      props.guestData.map((guest) => ({
         ...guest,
         rsvp,
         rsvpAnswer
       }))
-      props.onGuestDataUpdate(updatedGuests)
+      props.onGuestDataUpdate(guests)
     }
   }
 
@@ -97,7 +97,9 @@ export function GuestResponse(props: {
         ) : null
       })()}
 
-      {rsvp && rsvpAnswer && (
+      {props.guestData.some(
+        (guest) => guest.rsvp === true && guest.rsvpAnswer === true
+      ) && (
         <>
           <Section id='menu' className='bg-background'>
             <Menu

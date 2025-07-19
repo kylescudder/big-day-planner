@@ -7,12 +7,12 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { type Guest } from '@/server/db/schema'
+import { Espoused, type Guest } from '@/server/db/schema'
 import { updateSongChoice } from '@/server/service'
 import { useState } from 'react'
 import { useForm, type FieldValues } from 'react-hook-form'
 
-export function SongRequestForm(props: { guest: Guest }) {
+export function SongRequestForm(props: { guest: Guest; espoused: Espoused }) {
   const [song, setSong] = useState<string>(props.guest.song)
 
   const form = useForm({
@@ -35,7 +35,9 @@ export function SongRequestForm(props: { guest: Guest }) {
       body: JSON.stringify({
         forename: guest.forename,
         song: guest.song,
-        artist: guest.artist
+        artist: guest.artist,
+        bride: props.espoused.bride,
+        groom: props.espoused.groom
       })
     })
     setSong(guest.song)
