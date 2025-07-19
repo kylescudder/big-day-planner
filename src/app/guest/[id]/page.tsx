@@ -1,6 +1,6 @@
 'use server'
 
-import { Detail } from '@/server/db/schema'
+import { Detail, Espoused } from '@/server/db/schema'
 import {
   getDetailRecord,
   getGuestAndLinkedGuestRecord,
@@ -11,7 +11,8 @@ import {
   getTimingRecords,
   getTaxiRecords,
   getHotelRecords,
-  getColourRecords
+  getColourRecords,
+  getEspousedRecord
 } from '@/server/service'
 import { redirect } from 'next/navigation'
 import { ClientGuestPage } from '@/app/guest/[id]/_components/client-guest'
@@ -30,6 +31,11 @@ export default async function Guest(props: {
   const taxis = (await getTaxiRecords()) || []
   const hotels = (await getHotelRecords()) || []
   const colours = (await getColourRecords()) || []
+  const espoused: Espoused | null = await getEspousedRecord()
+
+  if (!espoused) {
+    redirect('/')
+  }
 
   if (!details) {
     redirect('/')
@@ -51,6 +57,7 @@ export default async function Guest(props: {
       taxis={taxis}
       hotels={hotels}
       colours={colours}
+      espoused={espoused}
     />
   )
 }

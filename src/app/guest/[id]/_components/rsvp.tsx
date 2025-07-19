@@ -1,5 +1,5 @@
 'use client'
-import { Detail, type Guest } from '@/server/db/schema'
+import { Detail, Espoused, type Guest } from '@/server/db/schema'
 import { RSVPAnswer } from './rsvp-answer'
 import { useState } from 'react'
 import { format, differenceInDays } from 'date-fns'
@@ -8,6 +8,7 @@ export function RSVP(props: {
   guestData: Guest[]
   onRsvpAnswer: (guests: Guest[]) => void
   details: Detail
+  espoused: Espoused
 }) {
   const [rsvpAnswer, setRsvpAnswer] = useState(
     props.guestData.some((guest) => guest.rsvpAnswer)
@@ -112,6 +113,7 @@ export function RSVP(props: {
               guestData={props.guestData}
               onRsvpAnswer={onRsvpAnswer}
               details={props.details}
+              espoused={props.espoused}
             />
           )}
         </section>

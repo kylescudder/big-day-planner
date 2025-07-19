@@ -4,7 +4,8 @@ import {
   type Main,
   type Starter,
   type Guest,
-  Detail
+  Detail,
+  Espoused
 } from '@/server/db/schema'
 import { format } from 'date-fns'
 
@@ -14,6 +15,7 @@ export function Menu(props: {
   mains: Main[]
   puddings: Pudding[]
   details: Detail
+  espoused: Espoused
 }) {
   return (
     <section>
@@ -24,6 +26,7 @@ export function Menu(props: {
           starters={props.starters}
           mains={props.mains}
           puddings={props.puddings}
+          espoused={props.espoused}
         />
       </div>
       <div>

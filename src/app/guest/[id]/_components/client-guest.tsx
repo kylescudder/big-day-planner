@@ -11,7 +11,8 @@ import {
   Starter,
   Taxi,
   Timing,
-  type Guest
+  type Guest,
+  Espoused
 } from '@/server/db/schema'
 import { Section } from '@/components/section'
 import TopBar from '@/app/guest/[id]/_components/top-bar'
@@ -29,6 +30,7 @@ interface ClientGuestPageProps {
   taxis: Taxi[]
   hotels: Hotel[]
   colours: Colour[]
+  espoused: Espoused
 }
 
 export function ClientGuestPage(props: ClientGuestPageProps) {
@@ -84,6 +86,7 @@ export function ClientGuestPage(props: ClientGuestPageProps) {
           taxis={props.taxis}
           hotels={props.hotels}
           colours={props.colours}
+          espoused={props.espoused}
           onGuestDataUpdate={handleGuestDataUpdate}
         />
         <Fab />

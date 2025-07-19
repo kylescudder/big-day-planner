@@ -12,7 +12,8 @@ import {
   Detail,
   Hotel,
   Taxi,
-  Colour
+  Colour,
+  Espoused
 } from '@/server/db/schema'
 import { useState } from 'react'
 import { Timings } from './timings'
@@ -36,6 +37,7 @@ export function GuestResponse(props: {
   taxis: Taxi[]
   hotels: Hotel[]
   colours: Colour[]
+  espoused: Espoused
   onGuestDataUpdate?: (guests: Guest[]) => void
 }) {
   const [rsvp, setRSVP] = useState(false)
@@ -72,6 +74,7 @@ export function GuestResponse(props: {
             guestData={props.guestData}
             onRsvpAnswer={onRsvpAnswer}
             details={props.details}
+            espoused={props.espoused}
           />
         </section>
         <Image
@@ -108,6 +111,7 @@ export function GuestResponse(props: {
               mains={props.mains}
               puddings={props.puddings}
               details={props.details}
+              espoused={props.espoused}
             />
           </Section>
           <Section
