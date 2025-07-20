@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -25,7 +26,6 @@ import {
   getAddressListRecords,
   getGuestRecord
 } from '@/server/service'
-import { useState } from 'react'
 
 export interface GuestFormFieldsProps {
   form: UseFormReturn<Guest>
@@ -72,6 +72,14 @@ export function GuestFormFields({
     form.setValue('parentId', guestData?.id ?? null)
   }
 
+  useEffect(() => {
+    const pid = form.getValues('parentId')
+    if (pid) {
+      setLinkedGuestId(pid)
+      void handleLinkSelection(pid)
+    }
+  }, [])
+
   return (
     <div className='grid gap-4 p-4'>
       <FormField
@@ -104,26 +112,36 @@ export function GuestFormFields({
         )}
       />
 
-      <FormItem>
-        <FormLabel>Going with</FormLabel>
-        <Select
-          onValueChange={(parentId) => void handleLinkSelection(parentId)}
-        >
-          <FormControl>
-            <SelectTrigger>
-              <SelectValue placeholder='Select a guest to link' />
-            </SelectTrigger>
-          </FormControl>
-          <SelectContent>
-            {guestList.map((g) => (
-              <SelectItem key={g.id} value={g.id}>
-                {g.forename} {g.surname}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <FormMessage />
-      </FormItem>
+      <FormField
+        control={form.control}
+        name='parentId'
+        render={({ field }: { field: FieldValues }) => (
+          <FormItem>
+            <FormLabel>Going with</FormLabel>
+            <FormControl>
+              <Select
+                value={field.value ?? ''}
+                onValueChange={(value) => {
+                  field.onChange(value)
+                  void handleLinkSelection(value)
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder='Select a guest to link' />
+                </SelectTrigger>
+                <SelectContent>
+                  {guestList.map((g) => (
+                    <SelectItem key={g.id} value={g.id}>
+                      {g.forename} {g.surname}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       <FormField
         control={form.control}
