@@ -33,7 +33,7 @@
     "@t3-oss/env-nextjs": "0.13.8",
     "@tabler/icons-react": "3.34.1",
     "@tanstack/react-table": "8.21.3",
-    "@uploadthing/react": "7.3.2",
+    "@uploadthing/react": "7.3.3",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
