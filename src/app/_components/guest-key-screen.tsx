@@ -51,6 +51,7 @@ export function GuestKeyScreen({
       type: 'manual',
       message: 'Invalid key. Please try again.'
     })
+    setLoading(false)
   }
 
   return (
