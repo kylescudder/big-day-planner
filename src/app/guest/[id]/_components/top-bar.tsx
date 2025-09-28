@@ -13,7 +13,7 @@ const TopBar = (props: { guestData: Guest[]; details: Detail }) => {
   const [currentSection, setCurrentSection] = useState<string>('home')
   const showSheet =
     props.guestData?.[0]?.rsvp && props.guestData?.[0]?.rsvpAnswer
-  console.log('showSheet: ', showSheet)
+
   useEffect(() => {
     const section = document.getElementById(currentSection)
     const sectionTop =

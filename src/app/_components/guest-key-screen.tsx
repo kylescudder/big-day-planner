@@ -76,7 +76,7 @@ export function GuestKeyScreen({
 
       {/* Centered form */}
       {!showOverlay && (
-        <div className='z-30 flex flex-col items-center'>
+        <div className='z-30 flex flex-col items-center w-[85%]'>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
