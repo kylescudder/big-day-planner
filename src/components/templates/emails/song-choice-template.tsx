@@ -12,9 +12,9 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   artist
 }) => (
   <div>
-    <h1>
+    <p>
       {forename} has just submitted {song} by {artist} as their song choice!
       Don&apos;t forget to add it to the playlist!
-    </h1>
+    </p>
   </div>
 )
