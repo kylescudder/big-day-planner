@@ -55,11 +55,13 @@ export function MenuForm(props: {
         updatedAt: new Date()
       }
       await updateMenuChoice(guest)
-      const starter = props.starters.find(
+      const starter: Starter | undefined = props.starters.find(
         (starter) => starter.id === guest.starterId
       )
-      const main = props.mains.find((main) => main.id === guest.mainId)
-      const pudding = props.puddings.find(
+      const main: Main | undefined = props.mains.find(
+        (main) => main.id === guest.mainId
+      )
+      const pudding: Pudding | undefined = props.puddings.find(
         (pudding) => pudding.id === guest.puddingId
       )
       await fetch('/api/menu-choice', {
@@ -69,11 +71,13 @@ export function MenuForm(props: {
         },
         body: JSON.stringify({
           forename: guest.forename,
-          starter: starter,
-          main: main,
-          pudding: pudding,
+          starter: starter !== undefined ? starter.text : null,
+          main: main !== undefined ? main.text : null,
+          pudding: pudding !== undefined ? pudding.text : null,
           bride: props.espoused.bride,
-          groom: props.espoused.groom
+          groom: props.espoused.groom,
+          brideEmail: props.espoused.brideEmail,
+          groomEmail: props.espoused.groomEmail
         })
       })
     }

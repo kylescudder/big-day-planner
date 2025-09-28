@@ -5,11 +5,13 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 interface EmailData {
   forename: string
-  starter: string
-  main: string
-  pudding: string
+  starter: string | null
+  main: string | null
+  pudding: string | null
   bride: string
   groom: string
+  brideEmail: string
+  groomEmail: string
 }
 
 export async function POST(req: Request) {
@@ -29,11 +31,12 @@ export async function POST(req: Request) {
       pudding: emailData.pudding
     })
 
+    console.log(emailTemplate)
+
     const { data, error } = await resend.emails.send({
       from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
-      to: ['kyle@kylescudder.co.uk'],
+      to: [`${emailData.brideEmail}`, `${emailData.groomEmail}`],
       subject: `${emailData.forename} has submitted their menu choice!`,
-      text: 'Hello world',
       react: emailTemplate
     })
 

@@ -29,7 +29,6 @@ export async function POST(req: Request) {
       from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
       to: [`${emailData.groomEmail}`, `${emailData.brideEmail}`],
       subject: `${emailData.forename} has submitted their RSVP!`,
-      text: 'Hello world',
       react: emailTemplate
     })
 
