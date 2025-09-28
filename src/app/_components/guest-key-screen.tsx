@@ -92,7 +92,7 @@ export function GuestKeyScreen({
                         <Input
                           {...field}
                           id='guest-key'
-                          placeholder='Enter your guest key'
+                          placeholder='Enter your unique code'
                           className='text-base'
                           variant='default'
                           autoFocus
