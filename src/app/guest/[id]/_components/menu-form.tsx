@@ -74,6 +74,7 @@ export function MenuForm(props: {
           starter: starter !== undefined ? starter.text : null,
           main: main !== undefined ? main.text : null,
           pudding: pudding !== undefined ? pudding.text : null,
+          dietaryRequirements: guest.dietaryRequirements,
           bride: props.espoused.bride,
           groom: props.espoused.groom,
           brideEmail: props.espoused.brideEmail,

@@ -8,6 +8,7 @@ interface EmailData {
   starter: string | null
   main: string | null
   pudding: string | null
+  dietaryRequirements: string | null
   bride: string
   groom: string
   brideEmail: string
@@ -28,7 +29,8 @@ export async function POST(req: Request) {
       forename: emailData.forename,
       starter: emailData.starter,
       main: emailData.main,
-      pudding: emailData.pudding
+      pudding: emailData.pudding,
+      dietaryRequirements: emailData.dietaryRequirements
     })
 
     console.log(emailTemplate)

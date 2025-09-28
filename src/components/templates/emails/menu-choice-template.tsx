@@ -5,13 +5,15 @@ interface EmailTemplateProps {
   starter: string | null
   main: string | null
   pudding: string | null
+  dietaryRequirements: string | null
 }
 
 export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   forename,
   starter,
   main,
-  pudding
+  pudding,
+  dietaryRequirements
 }) => (
   <div>
     <p>
@@ -23,5 +25,8 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
       {main !== null ? <li>{main} for main</li> : null}
       {pudding !== null ? <li>{pudding} for pudding</li> : null}
     </ul>
+    {dietaryRequirements !== null ? (
+      <p> Their dietary requirements are {dietaryRequirements}</p>
+    ) : null}
   </div>
 )
