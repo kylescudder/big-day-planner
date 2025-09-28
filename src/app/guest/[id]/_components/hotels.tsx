@@ -13,8 +13,8 @@ export function Hotels(props: { hotels: Hotel[] | null }) {
         className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl`}
       >
         <p className='text-lg'>
-          for those that want to stay overnight, here are a list of
-          local hotels and bed & breakfasts
+          for those that want to stay overnight, here are a list of local hotels
+          and bed & breakfasts
         </p>
         <Collapsible className='w-full space-y-2'>
           <CollapsibleTrigger className='w-full'>

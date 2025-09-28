@@ -90,7 +90,7 @@ export function MenuForm(props: {
     <>
       {loading && <LoadingPage />}
       {allMenuChosen ? (
-        <p className='py-2'>Thanks for submitting your menu choice</p>
+        <p className='py-2'>thanks for submitting your menu choice</p>
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

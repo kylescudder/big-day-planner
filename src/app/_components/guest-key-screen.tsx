@@ -49,7 +49,7 @@ export function GuestKeyScreen({
     }
     form.setError('guestKey', {
       type: 'manual',
-      message: 'Invalid key. Please try again.'
+      message: 'invalid key. please try again.'
     })
     setLoading(false)
   }
@@ -92,7 +92,7 @@ export function GuestKeyScreen({
                         <Input
                           {...field}
                           id='guest-key'
-                          placeholder='Enter your unique code'
+                          placeholder='enter your unique code'
                           className='text-base'
                           variant='default'
                           autoFocus
