@@ -1,7 +1,8 @@
 import { EmailTemplate } from '@/components/templates/emails/menu-choice-template'
-import { emailQueue, resend } from '@/lib/email-queue'
 import { NextResponse } from 'next/server'
+import { Resend } from 'resend'
 
+const resend = new Resend(process.env.RESEND_API_KEY)
 interface EmailData {
   forename: string
   starter: string
@@ -21,26 +22,29 @@ export async function POST(req: Request) {
         { status: 404 }
       )
     }
-
-    emailQueue.enqueue(async () => {
-      const emailTemplate = await EmailTemplate({
-        forename: emailData.forename,
-        starter: emailData.starter,
-        main: emailData.main,
-        pudding: emailData.pudding
-      })
-
-      await resend.emails.send({
-        from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
-        to: ['kyle@kylescudder.co.uk'],
-        subject: `${emailData.forename} has submitted their menu choice!`,
-        react: emailTemplate
-      })
+    const emailTemplate = await EmailTemplate({
+      forename: emailData.forename,
+      starter: emailData.starter,
+      main: emailData.main,
+      pudding: emailData.pudding
     })
 
-    return NextResponse.json({ queued: true }, { status: 202 })
+    const { data, error } = await resend.emails.send({
+      from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
+      to: ['kyle@kylescudder.co.uk'],
+      subject: `${emailData.forename} has submitted their menu choice!`,
+      text: 'Hello world',
+      react: emailTemplate
+    })
+
+    if (error) {
+      console.error(error)
+      return NextResponse.json({ error }, { status: 500 })
+    }
+
+    return NextResponse.json({ data }, { status: 200 })
   } catch (error) {
-    console.error(error)
+    console.error(error) // Log the error for debugging purposes
     return NextResponse.json({ error }, { status: 500 })
   }
 }

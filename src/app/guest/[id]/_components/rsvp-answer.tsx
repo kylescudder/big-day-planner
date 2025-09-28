@@ -36,9 +36,15 @@ export function RSVPAnswer(props: {
     }
   })
 
+  async function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
+
   async function onSubmit(guests: Guest[]) {
     setLoading(true)
+
     const updatedGuests: Guest[] = []
+
     for (const [_, value] of Object.entries(guests)) {
       const guest = {
         ...value,
@@ -53,38 +59,45 @@ export function RSVPAnswer(props: {
       if (!props.espoused) throw new Error('espoused not found')
 
       await updateRSVP(guest)
-      await fetch('/api/rsvp-choice', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          forename: guest.forename,
-          rsvpAnswer: guest.rsvpAnswer,
-          bride: props.espoused.bride,
-          groom: props.espoused.groom,
-          brideEmail: props.espoused.brideEmail,
-          groomEmail: props.espoused.groomEmail
-        })
-      })
-
-      await fetch('/api/rsvp-thanks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          forename: guest.forename,
-          email: guest.email,
-          rsvpAnswer: guest.rsvpAnswer,
-          bride: props.espoused.bride,
-          groom: props.espoused.groom
-        })
-      })
       updatedGuests.push(guest)
     }
+
     props.onRsvpAnswer(updatedGuests)
     setLoading(false)
+    ;(async () => {
+      for (const guest of updatedGuests) {
+        try {
+          await fetch('/api/rsvp-choice', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              forename: guest.forename,
+              rsvpAnswer: guest.rsvpAnswer,
+              bride: props.espoused.bride,
+              groom: props.espoused.groom,
+              brideEmail: props.espoused.brideEmail,
+              groomEmail: props.espoused.groomEmail
+            })
+          })
+          await delay(500)
+
+          await fetch('/api/rsvp-thanks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              forename: guest.forename,
+              email: guest.email,
+              rsvpAnswer: guest.rsvpAnswer,
+              bride: props.espoused.bride,
+              groom: props.espoused.groom
+            })
+          })
+          await delay(500)
+        } catch (err) {
+          console.error('Error sending emails for guest', guest.forename, err)
+        }
+      }
+    })()
   }
 
   return (
