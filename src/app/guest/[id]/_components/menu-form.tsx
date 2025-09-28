@@ -101,7 +101,7 @@ export function MenuForm(props: {
                 )
                 .map((guest, index) => (
                   <div key={index} className='text-lg pt-4'>
-                    <p className='text-lg'>{guest.forename}</p>
+                    <p className='text-lg'>{guest.forename.toLowerCase()}</p>
                     {props.starters.length > 0 && (
                       <article className='pt-4'>
                         <p className='text-secondary'>starter</p>

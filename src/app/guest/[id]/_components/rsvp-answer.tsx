@@ -113,7 +113,9 @@ export function RSVPAnswer(props: {
             <div className='grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl'>
               {props.guestData.map((guest, index) => (
                 <div key={index} className='text-lg pb-10'>
-                  <p className='text-lg text-primary'>{guest.forename}</p>
+                  <p className='text-lg text-primary'>
+                    {guest.forename.toLowerCase()}
+                  </p>
                   <FormField
                     control={form.control}
                     name={`${index}.rsvpAnswer`}
