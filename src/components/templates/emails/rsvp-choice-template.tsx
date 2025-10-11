@@ -9,12 +9,24 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   forename,
   rsvpAnswer
 }) => (
-  <div>
+  <div
+    style={{
+      fontFamily: 'sans-serif',
+      lineHeight: 1.6,
+      color: '#333',
+      padding: '16px'
+    }}
+  >
     <p>
-      {forename} has submitted their RSVP!
-      {rsvpAnswer === true
-        ? '\nThey will be attending!'
-        : '\nThey will not be attending.'}
+      <strong>{forename}</strong> has submitted their RSVP.
+    </p>
+
+    <p>
+      {rsvpAnswer ? (
+        <span>🎉 They will be attending!</span>
+      ) : (
+        <span>😔 They will not be attending.</span>
+      )}
     </p>
   </div>
 )

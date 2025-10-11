@@ -1,8 +1,10 @@
+import * as React from 'react'
 import { EmailTemplate } from '@/components/templates/emails/rsvp-choice-template'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+
 interface EmailData {
   forename: string
   rsvpAnswer: boolean
@@ -20,16 +22,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
     }
 
-    const emailTemplate = await EmailTemplate({
+    const reactEmail = React.createElement(EmailTemplate, {
       forename: emailData.forename,
       rsvpAnswer: emailData.rsvpAnswer
     })
 
     const { data, error } = await resend.emails.send({
       from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
-      to: [`${emailData.groomEmail}`, `${emailData.brideEmail}`],
+      to: [emailData.groomEmail, emailData.brideEmail],
       subject: `${emailData.forename} has submitted their RSVP!`,
-      react: emailTemplate
+      react: reactEmail
     })
 
     if (error) {
@@ -39,7 +41,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ data }, { status: 200 })
   } catch (error) {
-    console.error(error) // Log the error for debugging purposes
+    console.error(error)
     return NextResponse.json({ error }, { status: 500 })
   }
 }
