@@ -29,19 +29,19 @@ export async function POST(req: Request) {
       )
     }
 
-    const emailTemplate = await EmailTemplate({
-      forename: emailData.forename,
-      starter: emailData.starter,
-      main: emailData.main,
-      pudding: emailData.pudding,
-      dietaryRequirements: emailData.dietaryRequirements
-    })
-
     const { data, error } = await resend.emails.send({
-      from: `${emailData.bride} & ${emailData.groom} <onboarding@resend.dev>`, // 👈 use verified sender
+      from: `${emailData.bride} & ${emailData.groom} <onboarding@resend.dev>`,
       to: [emailData.brideEmail, emailData.groomEmail],
       subject: `${emailData.forename} has submitted their menu choice!`,
-      react: emailTemplate
+      react: (
+        <EmailTemplate
+          forename={emailData.forename}
+          starter={emailData.starter}
+          main={emailData.main}
+          pudding={emailData.pudding}
+          dietaryRequirements={emailData.dietaryRequirements}
+        />
+      )
     })
 
     if (error) {
