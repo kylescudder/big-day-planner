@@ -1,8 +1,10 @@
 export const runtime = 'nodejs'
 
+import * as React from 'react'
 import { EmailTemplate } from '@/components/templates/emails/menu-choice-template'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { render } from '@react-email/render'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -29,19 +31,22 @@ export async function POST(req: Request) {
       )
     }
 
+    // ✅ Render HTML from React component
+    const htmlContent = await render(
+      <EmailTemplate
+        forename={emailData.forename}
+        starter={emailData.starter}
+        main={emailData.main}
+        pudding={emailData.pudding}
+        dietaryRequirements={emailData.dietaryRequirements}
+      />
+    )
+
     const { data, error } = await resend.emails.send({
-      from: `${emailData.bride} & ${emailData.groom} <onboarding@resend.dev>`,
+      from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
       to: [emailData.brideEmail, emailData.groomEmail],
       subject: `${emailData.forename} has submitted their menu choice!`,
-      react: (
-        <EmailTemplate
-          forename={emailData.forename}
-          starter={emailData.starter}
-          main={emailData.main}
-          pudding={emailData.pudding}
-          dietaryRequirements={emailData.dietaryRequirements}
-        />
-      )
+      html: htmlContent
     })
 
     if (error) {

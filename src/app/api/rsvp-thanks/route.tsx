@@ -1,8 +1,11 @@
+import * as React from 'react'
 import { EmailTemplate } from '@/components/templates/emails/rsvp-thanks-template'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { render } from '@react-email/render'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+
 interface EmailData {
   forename: string
   email: string
@@ -22,18 +25,20 @@ export async function POST(req: Request) {
       )
     }
 
-    const emailTemplate = await EmailTemplate({
-      forename: emailData.forename,
-      rsvpAnswer: emailData.rsvpAnswer,
-      bride: emailData.bride,
-      groom: emailData.groom
-    })
+    const htmlContent = await render(
+      <EmailTemplate
+        forename={emailData.forename}
+        rsvpAnswer={emailData.rsvpAnswer}
+        bride={emailData.bride}
+        groom={emailData.groom}
+      />
+    )
 
     const { data, error } = await resend.emails.send({
       from: `${emailData.bride} & ${emailData.groom} <noreply@scudder.rsvp>`,
-      to: [`${emailData.email}`],
-      subject: `Thank you for your has submitted you RSVP!`,
-      react: emailTemplate
+      to: [emailData.email],
+      subject: `Thank you for submitting your RSVP!`,
+      html: htmlContent
     })
 
     if (error) {
@@ -43,7 +48,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ data }, { status: 200 })
   } catch (error) {
-    console.error(error) // Log the error for debugging purposes
+    console.error(error)
     return NextResponse.json({ error }, { status: 500 })
   }
 }
