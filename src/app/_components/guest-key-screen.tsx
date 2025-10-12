@@ -41,7 +41,7 @@ export function GuestKeyScreen({
   async function onSubmit(values: { guestKey: string }) {
     setLoading(true)
     const guest: Guest[] | undefined = await getGuestByKeyRecord(
-      values.guestKey.toLowerCase()
+      values.guestKey.trim().toLowerCase()
     )
 
     if (guest != undefined && guest.length > 0) {
