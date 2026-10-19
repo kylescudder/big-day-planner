@@ -1,4 +1,3 @@
-'use client'
 import { useState } from 'react'
 import { UploadButton } from '@/utils/uploadthing'
 import { twMerge } from 'tailwind-merge'

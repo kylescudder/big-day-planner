@@ -1,10 +1,10 @@
-import { SignOutButton, SignedIn } from '@clerk/nextjs'
+import { Show, SignOutButton } from '@clerk/tanstack-react-start'
 import { IconLogout } from '@tabler/icons-react'
 
 export default function Logout() {
   return (
     <div className='pl-4'>
-      <SignedIn>
+      <Show when='signed-in'>
         <SignOutButton redirectUrl='/sign-in'>
           <div className='flex align-middle cursor-pointer'>
             <IconLogout
@@ -18,7 +18,7 @@ export default function Logout() {
             </p>
           </div>
         </SignOutButton>
-      </SignedIn>
+      </Show>
     </div>
   )
 }
