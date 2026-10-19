@@ -12,10 +12,9 @@
 /prisma/db.sqlite
 /prisma/db.sqlite-journal
 
-# next.js
-/.next/
-/out/
-next-env.d.ts
+# build output
+/dist/
+.tanstack/
 
 # production
 /build
@@ -35,8 +34,13 @@ yarn-error.log*
 .env
 .env*.local
 
-# vercel
-.vercel
+# Herman deployment state and secrets
+/app.env
+/secrets/
+/state/
+/backups/
+/deploy-spool/
+__pycache__/
 
 # typescript
 *.tsbuildinfo

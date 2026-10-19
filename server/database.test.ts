@@ -1,0 +1,118 @@
+import { afterAll, beforeAll, describe, expect, test } from 'bun:test'
+import { mkdtempSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import postgres from 'postgres'
+
+import { databaseUrl } from '../src/server/db/connection'
+
+const testUrl = process.env.TEST_DATABASE_URL
+if (!testUrl) throw new Error('TEST_DATABASE_URL is required')
+
+// The repository reads its connection from the environment on import.
+process.env.DATABASE_URL = testUrl
+process.env.SKIP_ENV_VALIDATION = '1'
+
+const sql = postgres(testUrl, { max: 1, onnotice: () => {} })
+const guestId = '77777777-7777-4777-8777-777777777777'
+const partnerId = '88888888-8888-4888-8888-888888888888'
+
+async function migrate() {
+  const child = Bun.spawn(['bun', 'server/migrate.ts'], {
+    env: { ...process.env, DATABASE_URL: testUrl },
+    stdout: 'pipe',
+    stderr: 'pipe'
+  })
+  expect(await child.exited).toBe(0)
+}
+
+beforeAll(async () => {
+  await sql`DROP SCHEMA public CASCADE`
+  await sql`CREATE SCHEMA public`
+  await migrate()
+})
+
+afterAll(async () => {
+  await sql.end()
+})
+
+describe('migrations', () => {
+  test('create the schema and are safe to re-run', async () => {
+    await migrate()
+    const tables = await sql`
+      SELECT table_name FROM information_schema.tables
+      WHERE table_schema = 'public' ORDER BY table_name
+    `
+    expect(tables.map(({ table_name }) => table_name)).toEqual([
+      '__drizzle_migrations',
+      'colours',
+      'detail',
+      'espoused',
+      'guest',
+      'hotels',
+      'image',
+      'main',
+      'pudding',
+      'starter',
+      'taxi',
+      'timing'
+    ])
+  })
+})
+
+describe('database URL', () => {
+  test('reads and encodes the password file', () => {
+    const file = join(mkdtempSync(join(tmpdir(), 'bdp-')), 'password')
+    writeFileSync(file, 'p@ss/word\n')
+    const url = new URL(databaseUrl('postgres://runtime@db:5432/app', file))
+    expect(decodeURIComponent(url.password)).toBe('p@ss/word')
+    expect(url.username).toBe('runtime')
+  })
+})
+
+describe('guest responses', () => {
+  test('update only their own fields and keep linked guests together', async () => {
+    const repository = await import('../src/server/repository')
+    await sql`INSERT INTO starter (id, text) VALUES ('44444444-4444-4444-8444-444444444444', 'Soup')`
+    await sql`
+      INSERT INTO guest (id, forename, surname, email, phone, address1, song, artist, "guestKey")
+      VALUES (${guestId}, 'Test', 'Guest', 'guest@example.com', '0', '1 Road', '', '', 'testkey'),
+             (${partnerId}, 'Plus', 'One', 'plus@example.com', '0', '1 Road', '', '', 'pluskey')
+    `
+    await sql`UPDATE guest SET "parentId" = ${guestId} WHERE id = ${partnerId}`
+
+    await repository.updateGuestRSVP({
+      id: guestId,
+      rsvp: true,
+      rsvpAnswer: true
+    })
+    await repository.updateGuestSong({
+      id: guestId,
+      song: 'Song',
+      artist: 'Artist'
+    })
+    await repository.updateGuestMenu({
+      id: guestId,
+      starterId: '44444444-4444-4444-8444-444444444444',
+      mainId: null,
+      puddingId: null,
+      dietaryRequirements: 'none'
+    })
+
+    const guest = await repository.getGuest(guestId)
+    expect(guest).toMatchObject({
+      rsvp: true,
+      rsvpAnswer: true,
+      song: 'Song',
+      artist: 'Artist',
+      starterId: '44444444-4444-4444-8444-444444444444',
+      dietaryRequirements: 'none',
+      email: 'guest@example.com'
+    })
+
+    const party = await repository.getGuestAndLinkedGuest(partnerId)
+    expect(party.map(({ id }) => id).sort()).toEqual([guestId, partnerId])
+    expect((await repository.getGuestByKey('testkey'))?.[0]?.id).toBe(guestId)
+    expect(await repository.getGuestByKey('missing')).toBeNull()
+  })
+})

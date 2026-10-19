@@ -1,254 +1,346 @@
-'use server'
+import { auth } from '@clerk/tanstack-react-start/server'
+import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 
 import {
-  deleteGuest,
-  getGuests,
-  getAddressList,
-  getAddress,
   createGuest,
-  updateGuest,
+  deleteColours,
+  deleteGuest,
+  deleteHotels,
+  deleteImages,
+  deleteTaxis,
+  deleteTimings,
+  getAddress,
+  getAddressList,
+  getColours,
+  getDetails,
+  getEspoused,
   getGuest,
   getGuestAndLinkedGuest,
-  updateGuestSong,
-  getStarters,
+  getGuestByKey,
+  getGuests,
+  getHotels,
+  getImages,
   getMains,
   getPuddings,
-  updateGuestMenu,
-  updateGuestRSVP,
-  getDetails,
+  getStarters,
+  getTaxis,
+  getTimings,
+  updateColours,
   updateDetails,
   updateEspoused,
-  getEspoused,
-  getImages,
+  updateGuest,
+  updateGuestMenu,
+  updateGuestRSVP,
+  updateGuestSong,
+  updateHotels,
   updateImage,
-  getTimings,
-  updateTimings,
-  deleteTimings,
-  deleteImages,
-  updateStarters,
   updateMains,
   updatePuddings,
-  deleteTaxis,
+  updateStarters,
   updateTaxis,
-  getTaxis,
-  deleteHotels,
-  updateHotels,
-  getHotels,
-  updateColours,
-  deleteColours,
-  getColours,
-  getGuestByKey
+  updateTimings
 } from '@/server/repository'
-import { auth } from '@clerk/nextjs/server'
 import {
+  sendMenuChoiceEmail,
+  sendRsvpEmails,
+  sendSongChoiceEmail
+} from '@/server/email'
+import type {
   Colour,
   Detail,
   Espoused,
+  Guest,
   Hotel,
   Images,
   Main,
   Pudding,
   Starter,
   Taxi,
-  Timing,
-  type Guest
+  Timing
 } from './db/schema'
 
-export async function getGuestRecords() {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await getGuests()
+async function requireUser() {
+  const { userId } = await auth()
+  if (!userId) throw new Error('Unauthorized')
+  return userId
 }
 
-export async function getGuestAndLinkedGuestRecord(id: string) {
-  return await getGuestAndLinkedGuest(id)
-}
+/** Validates the shape of admin input; callers are already authenticated. */
+const input =
+  <T>() =>
+  (data: T) =>
+    data
 
-export async function getGuestRecord(id: string) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await getGuest(id)
-}
-
-export async function createGuestRecord(guest: Guest) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await createGuest(guest)
-}
-
-export async function updateGuestRecord(guest: Guest) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await updateGuest(guest)
-}
-
-export async function updateRSVP(guest: Guest) {
-  return await updateGuestRSVP(guest)
-}
-
-export async function updateSongChoice(guest: Guest) {
-  return await updateGuestSong(guest)
-}
-
-export async function updateMenuChoice(guest: Guest) {
-  return await updateGuestMenu(guest)
-}
-
-export async function deleteGuestRecord(id: string) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  await deleteGuest(id)
-}
-
-export async function getAddressListRecords(postcode: string) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await getAddressList(postcode)
-}
-
-export async function getAddressRecords(addressUrl: string) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await getAddress(addressUrl)
-}
-
-export async function getStarterRecords() {
-  return await getStarters()
-}
-
-export async function updateStarterRecords(starters: Starter[]) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await updateStarters(starters)
-}
-
-export async function getMainRecords() {
-  return await getMains()
-}
-
-export async function updateMainRecords(mains: Main[]) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await updateMains(mains)
-}
-
-export async function getPuddingRecords() {
-  return await getPuddings()
-}
-
-export async function updatePuddingRecords(puddings: Pudding[]) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await updatePuddings(puddings)
-}
-
-export async function getDetailRecord() {
-  return await getDetails()
-}
-
-export async function updateDetailRecord(details: Detail) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await updateDetails(details)
-}
-
-export async function getEspousedRecord() {
-  return await getEspoused()
-}
-
-export async function updateEspousedRecord(espoused: Espoused) {
-  const user = await auth()
-
-  if (!user.userId) throw new Error('Unauthorized')
-
-  return await updateEspoused(espoused)
-}
-
-export async function getImagesRecord() {
-  return await getImages()
-}
-
-export async function updateImageRecord(image: Images) {
-  return await updateImage(image)
-}
-
-export async function deleteImageRecord(image: Images) {
-  return await deleteImages(image)
-}
-
-export async function getTimingRecords() {
-  return await getTimings()
-}
-
-export async function updateTimingRecord(timing: Timing) {
-  return await updateTimings(timing)
-}
-
-export async function deleteTimingRecord(timing: Timing) {
-  return await deleteTimings(timing)
-}
-
-export async function getTaxiRecords() {
-  return await getTaxis()
-}
-
-export async function updateTaxiRecord(taxi: Taxi) {
-  return await updateTaxis(taxi)
-}
-
-export async function deleteTaxiRecord(taxi: Taxi) {
-  return await deleteTaxis(taxi)
-}
-
-export async function getHotelRecords() {
-  return await getHotels()
-}
-
-export async function updateHotelRecord(hotel: Hotel) {
-  return await updateHotels(hotel)
-}
-
-export async function deleteHotelRecord(hotel: Hotel) {
-  return await deleteHotels(hotel)
-}
-
-export async function getColourRecords() {
-  return await getColours()
-}
-
-export async function updateColourRecord(colour: Colour) {
-  return await updateColours(colour)
-}
-
-export async function deleteColourRecord(colour: Colour) {
-  return await deleteColours(colour)
-}
-
-export async function getGuestByKeyRecord(guestKey: string) {
-  const guest = await getGuestByKey(guestKey)
-  if (guest != null) {
-    return guest
+async function loadSharedRecords() {
+  const [
+    details,
+    espoused,
+    images,
+    starters,
+    mains,
+    puddings,
+    timings,
+    taxis,
+    hotels,
+    colours
+  ] = await Promise.all([
+    getDetails(),
+    getEspoused(),
+    getImages(),
+    getStarters(),
+    getMains(),
+    getPuddings(),
+    getTimings(),
+    getTaxis(),
+    getHotels(),
+    getColours()
+  ])
+  return {
+    details,
+    espoused,
+    images: images ?? [],
+    starters,
+    mains,
+    puddings,
+    timings: timings ?? [],
+    taxis: taxis ?? [],
+    hotels: hotels ?? [],
+    colours: colours ?? []
   }
 }
+
+// Public pages
+
+export const getHomePageData = createServerFn({ method: 'GET' }).handler(
+  async () => ({ images: (await getImages()) ?? [] })
+)
+
+export const getGuestPageData = createServerFn({ method: 'GET' })
+  .validator(z.object({ id: z.string().uuid() }))
+  .handler(async ({ data }) => ({
+    guestData: await getGuestAndLinkedGuest(data.id),
+    ...(await loadSharedRecords())
+  }))
+
+/** Resolves a guest's invitation code to the guest page they can open. */
+export const getGuestByKeyRecord = createServerFn({ method: 'POST' })
+  .validator(z.object({ guestKey: z.string().trim().toLowerCase().max(20) }))
+  .handler(async ({ data }) => {
+    const guests = await getGuestByKey(data.guestKey)
+    return guests?.[0] ? { id: guests[0].id } : null
+  })
+
+// Guest responses. The guest page is reached by its unguessable ID; these
+// update only the response fields and email the couple from stored records.
+
+async function respondingGuest(id: string) {
+  const [guest, espoused] = await Promise.all([getGuest(id), getEspoused()])
+  if (!guest || !espoused) throw new Error('Guest not found')
+  return { guest, espoused }
+}
+
+export const updateRSVP = createServerFn({ method: 'POST' })
+  .validator(
+    z.object({ id: z.string().uuid(), rsvpAnswer: z.boolean().nullable() })
+  )
+  .handler(async ({ data }) => {
+    await updateGuestRSVP({ ...data, rsvp: true })
+    const { guest, espoused } = await respondingGuest(data.id)
+    sendRsvpEmails(espoused, guest)
+  })
+
+export const updateSongChoice = createServerFn({ method: 'POST' })
+  .validator(
+    z.object({
+      id: z.string().uuid(),
+      song: z.string().max(256),
+      artist: z.string().max(256)
+    })
+  )
+  .handler(async ({ data }) => {
+    await updateGuestSong(data)
+    const { guest, espoused } = await respondingGuest(data.id)
+    sendSongChoiceEmail(espoused, guest)
+  })
+
+export const updateMenuChoice = createServerFn({ method: 'POST' })
+  .validator(
+    z.object({
+      id: z.string().uuid(),
+      starterId: z.string().uuid().nullable(),
+      mainId: z.string().uuid().nullable(),
+      puddingId: z.string().uuid().nullable(),
+      dietaryRequirements: z.string().max(256).nullable()
+    })
+  )
+  .handler(async ({ data }) => {
+    await updateGuestMenu(data)
+    const [{ guest, espoused }, starters, mains, puddings] = await Promise.all([
+      respondingGuest(data.id),
+      getStarters(),
+      getMains(),
+      getPuddings()
+    ])
+    sendMenuChoiceEmail(espoused, guest, {
+      starter: starters.find(({ id }) => id === guest.starterId)?.text ?? null,
+      main: mains.find(({ id }) => id === guest.mainId)?.text ?? null,
+      pudding: puddings.find(({ id }) => id === guest.puddingId)?.text ?? null
+    })
+  })
+
+// Admin. Every function below requires a signed-in Clerk user.
+
+export const getGuestsPageData = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    await requireUser()
+    return { data: await getGuests(), ...(await loadSharedRecords()) }
+  }
+)
+
+export const getGuestRecord = createServerFn({ method: 'GET' })
+  .validator(z.string().uuid())
+  .handler(async ({ data }) => {
+    await requireUser()
+    return (await getGuest(data)) ?? null
+  })
+
+export const createGuestRecord = createServerFn({ method: 'POST' })
+  .validator(input<Guest>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await createGuest(data)
+  })
+
+export const updateGuestRecord = createServerFn({ method: 'POST' })
+  .validator(input<Guest>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateGuest(data)
+  })
+
+export const deleteGuestRecord = createServerFn({ method: 'POST' })
+  .validator(z.string().uuid())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await deleteGuest(data)
+  })
+
+export const getAddressListRecords = createServerFn({ method: 'POST' })
+  .validator(z.string().max(16))
+  .handler(async ({ data }) => {
+    await requireUser()
+    return await getAddressList(data)
+  })
+
+export const getAddressRecords = createServerFn({ method: 'POST' })
+  .validator(z.string().max(256))
+  .handler(async ({ data }) => {
+    await requireUser()
+    return await getAddress(data)
+  })
+
+export const updateStarterRecords = createServerFn({ method: 'POST' })
+  .validator(input<Starter[]>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateStarters(data)
+  })
+
+export const updateMainRecords = createServerFn({ method: 'POST' })
+  .validator(input<Main[]>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateMains(data)
+  })
+
+export const updatePuddingRecords = createServerFn({ method: 'POST' })
+  .validator(input<Pudding[]>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updatePuddings(data)
+  })
+
+export const updateDetailRecord = createServerFn({ method: 'POST' })
+  .validator(input<Detail>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateDetails(data)
+  })
+
+export const updateEspousedRecord = createServerFn({ method: 'POST' })
+  .validator(input<Espoused>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateEspoused(data)
+  })
+
+export const updateImageRecord = createServerFn({ method: 'POST' })
+  .validator(input<Images>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateImage(data)
+  })
+
+export const deleteImageRecord = createServerFn({ method: 'POST' })
+  .validator(input<Images>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await deleteImages(data)
+  })
+
+export const updateTimingRecord = createServerFn({ method: 'POST' })
+  .validator(input<Timing>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateTimings(data)
+  })
+
+export const deleteTimingRecord = createServerFn({ method: 'POST' })
+  .validator(input<Timing>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await deleteTimings(data)
+  })
+
+export const updateTaxiRecord = createServerFn({ method: 'POST' })
+  .validator(input<Taxi>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateTaxis(data)
+  })
+
+export const deleteTaxiRecord = createServerFn({ method: 'POST' })
+  .validator(input<Taxi>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await deleteTaxis(data)
+  })
+
+export const updateHotelRecord = createServerFn({ method: 'POST' })
+  .validator(input<Hotel>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateHotels(data)
+  })
+
+export const deleteHotelRecord = createServerFn({ method: 'POST' })
+  .validator(input<Hotel>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await deleteHotels(data)
+  })
+
+export const updateColourRecord = createServerFn({ method: 'POST' })
+  .validator(input<Colour>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await updateColours(data)
+  })
+
+export const deleteColourRecord = createServerFn({ method: 'POST' })
+  .validator(input<Colour>())
+  .handler(async ({ data }) => {
+    await requireUser()
+    await deleteColours(data)
+  })

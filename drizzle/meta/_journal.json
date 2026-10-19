@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1730710040724,
-      "tag": "0000_omniscient_marvel_apes",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1730893188878,
-      "tag": "0001_amusing_living_mummy",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1730970261472,
-      "tag": "0002_soft_supreme_intelligence",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1730999059601,
-      "tag": "0003_famous_caretaker",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1734007466121,
-      "tag": "0004_spicy_gargoyle",
+      "when": 1792440575093,
+      "tag": "0000_baseline",
       "breakpoints": true
     }
   ]

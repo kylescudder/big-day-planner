@@ -2,6 +2,12 @@
 
 @source '../../node_modules/@uploadthing/react/dist/**';
 
+@font-face {
+  font-family: 'Cooper Black';
+  src: url('./fonts/COOPBL.woff') format('woff');
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -174,6 +180,7 @@
     @apply border-border;
   }
   body {
+    font-family: 'Cooper Black', serif;
     @apply bg-background text-foreground;
   }
 }

@@ -1,0 +1,43 @@
+name: big-day-planner
+services:
+  web:
+    image: ${BIG_DAY_PLANNER_IMAGE:?Select a release using deploy/herman-deploy.sh}
+    user: '501:20'
+    init: true
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 384m
+    cpus: 1
+    pids_limit: 128
+    # Protected (0600) file with Clerk, Resend, getAddress and UploadThing keys.
+    env_file: app.env
+    environment:
+      NODE_ENV: production
+      PORT: '3000'
+      TZ: Europe/London
+      DATABASE_URL: postgres://big_day_planner_runtime@postgres:5432/big_day_planner
+      DATABASE_PASSWORD_FILE: /run/secrets/database_password
+    secrets:
+      - database_password
+    networks:
+      platform-web:
+        aliases: [big-day-planner]
+      platform-db: {}
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+secrets:
+  database_password:
+    file: ../../projects/big_day_planner/runtime-password
+networks:
+  platform-web:
+    external: true
+  platform-db:
+    external: true

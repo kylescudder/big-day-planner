@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { IconCopy, IconCheck } from '@tabler/icons-react'
 import * as ColourUtils from '@/lib/colour-utils'
@@ -223,7 +221,7 @@ export function ColourPicker({
                   )`
                 }}
               />
-              <style jsx global>{`
+              <style>{`
                 .slider-thumb {
                   background-color: hsl(${hsl.h}, 100%, 50%) !important;
                   border: 2px solid white !important;

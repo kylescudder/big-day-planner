@@ -1,4 +1,3 @@
-import 'server-only'
 import { db } from '@/server/db'
 import {
   Colour,
@@ -78,7 +77,9 @@ export async function getGuest(id: string) {
   })
 }
 
-export async function updateGuestRSVP(guest: Guest) {
+export async function updateGuestRSVP(
+  guest: Pick<Guest, 'id' | 'rsvp' | 'rsvpAnswer'>
+) {
   await db
     .update(guests)
     .set({ rsvp: guest.rsvp, rsvpAnswer: guest.rsvpAnswer })
@@ -114,14 +115,21 @@ export async function updateGuest(guest: Guest) {
     .where(eq(guests.id, guest.id))
 }
 
-export async function updateGuestSong(guest: Guest) {
+export async function updateGuestSong(
+  guest: Pick<Guest, 'id' | 'song' | 'artist'>
+) {
   await db
     .update(guests)
     .set({ song: guest.song, artist: guest.artist })
     .where(eq(guests.id, guest.id))
 }
 
-export async function updateGuestMenu(guest: Guest) {
+export async function updateGuestMenu(
+  guest: Pick<
+    Guest,
+    'id' | 'starterId' | 'mainId' | 'puddingId' | 'dietaryRequirements'
+  >
+) {
   await db
     .update(guests)
     .set({
