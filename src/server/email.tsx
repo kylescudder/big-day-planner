@@ -10,6 +10,8 @@ import { env } from '@/env'
 import type { Espoused, Guest } from '@/server/db/schema'
 
 const SONG_REQUEST_RECIPIENT = 'kyle@kylescudder.co.uk'
+// Must be a verified sending domain in Resend.
+const SENDER_ADDRESS = 'noreply@rsvp.thescudders.org'
 // Resend allows two requests per second; space sends out across guests.
 const SEND_INTERVAL_MS = 500
 
@@ -27,7 +29,7 @@ function send(espoused: Espoused, { to, subject, body }: Message) {
     try {
       resend ??= new Resend(env.RESEND_API_KEY)
       const { error } = await resend.emails.send({
-        from: `${espoused.bride} & ${espoused.groom} <noreply@scudder.rsvp>`,
+        from: `${espoused.bride} & ${espoused.groom} <${SENDER_ADDRESS}>`,
         to,
         subject,
         html: await render(body)

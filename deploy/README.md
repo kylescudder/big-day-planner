@@ -14,7 +14,7 @@ This follows the Office Tracker deployment
 
 ## Services and trust boundaries
 
-- Public app: `vars.BIG_DAY_PLANNER_BASE_URL`, upstream `big-day-planner:3000`.
+- Public app: https://rsvp.thescudders.org (`vars.BIG_DAY_PLANNER_BASE_URL`), upstream `big-day-planner:3000`.
 - Deploy hook: https://deploy-bigday.kylescudder.co.uk/hooks/big-day-planner.
 - Checkout: `/Users/kyle/platform/apps/big-day-planner`.
 - LaunchAgent: `com.herman.big-day-planner-deploy`, running as Colima's owner.
@@ -44,15 +44,18 @@ in the checkout with mode 0600, using unquoted single-line values:
 ```dotenv
 CLERK_PUBLISHABLE_KEY=<production Clerk publishable key>
 CLERK_SECRET_KEY=<matching Clerk secret key>
-RESEND_API_KEY=<Resend key for scudder.rsvp>
+RESEND_API_KEY=<Resend key for rsvp.thescudders.org>
 GETADDRESS_URL=https://api.getaddress.io
 GETADDRESS_API_KEY=<getAddress.io key>
 UPLOADTHING_TOKEN=<UploadThing token>
 ```
 
 Clerk's publishable key is read at runtime and sent to the browser during SSR,
-so it is not baked into the image. Add the public origin to the Clerk
-production instance. These keys are currently in the Netlify site settings.
+so it is not baked into the image. Add `https://rsvp.thescudders.org` to the
+Clerk production instance. Resend must have `rsvp.thescudders.org` verified,
+because emails are sent from `noreply@rsvp.thescudders.org`. The previous
+keys lived in a Vercel project that has since been deleted; collect or reissue
+them.
 `app.env` is ignored by Git and Docker; never print it or resolved Compose output.
 
 ## Database and recovery
@@ -83,8 +86,8 @@ previous runtime.
 ### Importing the existing data
 
 Do this once before switching DNS, after the first successful deploy has
-created the schema. Read the old database URL from the Netlify site settings
-without echoing it, then:
+created the schema. The old database is on Neon: copy the direct (not
+pooled) connection string from the Neon console without echoing it, then:
 
 ```sh
 pg_dump --data-only --no-owner --no-privileges \
@@ -95,14 +98,15 @@ docker compose -f /Users/kyle/platform/compose.yaml exec -T --user postgres \
 ```
 
 Compare row counts per table between the old and new databases, keep the dump
-in the protected archive, and delete the Netlify site only after production is
+in the protected archive, and delete the Neon project only after production is
 verified on Herman.
 
 ## Configuration and commands
 
 GitHub's `production` environment permits `main` only. Its secrets are
 `DEPLOY_WEBHOOK_SECRET`, `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET`.
-Repository variables are `DEPLOY_ENABLED=true` and `BIG_DAY_PLANNER_BASE_URL`.
+Repository variables are `DEPLOY_ENABLED=true` and
+`BIG_DAY_PLANNER_BASE_URL=https://rsvp.thescudders.org`.
 
 From the checkout:
 
