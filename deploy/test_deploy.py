@@ -72,11 +72,15 @@ class Deploy(unittest.TestCase):
         self.assertFalse(stale.exists())
         self.assertTrue(fresh.exists())
 
+    def docker_inspect(self, image, running=True, health='healthy', labels=None, health_log=()):
+        # Shaped like `docker inspect <container>`: a one-element array with far more than the deployer reads.
+        state={'Status':'running' if running else 'exited','Running':running,
+               'Health':{'Status':health,'FailingStreak':3,'Log':[{'ExitCode':1,'Output':o} for o in health_log]}}
+        return json.dumps([{'Id':'container','State':state,'Config':{'Image':image,'Labels':labels or {},'Env':['X=y']}}]).encode()
+
     def test_healthy_same_digest_requires_the_requested_revision(self):
-        current={'Config':{'Image':module.IMAGE+'@'+D,'Labels':{'org.opencontainers.image.revision':R}},
-                 'State':{'Running':True,'Health':{'Status':'healthy'}}}
-        raw = '|'.join(json.dumps(v) for v in [current['Config']['Image'],current['State'],current['Config']['Labels']]).encode()
-        with patch.object(module,'run',return_value=raw),patch.object(module,'compose',self.fake_compose),patch.object(module,'start') as start:
+        raw=self.docker_inspect(module.IMAGE+'@'+D,labels={'org.opencontainers.image.revision':R})
+        with patch.object(module,'run',return_value=raw),patch.object(module,'find_containers',return_value=['container']),patch.object(module,'start') as start:
             with self.assertRaises(module.Error):module.deploy(D,'c'*40)
             module.deploy(D,R)
             start.assert_not_called()
@@ -84,13 +88,14 @@ class Deploy(unittest.TestCase):
     def fake_run(self, args, **kwargs):
         self.calls.append(args)
         if args[:2]==['docker','inspect']:
-            return '|'.join(json.dumps(v) for v in ['previous',{'Running':True,'Health':{'Status':'healthy'}},{}]).encode()
+            return self.docker_inspect('previous')
         if args[:3]==['docker','image','inspect']:
             return json.dumps({'org.opencontainers.image.revision':R}).encode()
+        if args[:3]==['docker','ps','-a']:
+            return b'container\n'
         return b''
 
     def fake_compose(self,*args,**kwargs):
-        if args[0]=='ps':return b'container\n'
         return b''
 
     def test_failed_verification_never_migrates_or_starts(self):
@@ -148,11 +153,89 @@ class Deploy(unittest.TestCase):
 
     def test_healthy_same_digest_rechecks_acceptance_before_acknowledging(self):
         current={'Config':{'Image':module.IMAGE+'@'+D,'Labels':{'org.opencontainers.image.revision':R}},
-                 'State':{'Health':{'Status':'healthy'}}}
+                 'State':{'Running':True,'Health':{'Status':'healthy'}}}
         self.acceptance.side_effect=module.Error('database unavailable')
-        with patch.object(module,'inspect_current',return_value=current),patch.object(module,'compose',self.fake_compose):
+        with patch.object(module,'find_containers',return_value=['container']),patch.object(module,'inspect_current',return_value=current),patch.object(module,'compose',self.fake_compose):
             with self.assertRaises(module.Error):module.deploy(D,R)
         self.assertFalse((module.STATE/'public/deployment.json').exists())
+
+    def test_inspect_survives_pipes_and_newlines_in_a_failed_health_log(self):
+        log=['error: boom\n3 | for (const path of paths) {\n  ^\n','a|b|c\n|\n']
+        raw=self.docker_inspect(module.IMAGE+'@'+D,running=False,health='unhealthy',
+                                labels={'org.opencontainers.image.revision':R},health_log=log)
+        with patch.object(module,'run',return_value=raw):
+            current=module.inspect_current('container')
+        self.assertEqual(current,{'Config':{'Image':module.IMAGE+'@'+D,'Labels':{'org.opencontainers.image.revision':R}},
+                                  'State':{'Running':False,'Status':'exited','Health':{'Status':'unhealthy'}}})
+
+    def test_inspect_without_health_or_labels(self):
+        raw=json.dumps([{'State':{'Status':'running','Running':True},'Config':{'Image':'previous','Labels':None}}]).encode()
+        with patch.object(module,'run',return_value=raw):
+            current=module.inspect_current('container')
+        self.assertEqual(current['Config'],{'Image':'previous','Labels':{}})
+        self.assertIsNone(current['State']['Health']['Status'])
+
+    def test_unparseable_docker_output_is_reported_without_echoing_it(self):
+        with patch.object(module,'run',return_value=b'3 | secret-looking text'):
+            with self.assertRaises(module.Error) as caught:module.inspect_current('container')
+        self.assertNotIn('secret',str(caught.exception))
+
+    def test_stopped_failed_candidate_does_not_block_the_next_deploy(self):
+        log=['3 | for (const path of paths) {\n']
+        stopped=self.docker_inspect(module.IMAGE+'@'+D,running=False,health='unhealthy',health_log=log)
+        def run(args,**kwargs):
+            return stopped if args[:2]==['docker','inspect'] else self.fake_run(args,**kwargs)
+        with patch.object(module,'run',run),patch.object(module,'compose',self.fake_compose),patch.object(module,'start') as start:
+            module.deploy(D,R)
+            self.assertEqual([c.args[0] for c in start.call_args_list],[module.IMAGE+'@'+D])
+        self.assertIn(module.IMAGE+'@'+D,(self.app/'.env').read_text())
+        self.assertIsNone(json.loads((module.STATE/'deployment.json').read_text())['previous_image'])
+
+    def test_failed_deploy_does_not_roll_back_to_a_stopped_failed_candidate(self):
+        other='sha256:'+'c'*64
+        stopped=self.docker_inspect(module.IMAGE+'@'+other,running=False,health='unhealthy')
+        def run(args,**kwargs):
+            return stopped if args[:2]==['docker','inspect'] else self.fake_run(args,**kwargs)
+        stops=[]
+        def compose(*args,**kwargs):
+            if args[0]=='stop':stops.append(kwargs.get('image'))
+            return b''
+        with patch.object(module,'run',run),patch.object(module,'compose',compose),patch.object(module,'start',side_effect=module.Error('unhealthy')) as start:
+            with self.assertRaises(module.Error):module.deploy(D,R)
+            self.assertEqual(start.call_count,1)
+        self.assertEqual(stops,[module.IMAGE+'@'+D])
+
+    def test_stopped_container_of_the_requested_digest_is_started_not_acknowledged(self):
+        stopped=self.docker_inspect(module.IMAGE+'@'+D,running=False,health='healthy',labels={'org.opencontainers.image.revision':R})
+        def run(args,**kwargs):
+            return stopped if args[:2]==['docker','inspect'] else self.fake_run(args,**kwargs)
+        with patch.object(module,'run',run),patch.object(module,'compose',self.fake_compose),patch.object(module,'start') as start:
+            module.deploy(D,R)
+            start.assert_called_once_with(module.IMAGE+'@'+D)
+
+    def test_first_deploy_with_an_empty_env_file_finds_no_container_without_compose(self):
+        (self.app/'.env').write_text('')
+        def run(args,**kwargs):
+            self.calls.append(args)
+            if args[:3]==['docker','ps','-a']:return b''
+            return self.fake_run(args,**kwargs)
+        def compose(*args,**kwargs):
+            # With an empty .env, compose interpolation fails unless an image is supplied.
+            if not kwargs.get('image'):raise module.Error('docker compose operation failed (exit 1).')
+            return b''
+        with patch.object(module,'run',run),patch.object(module,'compose',compose),patch.object(module,'start') as start:
+            module.deploy(D,R)
+            start.assert_called_once_with(module.IMAGE+'@'+D)
+        ps=[c for c in self.calls if c[:3]==['docker','ps','-a']][0]
+        self.assertIn('label=com.docker.compose.project=big-day-planner',ps)
+        self.assertIn('label=com.docker.compose.service=web',ps)
+        self.assertNotIn('compose',ps)
+        self.assertEqual((self.app/'.env').read_text().strip(),'BIG_DAY_PLANNER_IMAGE='+module.IMAGE+'@'+D)
+        self.assertIsNone(json.loads((module.STATE/'deployment.json').read_text())['previous_image'])
+
+    def test_more_than_one_container_is_rejected(self):
+        with patch.object(module,'run',return_value=b'one\ntwo\n'):
+            with self.assertRaises(module.Error):module.deploy(D,R)
 
 
 if __name__=='__main__':unittest.main()
