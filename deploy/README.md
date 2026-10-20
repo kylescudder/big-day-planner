@@ -21,8 +21,8 @@ This follows the Office Tracker deployment
 - Image: `ghcr.io/kylescudder/big-day-planner@sha256:<digest>`.
 - `.env` (mode 0600, ignored by Git): holds only `BIG_DAY_PLANNER_IMAGE`, which
   Herman rewrites after each healthy deploy. It may be empty (but must exist) before
-  the first release; the deployer finds the container by its Compose labels and
-  passes the candidate image explicitly, so no seeding is needed. `compose.yaml`
+  the first release; the deployer passes the candidate image explicitly to every
+  Compose call, so no seeding is needed. `compose.yaml`
   refuses to run without an image, so manual `docker compose --env-file .env`
   commands only work after the first successful deploy.
 

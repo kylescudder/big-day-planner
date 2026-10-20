@@ -143,13 +143,6 @@ def parse_json(raw, what):
         raise Error(f'{what} returned unexpected output.') from None
 
 
-def find_containers():
-    # Label lookup needs no image, so it works before the first release is pinned in .env.
-    raw = run(['docker', 'ps', '-a', '-q', '--filter', 'label=com.docker.compose.project=big-day-planner',
-               '--filter', 'label=com.docker.compose.service=web'])
-    return raw.decode().split()
-
-
 def inspect_current(container):
     # Parse the whole document rather than a delimited --format string: health check
     # logs from a failed candidate contain arbitrary text, including '|' and newlines.
@@ -199,14 +192,15 @@ def deploy(digest, requested_revision=None):
         raise Error('Use an exact sha256 digest.')
     runtime = private_env(APP / '.env')
     candidate = f'{IMAGE}@{digest}'
-    ids = find_containers()
+    # compose.yaml requires the image variable, which .env lacks before the first release.
+    ids = compose('ps', '-a', '-q', 'web', image=candidate).decode().strip().splitlines()
     if len(ids) > 1:
         raise Error('Expected a single Big Day Planner container.')
     current = inspect_current(ids[0]) if ids else None
-    # A stopped container (for example a failed first candidate) is not a rollback target.
+    # A stopped container, such as a failed first candidate, is neither the previous
+    # release to roll back to nor an already-healthy deployment.
     running = current['Config']['Image'] if current and current['State'].get('Running') else None
-    if current and current['Config']['Image'] == candidate and current['State'].get('Running') \
-            and current['State'].get('Health', {}).get('Status') == 'healthy':
+    if running == candidate and current['State'].get('Health', {}).get('Status') == 'healthy':
         revision = (current['Config'].get('Labels') or {}).get('org.opencontainers.image.revision', '')
         if not REVISION.fullmatch(revision) or requested_revision and requested_revision != revision:
             raise Error('Running image revision does not match the request.')

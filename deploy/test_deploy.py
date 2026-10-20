@@ -80,7 +80,7 @@ class Deploy(unittest.TestCase):
 
     def test_healthy_same_digest_requires_the_requested_revision(self):
         raw=self.docker_inspect(module.IMAGE+'@'+D,labels={'org.opencontainers.image.revision':R})
-        with patch.object(module,'run',return_value=raw),patch.object(module,'find_containers',return_value=['container']),patch.object(module,'start') as start:
+        with patch.object(module,'run',return_value=raw),patch.object(module,'compose',self.fake_compose),patch.object(module,'start') as start:
             with self.assertRaises(module.Error):module.deploy(D,'c'*40)
             module.deploy(D,R)
             start.assert_not_called()
@@ -91,11 +91,10 @@ class Deploy(unittest.TestCase):
             return self.docker_inspect('previous')
         if args[:3]==['docker','image','inspect']:
             return json.dumps({'org.opencontainers.image.revision':R}).encode()
-        if args[:3]==['docker','ps','-a']:
-            return b'container\n'
         return b''
 
     def fake_compose(self,*args,**kwargs):
+        if args[0]=='ps':return b'container\n'
         return b''
 
     def test_failed_verification_never_migrates_or_starts(self):
@@ -155,7 +154,7 @@ class Deploy(unittest.TestCase):
         current={'Config':{'Image':module.IMAGE+'@'+D,'Labels':{'org.opencontainers.image.revision':R}},
                  'State':{'Running':True,'Health':{'Status':'healthy'}}}
         self.acceptance.side_effect=module.Error('database unavailable')
-        with patch.object(module,'find_containers',return_value=['container']),patch.object(module,'inspect_current',return_value=current),patch.object(module,'compose',self.fake_compose):
+        with patch.object(module,'inspect_current',return_value=current),patch.object(module,'compose',self.fake_compose):
             with self.assertRaises(module.Error):module.deploy(D,R)
         self.assertFalse((module.STATE/'public/deployment.json').exists())
 
@@ -213,28 +212,21 @@ class Deploy(unittest.TestCase):
             module.deploy(D,R)
             start.assert_called_once_with(module.IMAGE+'@'+D)
 
-    def test_first_deploy_with_an_empty_env_file_finds_no_container_without_compose(self):
+    def test_first_deploy_with_an_empty_env_file(self):
         (self.app/'.env').write_text('')
-        def run(args,**kwargs):
-            self.calls.append(args)
-            if args[:3]==['docker','ps','-a']:return b''
-            return self.fake_run(args,**kwargs)
         def compose(*args,**kwargs):
             # With an empty .env, compose interpolation fails unless an image is supplied.
             if not kwargs.get('image'):raise module.Error('docker compose operation failed (exit 1).')
+            if args[0]=='ps':return b''
             return b''
-        with patch.object(module,'run',run),patch.object(module,'compose',compose),patch.object(module,'start') as start:
+        with patch.object(module,'run',self.fake_run),patch.object(module,'compose',compose),patch.object(module,'start') as start:
             module.deploy(D,R)
             start.assert_called_once_with(module.IMAGE+'@'+D)
-        ps=[c for c in self.calls if c[:3]==['docker','ps','-a']][0]
-        self.assertIn('label=com.docker.compose.project=big-day-planner',ps)
-        self.assertIn('label=com.docker.compose.service=web',ps)
-        self.assertNotIn('compose',ps)
         self.assertEqual((self.app/'.env').read_text().strip(),'BIG_DAY_PLANNER_IMAGE='+module.IMAGE+'@'+D)
         self.assertIsNone(json.loads((module.STATE/'deployment.json').read_text())['previous_image'])
 
     def test_more_than_one_container_is_rejected(self):
-        with patch.object(module,'run',return_value=b'one\ntwo\n'):
+        with patch.object(module,'compose',return_value=b'one\ntwo\n'):
             with self.assertRaises(module.Error):module.deploy(D,R)
 
 
