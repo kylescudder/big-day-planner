@@ -19,6 +19,12 @@ This follows the Office Tracker deployment
 - Checkout: `/Users/kyle/platform/apps/big-day-planner`.
 - LaunchAgent: `com.herman.big-day-planner-deploy`, running as Colima's owner.
 - Image: `ghcr.io/kylescudder/big-day-planner@sha256:<digest>`.
+- `.env` (mode 0600, ignored by Git): holds only `BIG_DAY_PLANNER_IMAGE`, which
+  Herman rewrites after each healthy deploy. It may be empty (but must exist) before
+  the first release; the deployer passes the candidate image explicitly to every
+  Compose call, so no seeding is needed. `compose.yaml`
+  refuses to run without an image, so manual `docker compose --env-file .env`
+  commands only work after the first successful deploy.
 
 The TanStack Start app runs as one non-root Bun container on `platform-web`
 and internal `platform-db`, with no host ports, a read-only filesystem,
@@ -79,7 +85,10 @@ the latest 14 dumps, runs owner migrations and waits for application health.
 assets, the revision and cache headers, the signed-out admin redirect and upload
 rejection, the removal of the old email endpoints, and guest page rendering
 from a temporary guest that it always deletes. A failed migration leaves the
-current app running. A failed acceptance check restores the previous image.
+current app running. A failed acceptance check restores the previous image. If
+there is no previous running image (the first release), the failed candidate is
+stopped and kept for `docker logs`; the next deploy replaces it whatever its state,
+and a stopped container is never used as a rollback target.
 Migrations are not reversed, so schema changes must stay compatible with the
 previous runtime.
 
