@@ -9,7 +9,6 @@ import { EmailTemplate as SongChoiceEmail } from '@/components/templates/emails/
 import { env } from '@/env'
 import type { Espoused, Guest } from '@/server/db/schema'
 
-const SONG_REQUEST_RECIPIENT = 'kyle@kylescudder.co.uk'
 // Resend allows two requests per second; space sends out across guests.
 const SEND_INTERVAL_MS = 500
 
@@ -27,7 +26,7 @@ function send(espoused: Espoused, { to, subject, body }: Message) {
     try {
       resend ??= new Resend(env.RESEND_API_KEY)
       const { error } = await resend.emails.send({
-        from: `${espoused.bride} & ${espoused.groom} <noreply@scudder.rsvp>`,
+        from: `${espoused.bride} & ${espoused.groom} <${env.EMAIL_FROM_ADDRESS}>`,
         to,
         subject,
         html: await render(body)
@@ -85,7 +84,7 @@ export function sendMenuChoiceEmail(
 
 export function sendSongChoiceEmail(espoused: Espoused, guest: Guest) {
   send(espoused, {
-    to: [SONG_REQUEST_RECIPIENT],
+    to: [env.SONG_REQUEST_EMAIL],
     subject: `${guest.forename} has submitted their song choice!`,
     body: (
       <SongChoiceEmail

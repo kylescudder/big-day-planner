@@ -145,19 +145,29 @@ export async function deleteGuest(id: string) {
   await db.delete(guests).where(eq(guests.id, id))
 }
 
+/** Address lookup is off unless both getAddress.io settings are present. */
+export const isAddressLookupEnabled = () =>
+  Boolean(env.GETADDRESS_URL && env.GETADDRESS_API_KEY)
+
 export const getAddressList = async (
   postcode: string
 ): Promise<Suggestions> => {
+  if (!isAddressLookupEnabled()) return { suggestions: [] }
   const response = await fetch(
     `${env.GETADDRESS_URL}/autocomplete/${postcode}?api-key=${env.GETADDRESS_API_KEY}`
   )
+  if (!response.ok) return { suggestions: [] }
   return (await response.json()) as Suggestions
 }
 
-export const getAddress = async (addressUrl: string) => {
+export const getAddress = async (
+  addressUrl: string
+): Promise<AddressData | null> => {
+  if (!isAddressLookupEnabled()) return null
   const response = await fetch(
     `${env.GETADDRESS_URL}/${addressUrl}?api-key=${env.GETADDRESS_API_KEY}`
   )
+  if (!response.ok) return null
   return (await response.json()) as AddressData
 }
 

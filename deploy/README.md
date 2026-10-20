@@ -44,7 +44,10 @@ in the checkout with mode 0600, using unquoted single-line values:
 ```dotenv
 CLERK_PUBLISHABLE_KEY=<production Clerk publishable key>
 CLERK_SECRET_KEY=<matching Clerk secret key>
-RESEND_API_KEY=<Resend key for scudder.rsvp>
+RESEND_API_KEY=<Resend sending key>
+EMAIL_FROM_ADDRESS=<sender address on a domain verified in Resend>
+SONG_REQUEST_EMAIL=<address that receives song requests>
+# Optional: the postcode lookup is off unless both are set
 GETADDRESS_URL=https://api.getaddress.io
 GETADDRESS_API_KEY=<getAddress.io key>
 UPLOADTHING_TOKEN=<UploadThing token>
