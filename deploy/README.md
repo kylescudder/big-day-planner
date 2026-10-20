@@ -65,7 +65,8 @@ UPLOADTHING_TOKEN=<UploadThing token>
 
 Clerk's publishable key is read at runtime and sent to the browser during SSR,
 so it is not baked into the image. Add the public origin to the Clerk
-production instance. These keys are currently in the Netlify site settings.
+production instance. The previous keys lived in a Vercel project that has
+since been deleted; collect or reissue them from each provider.
 `app.env` is ignored by Git and Docker; never print it or resolved Compose output.
 
 ## Database and recovery
@@ -100,8 +101,8 @@ previous runtime.
 ### Importing the existing data
 
 Do this once before switching DNS, after the first successful deploy has
-created the schema. Read the old database URL from the Netlify site settings
-without echoing it, then:
+created the schema. The old database is on Neon: copy the direct (not pooled)
+connection string from the Neon console without echoing it, then:
 
 ```sh
 pg_dump --data-only --no-owner --no-privileges \
@@ -112,7 +113,7 @@ docker compose -f /Users/kyle/platform/compose.yaml exec -T --user postgres \
 ```
 
 Compare row counts per table between the old and new databases, keep the dump
-in the protected archive, and delete the Netlify site only after production is
+in the protected archive, and delete the Neon project only after production is
 verified on the host.
 
 ## Configuration and commands
