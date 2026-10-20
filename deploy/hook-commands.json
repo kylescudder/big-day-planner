@@ -1,30 +1,15 @@
 [
   [
     "compose",
-    [
-      "exec",
-      "-T",
-      "web",
-      "bun",
-      "deploy/healthcheck.ts"
-    ],
+    ["exec", "-T", "web", "bun", "deploy/healthcheck.ts"],
     "ghcr.io/kylescudder/big-day-planner@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   ],
   [
     "compose",
-    [
-      "exec",
-      "-T",
-      "web",
-      "bun",
-      "deploy/verify.ts"
-    ],
+    ["exec", "-T", "web", "bun", "deploy/verify.ts"],
     "ghcr.io/kylescudder/big-day-planner@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   ],
-  [
-    "backup_database",
-    "big_day_planner"
-  ],
+  ["backup_database", "big_day_planner"],
   [
     "run",
     [
