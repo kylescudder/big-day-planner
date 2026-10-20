@@ -20,6 +20,7 @@ import { type FieldValues, UseFormReturn } from 'react-hook-form'
 import { type Address } from '@/types/address'
 import { type Guest } from '@/server/db/schema'
 import {
+  getAddressLookupEnabled,
   getAddressRecords,
   getAddressListRecords,
   getGuestRecord
@@ -41,16 +42,13 @@ export function GuestFormFields({
   const [addressSearched, setAddressSearched] = useState(initialAddressSearched)
   const [addressList, setAddressList] = useState<Address[]>(initialAddressList)
   const [linkedGuestId, setLinkedGuestId] = useState<string | null>(null)
+  const [lookupEnabled, setLookupEnabled] = useState(false)
 
   const handlePostcodeLookup = async () => {
     const postcode = form.getValues('postcode')
     const addressListData = await getAddressListRecords({
       data: postcode ?? ''
     })
-    console.log(
-      'addressListData',
-      addressListData?.suggestions.map((suggestion) => suggestion) ?? []
-    )
     const suggestions = addressListData?.suggestions ?? []
     setAddressList(suggestions)
     setAddressSearched(true)
@@ -71,6 +69,10 @@ export function GuestFormFields({
     form.setValue('guestKey', guestData?.guestKey ?? '')
     form.setValue('parentId', guestData?.id ?? null)
   }
+
+  useEffect(() => {
+    void getAddressLookupEnabled().then(setLookupEnabled)
+  }, [])
 
   useEffect(() => {
     const pid = form.getValues('parentId')
@@ -193,55 +195,170 @@ export function GuestFormFields({
         )}
       />
 
-      <FormField
-        control={form.control}
-        name='postcode'
-        render={({ field }: { field: FieldValues }) => (
+      {lookupEnabled ? (
+        <>
+          <FormField
+            control={form.control}
+            name='postcode'
+            render={({ field }: { field: FieldValues }) => (
+              <FormItem>
+                <FormLabel htmlFor='postcode'>Postcode</FormLabel>
+                <FormControl>
+                  <div className='grid grid-cols-4 gap-2'>
+                    <Input
+                      {...field}
+                      id='postcode'
+                      className='col-span-3 text-base'
+                    />
+                    <Button
+                      type='button'
+                      variant='default'
+                      className='col-span-1'
+                      onClick={handlePostcodeLookup}
+                    >
+                      <IconSearch />
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormItem>
-            <FormLabel htmlFor='postcode'>Postcode</FormLabel>
-            <FormControl>
-              <div className='grid grid-cols-4 gap-2'>
-                <Input
-                  {...field}
-                  id='postcode'
-                  className='col-span-3 text-base'
-                />
-                <Button
-                  type='button'
-                  variant='default'
-                  className='col-span-1'
-                  onClick={handlePostcodeLookup}
-                >
-                  <IconSearch />
-                </Button>
-              </div>
-            </FormControl>
+            <FormLabel>Address</FormLabel>
+            <Select
+              disabled={!addressSearched}
+              onValueChange={(url) => void handleAddressSelection(url)}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder='Select an address' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {addressList.map((a) => (
+                  <SelectItem key={a.url} value={a.url}>
+                    {a.address}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
-        )}
-      />
+        </>
+      ) : (
+        <>
+          <FormField
+            control={form.control}
+            name='postcode'
+            render={({ field }: { field: FieldValues }) => (
+              <FormItem>
+                <FormLabel htmlFor='postcode'>Postcode</FormLabel>
+                <FormControl>
+                  <Input {...field} id='postcode' className='text-base' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-      <FormItem>
-        <FormLabel>Address</FormLabel>
-        <Select
-          disabled={!addressSearched}
-          onValueChange={(url) => void handleAddressSelection(url)}
-        >
-          <FormControl>
-            <SelectTrigger>
-              <SelectValue placeholder='Select an address' />
-            </SelectTrigger>
-          </FormControl>
-          <SelectContent>
-            {addressList.map((a) => (
-              <SelectItem key={a.url} value={a.url}>
-                {a.address}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <FormMessage />
-      </FormItem>
+          <FormField
+            control={form.control}
+            name='address1'
+            render={({ field }: { field: FieldValues }) => (
+              <FormItem>
+                <FormLabel htmlFor='address1'>Address 1</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    id='address1'
+                    className='text-base'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='address2'
+            render={({ field }: { field: FieldValues }) => (
+              <FormItem>
+                <FormLabel htmlFor='address2'>Address 2</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    id='address2'
+                    className='text-base'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='address3'
+            render={({ field }: { field: FieldValues }) => (
+              <FormItem>
+                <FormLabel htmlFor='address3'>Address 3</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    id='address3'
+                    className='text-base'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='town'
+            render={({ field }: { field: FieldValues }) => (
+              <FormItem>
+                <FormLabel htmlFor='town'>Town</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    id='town'
+                    className='text-base'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='county'
+            render={({ field }: { field: FieldValues }) => (
+              <FormItem>
+                <FormLabel htmlFor='county'>County</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    id='county'
+                    className='text-base'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      )}
     </div>
   )
 }

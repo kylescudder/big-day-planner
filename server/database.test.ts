@@ -116,3 +116,22 @@ describe('guest responses', () => {
     expect(await repository.getGuestByKey('missing')).toBeNull()
   })
 })
+
+describe('address lookup', () => {
+  test('is off and returns empty results when getAddress.io is unconfigured', async () => {
+    const repository = await import('../src/server/repository')
+    const originalFetch = globalThis.fetch
+    globalThis.fetch = (() => {
+      throw new Error('getAddress.io must not be called')
+    }) as unknown as typeof fetch
+    try {
+      expect(repository.isAddressLookupEnabled()).toBe(false)
+      expect(await repository.getAddressList('AB1 2CD')).toEqual({
+        suggestions: []
+      })
+      expect(await repository.getAddress('some/address')).toBeNull()
+    } finally {
+      globalThis.fetch = originalFetch
+    }
+  })
+})

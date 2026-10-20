@@ -9,9 +9,11 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     DATABASE_PASSWORD_FILE: z.string().optional(),
-    GETADDRESS_URL: z.string().url(),
-    GETADDRESS_API_KEY: z.string(),
+    GETADDRESS_URL: z.string().url().optional(),
+    GETADDRESS_API_KEY: z.string().optional(),
     RESEND_API_KEY: z.string(),
+    EMAIL_FROM_ADDRESS: z.string().email(),
+    SONG_REQUEST_EMAIL: z.string().email(),
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development')

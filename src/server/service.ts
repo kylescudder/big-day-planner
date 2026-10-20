@@ -12,6 +12,7 @@ import {
   deleteTimings,
   getAddress,
   getAddressList,
+  isAddressLookupEnabled,
   getColours,
   getDetails,
   getEspoused,
@@ -225,6 +226,13 @@ export const deleteGuestRecord = createServerFn({ method: 'POST' })
     await requireUser()
     await deleteGuest(data)
   })
+
+export const getAddressLookupEnabled = createServerFn({
+  method: 'GET'
+}).handler(async () => {
+  await requireUser()
+  return isAddressLookupEnabled()
+})
 
 export const getAddressListRecords = createServerFn({ method: 'POST' })
   .validator(z.string().max(16))
