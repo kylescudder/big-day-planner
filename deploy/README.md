@@ -1,5 +1,19 @@
 # Big Day Planner on the host
 
+## Shared deployment service
+
+This app is registered as `big-day-planner` in the central deployment registry
+`/Users/kyle/platform/deploy-core/apps.json`. LaunchAgent
+`com.kylescudder.deploy-core` runs the single installed engine. Application hooks
+are `deploy/hooks.py`; the receiver, credentials, queues,
+state and database contracts below remain app-specific. Manual deployment uses
+`./deploy/host-deploy.sh sha256:<digest>`.
+
+Engine updates, application registration, failure inspection and service rollback
+are documented in [deploy-core](https://github.com/kylescudder/deploy-core).
+There are no vendored engine files, lock files or sync PRs. Do not install an
+app-specific LaunchAgent. Apply future engine changes once through the central service.
+
 Every push to `main` runs **Release**. CI typechecks and builds the app with
 the frozen Bun lockfile, checks formatting, runs Drizzle migrations and
 repository tests against a disposable Postgres, and tests the webhook receiver
@@ -17,11 +31,8 @@ This follows the Office Tracker deployment
 - Public app: `vars.BIG_DAY_PLANNER_BASE_URL`, upstream `big-day-planner:3000`.
 - Deploy hook: https://deploy-bigday.kylescudder.co.uk/hooks/big-day-planner.
 - Checkout: `/Users/kyle/platform/apps/big-day-planner`.
-- LaunchAgent: `com.kylescudder.big-day-planner-deploy`, running as Colima's owner.
-- Deployer: `deploy/host-deploy.py` holds this app's settings and hooks; the
-  shared flow is `deploy/deploy_core.py`, vendored unchanged from
-  `kylescudder/deploy-core` (see `deploy/deploy_core.lock`). Change the core
-  there and sync it; CI fails if the vendored copy is edited here.
+- LaunchAgent: `com.kylescudder.deploy-core`, running as Colima's owner.
+- Deployer: the centrally installed service; application behavior lives in `hooks.py`.
 - Image: `ghcr.io/kylescudder/big-day-planner@sha256:<digest>`.
 - `.env` (mode 0600, ignored by Git): holds only `BIG_DAY_PLANNER_IMAGE`, which
   the deployer rewrites after each healthy deploy. It may be empty (but must exist) before
@@ -126,8 +137,7 @@ From the checkout:
 
 ```sh
 docker compose -f deploy/compose.deploy-hook.yaml --env-file .env.deploy-hook up -d --wait
-python3 -B deploy/host-deploy.py --install <host LocalHostName>  # refuses any other machine
-launchctl print gui/501/com.kylescudder.big-day-planner-deploy
+launchctl print gui/501/com.kylescudder.deploy-core
 tail -n 100 state/deploy.log
 docker compose --env-file .env ps
 ```

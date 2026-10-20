@@ -1,0 +1,44 @@
+[
+  [
+    "compose",
+    ["exec", "-T", "web", "bun", "deploy/healthcheck.ts"],
+    "ghcr.io/kylescudder/big-day-planner@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
+  [
+    "compose",
+    ["exec", "-T", "web", "bun", "deploy/verify.ts"],
+    "ghcr.io/kylescudder/big-day-planner@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
+  ["backup_database", "big_day_planner"],
+  [
+    "run",
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--read-only",
+      "--cap-drop",
+      "ALL",
+      "--security-opt",
+      "no-new-privileges:true",
+      "--user",
+      "501:20",
+      "--network",
+      "platform-db",
+      "--memory",
+      "256m",
+      "--cpus",
+      "0.5",
+      "--mount",
+      "type=bind,src={PLATFORM}/projects/big_day_planner/owner-password,dst=/run/secrets/database_password,readonly",
+      "--env",
+      "DATABASE_URL=postgres://big_day_planner_owner@postgres:5432/big_day_planner",
+      "--env",
+      "DATABASE_PASSWORD_FILE=/run/secrets/database_password",
+      "ghcr.io/kylescudder/big-day-planner@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "bun",
+      "server/migrate.ts"
+    ],
+    null
+  ]
+]
