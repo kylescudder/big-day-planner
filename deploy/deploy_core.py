@@ -433,8 +433,11 @@ def install(script, hostname):
         raise SystemExit('Pass this host\'s LocalHostName: host-deploy.py --install <LocalHostName>')
     os.umask(0o077)
     label = f'com.kylescudder.{CONFIG.name}-deploy'
-    for name in ('state', 'backups', 'deploy-spool/requests', 'deploy-spool/tmp'):
-        (APP / name).mkdir(parents=True, mode=0o700, exist_ok=True)
+    folders = [STATE, REQUESTS, APP / 'deploy-spool/tmp'] + ([BACKUPS] if CONFIG.backups else []) + \
+        ([STATE / 'public'] if CONFIG.public_status else []) + ([STATUS] if CONFIG.release_status else [])
+    for folder in folders:
+        # The receiver mounts deploy-spool; create its directories before Docker would.
+        folder.mkdir(parents=True, mode=0o700, exist_ok=True)
     agents = Path.home() / 'Library/LaunchAgents'
     agents.mkdir(parents=True, exist_ok=True)
     # Retire any earlier agent that runs a deployer from this checkout under another label.

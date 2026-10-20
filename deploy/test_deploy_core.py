@@ -358,5 +358,17 @@ class Main(Base):
         self.assertTrue(other.exists())
         self.assertIn(['/bin/launchctl','bootout',f'gui/{os.getuid()}/old.label'],launchctl)
 
+    def test_install_creates_only_the_folders_the_app_uses(self):
+        home=self.app/'home'
+        self.reconfigure(backups=False, public_status=False, release_status=True)
+        core.BACKUPS.rmdir()
+        with patch.object(core,'local_hostname',return_value='box'),patch.object(Path,'home',return_value=home),\
+             patch.object(core.subprocess,'run'):
+            core.install(str(self.app/'deploy/host-deploy.py'),'box')
+        for folder in ('state','deploy-spool/requests','deploy-spool/tmp','deploy-spool/status'):
+            self.assertTrue((self.app/folder).is_dir(),folder)
+        self.assertFalse((self.app/'backups').exists())
+        self.assertFalse((self.app/'state/public').exists())
+
 
 if __name__=='__main__':unittest.main()
