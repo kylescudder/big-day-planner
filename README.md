@@ -22,5 +22,5 @@ bun run dev
 
 ## Deployment
 
-Merges to `main` are built, attested and deployed to Herman. See
+Merges to `main` are built, attested and deployed to the self-hosted platform. See
 [deploy/README.md](deploy/README.md).

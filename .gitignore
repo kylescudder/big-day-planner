@@ -34,7 +34,7 @@ yarn-error.log*
 .env
 .env*.local
 
-# Herman deployment state and secrets
+# Host deployment state and secrets
 /app.env
 /secrets/
 /state/

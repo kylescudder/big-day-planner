@@ -1,7 +1,7 @@
 name: big-day-planner
 services:
   web:
-    image: ${BIG_DAY_PLANNER_IMAGE:?Select a release using deploy/herman-deploy.sh}
+    image: ${BIG_DAY_PLANNER_IMAGE:?Select a release using deploy/host-deploy.sh}
     user: '501:20'
     init: true
     restart: unless-stopped
