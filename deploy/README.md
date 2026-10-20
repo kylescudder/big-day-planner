@@ -1,4 +1,4 @@
-# Big Day Planner on Herman
+# Big Day Planner on the host
 
 Every push to `main` runs **Release**. CI typechecks and builds the app with
 the frozen Bun lockfile, checks formatting, runs Drizzle migrations and
@@ -6,7 +6,7 @@ repository tests against a disposable Postgres, and tests the webhook receiver
 and host deployment gates. GitHub builds native AMD64/ARM64 images, publishes
 an immutable GHCR manifest and attests its provenance. The workflow succeeds
 only when the public `/api/health` reports that commit in
-`X-Big-Day-Planner-Revision` and Herman acknowledges the same commit and image
+`X-Big-Day-Planner-Revision` and the host acknowledges the same commit and image
 digest after completed acceptance checks.
 
 This follows the Office Tracker deployment
@@ -17,10 +17,14 @@ This follows the Office Tracker deployment
 - Public app: `vars.BIG_DAY_PLANNER_BASE_URL`, upstream `big-day-planner:3000`.
 - Deploy hook: https://deploy-bigday.kylescudder.co.uk/hooks/big-day-planner.
 - Checkout: `/Users/kyle/platform/apps/big-day-planner`.
-- LaunchAgent: `com.herman.big-day-planner-deploy`, running as Colima's owner.
+- LaunchAgent: `com.kylescudder.big-day-planner-deploy`, running as Colima's owner.
+- Deployer: `deploy/host-deploy.py` holds this app's settings and hooks; the
+  shared flow is `deploy/deploy_core.py`, vendored unchanged from
+  `kylescudder/deploy-core` (see `deploy/deploy_core.lock`). Change the core
+  there and sync it; CI fails if the vendored copy is edited here.
 - Image: `ghcr.io/kylescudder/big-day-planner@sha256:<digest>`.
 - `.env` (mode 0600, ignored by Git): holds only `BIG_DAY_PLANNER_IMAGE`, which
-  Herman rewrites after each healthy deploy. It may be empty (but must exist) before
+  the deployer rewrites after each healthy deploy. It may be empty (but must exist) before
   the first release; the deployer passes the candidate image explicitly to every
   Compose call, so no seeding is needed. `compose.yaml`
   refuses to run without an image, so manual `docker compose --env-file .env`
@@ -37,7 +41,7 @@ paths, HMAC-SHA256 signatures, a five-minute timestamp window, request size and
 queue bounds. Cloudflare Access protects the whole deploy hostname with one
 Service Auth policy allowing only `github-big-day-planner-deploy`.
 
-Herman independently verifies provenance for `kylescudder/big-day-planner`,
+The host independently verifies provenance for `kylescudder/big-day-planner`,
 `.github/workflows/release.yml`, `refs/heads/main` and GitHub-hosted runners
 before pulling the exact digest. Deployments are serialized; queued requests
 coalesce to the newest request.
@@ -79,13 +83,14 @@ applied migrations in `public.__drizzle_migrations`. `0000_baseline.sql`
 creates the current schema; the earlier migration history had drifted from
 the schema and was replaced.
 
-After verifying an image, Herman saves a private pre-deploy `pg_dump`, retains
+After verifying an image, the deployer saves a private pre-deploy `pg_dump`, retains
 the latest 14 dumps, runs owner migrations and waits for application health.
 `deploy/verify.ts` then checks the restricted runtime role, HTML and built
 assets, the revision and cache headers, the signed-out admin redirect and upload
 rejection, the removal of the old email endpoints, and guest page rendering
 from a temporary guest that it always deletes. A failed migration leaves the
-current app running. A failed acceptance check restores the previous image. If
+current app running. A failed acceptance check restores the previous image, which must pass the same
+checks. If
 there is no previous running image (the first release), the failed candidate is
 stopped and kept for `docker logs`; the next deploy replaces it whatever its state,
 and a stopped container is never used as a rollback target.
@@ -108,7 +113,7 @@ docker compose -f /Users/kyle/platform/compose.yaml exec -T --user postgres \
 
 Compare row counts per table between the old and new databases, keep the dump
 in the protected archive, and delete the Netlify site only after production is
-verified on Herman.
+verified on the host.
 
 ## Configuration and commands
 
@@ -120,8 +125,8 @@ From the checkout:
 
 ```sh
 docker compose -f deploy/compose.deploy-hook.yaml --env-file .env.deploy-hook up -d --wait
-python3 -B deploy/install-launchd.py
-launchctl print gui/501/com.herman.big-day-planner-deploy
+python3 -B deploy/host-deploy.py --install <host LocalHostName>  # refuses any other machine
+launchctl print gui/501/com.kylescudder.big-day-planner-deploy
 tail -n 100 state/deploy.log
 docker compose --env-file .env ps
 ```
@@ -135,7 +140,7 @@ gh variable set DEPLOY_ENABLED --body false --repo kylescudder/big-day-planner
 Redeploy or roll back to a previously attested main digest:
 
 ```sh
-./deploy/herman-deploy.sh sha256:<verified-main-digest>
+./deploy/host-deploy.sh sha256:<verified-main-digest>
 ```
 
 Access must exist before registering the exact hook route. From the platform:

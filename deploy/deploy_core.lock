@@ -1,0 +1,8 @@
+{
+  "source": "kylescudder/deploy-core",
+  "commit": "e935f08cd8e25833ba3b7c69c2e0b01bcbdb4ff0",
+  "sha256": {
+    "deploy_core.py": "2a20640a369a7dc32eb47858c3db0c5f9c475a05537b102aff806e9785b67abf",
+    "test_deploy_core.py": "9bccba19d74d339e281d465f67ba026a6a285f19151c080624cb0091b883c0eb"
+  }
+}
