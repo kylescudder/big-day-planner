@@ -6,7 +6,7 @@ RUN bun install --frozen-lockfile --network-concurrency 8
 
 FROM dependencies AS build
 COPY . .
-RUN bun run typecheck && bun run build
+RUN bun run typecheck && bun run lint && bun run build
 
 FROM dependencies AS production-dependencies
 RUN rm -rf node_modules && bun install --production --frozen-lockfile --ignore-scripts --network-concurrency 8

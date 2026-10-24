@@ -7,7 +7,7 @@ export function Fab() {
 
   useEffect(() => {
     const handleScrollButtonVisibility = () => {
-      window.scrollY > 300 ? setShowButton(true) : setShowButton(false)
+      setShowButton(window.scrollY > 300)
     }
 
     window.addEventListener('scroll', handleScrollButtonVisibility)
