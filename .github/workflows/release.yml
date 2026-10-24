@@ -132,7 +132,7 @@ jobs:
       cancel-in-progress: false
     env:
       DEPLOY_URL: https://deploy-bigday.kylescudder.co.uk/hooks/big-day-planner
-      HEALTH_URL: ${{ vars.BIG_DAY_PLANNER_BASE_URL }}/api/health
+      HEALTH_URL: ${{ vars.BIG_DAY_PLANNER_BASE_URL }}/healthz
     steps:
       - name: Check deploy endpoint protection
         env:

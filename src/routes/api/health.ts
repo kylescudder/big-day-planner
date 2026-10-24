@@ -1,24 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { sql } from 'drizzle-orm'
 
-import { db } from '@/server/db'
+import { healthResponse } from '@/server/health'
 
+// Pre-standardisation path; remove once nothing calls it.
 export const Route = createFileRoute('/api/health')({
-  server: {
-    handlers: {
-      GET: async () => {
-        await db.execute(sql`SELECT id FROM guest LIMIT 0`)
-        return Response.json(
-          { ok: true },
-          {
-            headers: {
-              'Cache-Control': 'no-store',
-              'X-Big-Day-Planner-Revision':
-                process.env.BIG_DAY_PLANNER_REVISION || 'development'
-            }
-          }
-        )
-      }
-    }
-  }
+  server: { handlers: { GET: healthResponse } }
 })
