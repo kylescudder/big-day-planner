@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 
 const TopBar = (props: { authed?: boolean }) => {
   return (
-    <section className='border-zinc-400 p-6 w-full flex justify-between'>
+    <section className='flex w-full justify-between border-zinc-400 p-6'>
       <div className='flex-row items-center'>
         <SiteTitle />
       </div>

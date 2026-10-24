@@ -19,8 +19,8 @@ export function Menu(props: {
 }) {
   return (
     <section>
-      <p className='text-5xl pt-14'>menu</p>
-      <div className='grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl'>
+      <p className='pt-14 text-5xl'>menu</p>
+      <div className='border-primary mt-10 grid gap-4 rounded-2xl border-4 p-2'>
         <MenuForm
           guestData={props.guestData}
           starters={props.starters}
@@ -31,7 +31,7 @@ export function Menu(props: {
       </div>
       <div>
         {props.details.menuDeadlineDateTime ? (
-          <p className='text-center pt-4 text-lg'>
+          <p className='pt-4 text-center text-lg'>
             we kindly ask you to make your choices by{' '}
             {format(props.details.menuDeadlineDateTime, 'dd/MM/yyyy')}
           </p>

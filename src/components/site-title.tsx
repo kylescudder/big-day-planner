@@ -10,7 +10,7 @@ const SiteTitle = () => {
         stroke={2}
         strokeLinejoin='miter'
       />
-      <p className='text-foreground max-lg:hidden font-black pl-3'>
+      <p className='text-foreground pl-3 font-black max-lg:hidden'>
         Big Day Planner
       </p>
     </div>

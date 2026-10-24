@@ -48,7 +48,7 @@ export function ClientGuestPage(props: ClientGuestPageProps) {
       <div className='flex min-h-screen flex-col items-center overflow-x-hidden pt-10'>
         <Section
           id='home'
-          className={`bg-pink pt-7 h-64 ${
+          className={`bg-pink h-64 pt-7 ${
             !guestData.some((guest) => guest.rsvpAnswer) &&
             guestData.some((guest) => guest.rsvp)
               ? 'hidden'
@@ -56,12 +56,12 @@ export function ClientGuestPage(props: ClientGuestPageProps) {
           }`}
         >
           <div className='text-5xl'>
-            <div className='whitespace-pre-line z-10 relative'>
+            <div className='relative z-10 whitespace-pre-line'>
               we&apos;re getting <br />
               married!
             </div>
           </div>
-          <p className='text-3xl text-primary pt-10 relative z-10'>
+          <p className='text-primary relative z-10 pt-10 text-3xl'>
             {guestData
               .filter(
                 (guest) => guest.rsvp === true && guest.rsvpAnswer === true

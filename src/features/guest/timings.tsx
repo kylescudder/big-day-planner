@@ -6,7 +6,7 @@ export function Timings(props: { timings: Timing[] | null }) {
   if (props.timings != null) {
     return (
       <div className='relative z-10'>
-        <div className='text-lg mx-auto text-center pt-7'>
+        <div className='mx-auto pt-7 text-center text-lg'>
           {props.timings.map((timing, index) => (
             <div key={index} className='pb-5'>
               <div className='flex justify-center'>

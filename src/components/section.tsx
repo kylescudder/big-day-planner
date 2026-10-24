@@ -5,7 +5,7 @@ function Section({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div id={props.id} className={cn('w-full -mt-10 h-fit', className)}>
+    <div id={props.id} className={cn('-mt-10 h-fit w-full', className)}>
       <article className='px-6'>{props.children}</article>
     </div>
   )

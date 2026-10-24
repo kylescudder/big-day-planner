@@ -67,12 +67,12 @@ export function EditHotels(props: {
   const HotelItem = (hotel: Hotel) => (
     <li
       key={hotel.id}
-      className='flex flex-col space-y-2 p-4 hover:bg-muted/50 rounded-md'
+      className='hover:bg-muted/50 flex flex-col space-y-2 rounded-md p-4'
     >
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <p className='font-medium'>{hotel.name}</p>
-          <p className='text-sm break-all text-muted-foreground'>{hotel.url}</p>
+          <p className='text-muted-foreground text-sm break-all'>{hotel.url}</p>
         </div>
         <Button
           variant='ghost'
@@ -89,11 +89,11 @@ export function EditHotels(props: {
   const HotelsList = () => (
     <div className='py-4'>
       {currentHotels.length > 0 ? (
-        <ul className='space-y-2 max-h-[400px] overflow-y-auto'>
+        <ul className='max-h-[400px] space-y-2 overflow-y-auto'>
           {currentHotels.map(HotelItem)}
         </ul>
       ) : (
-        <div className='text-center py-4 text-muted-foreground'>
+        <div className='text-muted-foreground py-4 text-center'>
           No hotels added yet. Add your first hotel below.
         </div>
       )}

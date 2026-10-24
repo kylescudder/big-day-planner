@@ -69,12 +69,12 @@ export function EditColours(props: {
   const ColourItem = (colour: Colour) => (
     <li
       key={colour.id}
-      className='flex flex-col space-y-2 p-4 hover:bg-muted/50 rounded-md'
+      className='hover:bg-muted/50 flex flex-col space-y-2 rounded-md p-4'
     >
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <span
-            className='w-6 h-6 rounded-md border'
+            className='h-6 w-6 rounded-md border'
             style={{ backgroundColor: colour.hex }}
           />
           <p className='font-mono'>{colour.hex}</p>
@@ -94,11 +94,11 @@ export function EditColours(props: {
   const ColoursList = () => (
     <div className='py-4'>
       {currentColours.length > 0 ? (
-        <ul className='space-y-2 max-h-[400px] overflow-y-auto'>
+        <ul className='max-h-[400px] space-y-2 overflow-y-auto'>
           {currentColours.map(ColourItem)}
         </ul>
       ) : (
-        <div className='text-center py-4 text-muted-foreground'>
+        <div className='text-muted-foreground py-4 text-center'>
           No colours added yet. Add your first colour below.
         </div>
       )}
