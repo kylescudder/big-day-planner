@@ -32,13 +32,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Typecheck, lint and build with the frozen lockfile
+      - name: Typecheck and build with the frozen lockfile
         run: docker build --target build -t big-day-planner:checks .
       - name: Check formatting and database-backed API behavior
         run: |
           docker run --rm --network host \
             -e TEST_DATABASE_URL=postgres://big_day_planner_test_owner@127.0.0.1:5432/big_day_planner_test \
-            big-day-planner:checks sh -c 'bun run format:check && bun run test:integration'
+            big-day-planner:checks sh -c 'bun run format:check && bun run test'
       - name: Verify application deployment hooks (engine gates run in deploy-core)
         run: python3 -B -m unittest discover -s deploy -p 'test_*.py' -v
       - name: Verify webhook authentication and queue limits

@@ -18,7 +18,7 @@ bun run dev
 
 - `bun run db:generate` creates a migration after changing `src/server/db/schema.ts`.
 - `bun run typecheck`, `bun run format:check` and
-  `TEST_DATABASE_URL=… bun run test:integration` match CI.
+  `TEST_DATABASE_URL=… bun run test` match CI.
 
 ## Deployment
 
