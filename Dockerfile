@@ -1,5 +1,4 @@
-ARG BUN_IMAGE=oven/bun:1.4.2@sha256:9114c058aeae42162ee16dd5084b95fe9473970bb6bcb5b232ab1630f0546895
-FROM ${BUN_IMAGE} AS dependencies
+FROM oven/bun:1.4.4@sha256:1d22548f177f4ff38e0c15baa3c2c46c6c2060ba2d1bc573bb4720b407548f1d AS dependencies
 WORKDIR /app
 COPY package.json bun.lock ./
 ENV HUSKY=0
@@ -12,7 +11,7 @@ RUN bun run typecheck && bun run build
 FROM dependencies AS production-dependencies
 RUN rm -rf node_modules && bun install --production --frozen-lockfile --ignore-scripts --network-concurrency 8
 
-FROM ${BUN_IMAGE} AS runtime
+FROM oven/bun:1.4.4@sha256:1d22548f177f4ff38e0c15baa3c2c46c6c2060ba2d1bc573bb4720b407548f1d AS runtime
 WORKDIR /app
 ARG BIG_DAY_PLANNER_REVISION=development
 LABEL org.opencontainers.image.source="https://github.com/kylescudder/big-day-planner" \
