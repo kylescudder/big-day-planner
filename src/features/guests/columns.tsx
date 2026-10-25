@@ -83,7 +83,7 @@ export const getGuestColumns = ({
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
+    cell: function ActionsCell({ row }) {
       const guest = row.original
       const [editOpen, setEditOpen] = useState(false)
 

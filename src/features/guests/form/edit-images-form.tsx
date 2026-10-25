@@ -20,7 +20,7 @@ export function EditImagesForm(props: {
     Images | undefined
   >(logoImage)
 
-  let displayedLogoImage = uploadedLogoImage || logoImage
+  const displayedLogoImage = uploadedLogoImage || logoImage
 
   const rsvpImage = props.images.filter(
     (image) => image.type === ImageType.RSVP
