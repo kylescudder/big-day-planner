@@ -1,11 +1,11 @@
 // Post-deploy acceptance checks, run inside the candidate container with the
 // restricted runtime credential. Fixtures use a unique key and are removed.
-import postgres from 'postgres'
+import { createDeploymentDatabase } from './database'
 
 import { databaseUrl } from '../src/server/db/connection'
 
 const origin = process.env.VERIFY_ORIGIN || 'http://127.0.0.1:3000'
-const sql = postgres(databaseUrl(), { max: 1 })
+const sql = createDeploymentDatabase(databaseUrl())
 const guestId = crypto.randomUUID()
 const forename = `deployment-check-${guestId.slice(0, 8)}`
 

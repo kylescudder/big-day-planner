@@ -25,7 +25,7 @@ COPY --chown=bun:bun drizzle ./drizzle
 COPY --chown=bun:bun server/index.ts server/migrate.ts ./server/
 COPY --chown=bun:bun src/lib/sentry.ts ./src/lib/
 COPY --chown=bun:bun src/server/db/connection.ts ./src/server/db/
-COPY --chown=bun:bun deploy/healthcheck.ts deploy/verify.ts ./deploy/
+COPY --chown=bun:bun deploy/healthcheck.ts deploy/verify.ts deploy/database.ts ./deploy/
 USER bun
 EXPOSE 3000
 HEALTHCHECK --interval=15s --timeout=10s --start-period=15s --retries=3 \
