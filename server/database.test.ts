@@ -3,6 +3,7 @@ import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import postgres from 'postgres'
+import { sql as query } from 'drizzle-orm'
 
 import { databaseUrl } from '../src/server/db/connection'
 
@@ -135,3 +136,50 @@ describe('address lookup', () => {
     }
   })
 })
+
+test('timed-out health probes stop SQL and preserve shared pool availability', async () => {
+  const { db } = await import('../src/server/db')
+  const { healthResponse } = await import('../src/server/health')
+  expect((await healthResponse()).status).toBe(200)
+  await sql`BEGIN`
+  try {
+    await sql`LOCK TABLE guest IN ACCESS EXCLUSIVE MODE`
+    const responses = await Promise.all(
+      Array.from({ length: 8 }, () => healthResponse())
+    )
+    for (const response of responses) {
+      expect(response.status).toBe(503)
+      expect(response.headers.get('Cache-Control')).toBe('no-store')
+      expect(await response.json()).toEqual({ ok: false })
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined
+    try {
+      const rows = await Promise.race([
+        db.execute(query`SELECT 42 AS answer`),
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(
+            () => reject(new Error('Health probes exhausted the shared pool')),
+            1500
+          )
+        })
+      ])
+      expect(rows[0]?.answer).toBe(42)
+      const deadline = Date.now() + 1500
+      for (;;) {
+        const [row] =
+          await sql`SELECT count(*)::int AS active FROM pg_stat_activity
+          WHERE datname = current_database() AND pid <> pg_backend_pid()
+          AND state = 'active' AND query ILIKE '%SELECT id FROM guest LIMIT 0%'`
+        if (row?.active === 0) break
+        if (Date.now() > deadline)
+          throw new Error('Health SQL outlived its deadline')
+        await Bun.sleep(25)
+      }
+    } finally {
+      clearTimeout(timer)
+    }
+  } finally {
+    await sql`ROLLBACK`
+  }
+  expect((await healthResponse()).status).toBe(200)
+}, 15000)
