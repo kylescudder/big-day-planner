@@ -1,6 +1,6 @@
 // Container healthcheck: the app must serve pages and reach its tables.
 const origin = `http://127.0.0.1:${process.env.PORT || 3000}`
-for (const path of ['/', '/api/health']) {
+for (const path of ['/', '/healthz']) {
   const response = await fetch(origin + path, {
     signal: AbortSignal.timeout(5000)
   })

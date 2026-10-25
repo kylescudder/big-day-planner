@@ -59,7 +59,7 @@ try {
       throw new Error('Built asset has an unexpected content type')
   }
 
-  const health = await request('/api/health')
+  const health = await request('/healthz')
   if (
     health.headers.get('X-Big-Day-Planner-Revision') !==
       process.env.BIG_DAY_PLANNER_REVISION ||
