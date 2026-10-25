@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuestsRouteImport } from './routes/guests'
 import { Route as HealthzRouteImport } from './routes/healthz'
 import { Route as SignInRouteImport } from './routes/sign-in'
-import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
 import { Route as GuestIdRouteImport } from './routes/guest.$id'
 
@@ -37,11 +36,6 @@ const SignInRoute = SignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiHealthRoute = ApiHealthRouteImport.update({
-  id: '/api/health',
-  path: '/api/health',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
   id: '/api/uploadthing',
   path: '/api/uploadthing',
@@ -58,7 +52,6 @@ export interface FileRoutesByFullPath {
   '/guests': typeof GuestsRoute
   '/healthz': typeof HealthzRoute
   '/sign-in': typeof SignInRoute
-  '/api/health': typeof ApiHealthRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/guest/$id': typeof GuestIdRoute
 }
@@ -67,7 +60,6 @@ export interface FileRoutesByTo {
   '/guests': typeof GuestsRoute
   '/healthz': typeof HealthzRoute
   '/sign-in': typeof SignInRoute
-  '/api/health': typeof ApiHealthRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/guest/$id': typeof GuestIdRoute
 }
@@ -77,7 +69,6 @@ export interface FileRoutesById {
   '/guests': typeof GuestsRoute
   '/healthz': typeof HealthzRoute
   '/sign-in': typeof SignInRoute
-  '/api/health': typeof ApiHealthRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/guest/$id': typeof GuestIdRoute
 }
@@ -88,7 +79,6 @@ export interface FileRouteTypes {
     | '/guests'
     | '/healthz'
     | '/sign-in'
-    | '/api/health'
     | '/api/uploadthing'
     | '/guest/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -97,7 +87,6 @@ export interface FileRouteTypes {
     | '/guests'
     | '/healthz'
     | '/sign-in'
-    | '/api/health'
     | '/api/uploadthing'
     | '/guest/$id'
   id:
@@ -106,7 +95,6 @@ export interface FileRouteTypes {
     | '/guests'
     | '/healthz'
     | '/sign-in'
-    | '/api/health'
     | '/api/uploadthing'
     | '/guest/$id'
   fileRoutesById: FileRoutesById
@@ -116,7 +104,6 @@ export interface RootRouteChildren {
   GuestsRoute: typeof GuestsRoute
   HealthzRoute: typeof HealthzRoute
   SignInRoute: typeof SignInRoute
-  ApiHealthRoute: typeof ApiHealthRoute
   ApiUploadthingRoute: typeof ApiUploadthingRoute
   GuestIdRoute: typeof GuestIdRoute
 }
@@ -151,13 +138,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/health': {
-      id: '/api/health'
-      path: '/api/health'
-      fullPath: '/api/health'
-      preLoaderRoute: typeof ApiHealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/uploadthing': {
       id: '/api/uploadthing'
       path: '/api/uploadthing'
@@ -180,7 +160,6 @@ const rootRouteChildren: RootRouteChildren = {
   GuestsRoute: GuestsRoute,
   HealthzRoute: HealthzRoute,
   SignInRoute: SignInRoute,
-  ApiHealthRoute: ApiHealthRoute,
   ApiUploadthingRoute: ApiUploadthingRoute,
   GuestIdRoute: GuestIdRoute,
 }

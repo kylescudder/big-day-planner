@@ -19,7 +19,7 @@ the frozen Bun lockfile, checks formatting, runs Drizzle migrations and
 repository tests against a disposable Postgres, and tests the webhook receiver
 and host deployment gates. GitHub builds native AMD64/ARM64 images, publishes
 an immutable GHCR manifest and attests its provenance. The workflow succeeds
-only when the public `/api/health` reports that commit in
+only when the public `/healthz` reports that commit in
 `X-Big-Day-Planner-Revision` and the host acknowledges the same commit and image
 digest after completed acceptance checks.
 
