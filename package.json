@@ -15,7 +15,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:connections": "bun deploy/test-connection-budget.ts"
   },
   "dependencies": {
     "@clerk/tanstack-react-start": "1.7.3",
