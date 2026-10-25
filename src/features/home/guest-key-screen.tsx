@@ -56,7 +56,7 @@ export function GuestKeyScreen({
 
   return (
     <div
-      className='relative min-h-screen flex items-center justify-center bg-cover bg-center'
+      className='relative flex min-h-screen items-center justify-center bg-cover bg-center'
       style={{ backgroundImage: bgUrl }}
     >
       {loading && <LoadingPage />}
@@ -64,19 +64,19 @@ export function GuestKeyScreen({
         className={`
           fixed inset-0 z-20 bg-cover bg-center
           transition-opacity duration-2000
-          ${showOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
+          ${showOverlay ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}
         `}
         style={{ backgroundImage: bgUrl }}
       />
 
       {/* Dim overlay after fade */}
       {!showOverlay && (
-        <div className='fixed inset-0 bg-black/10 z-10 pointer-events-none transition-opacity duration-2000' />
+        <div className='pointer-events-none fixed inset-0 z-10 bg-black/10 transition-opacity duration-2000' />
       )}
 
       {/* Centered form */}
       {!showOverlay && (
-        <div className='z-30 flex flex-col items-center w-[85%]'>
+        <div className='z-30 flex w-[85%] flex-col items-center'>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

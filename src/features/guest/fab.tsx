@@ -30,7 +30,7 @@ export function Fab() {
       variant='default'
       size='icon'
       onClick={scrollToTop}
-      className={`bottom-3 right-3 fixed transition-opacity ease-in-out duration-1000 ${!showButton ? 'opacity-0' : 'opacity-100'}`}
+      className={`fixed right-3 bottom-3 transition-opacity duration-1000 ease-in-out ${!showButton ? 'opacity-0' : 'opacity-100'}`}
     >
       <IconChevronUp className='h-4 w-4' />
     </Button>

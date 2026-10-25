@@ -153,12 +153,12 @@ export function ColourPicker({
           variant='outline'
           className='w-[240px] justify-start text-left font-normal'
         >
-          <div className='w-full flex items-center gap-2'>
+          <div className='flex w-full items-center gap-2'>
             <div
-              className='h-4 w-4 rounded !bg-center !bg-cover transition-all border'
+              className='h-4 w-4 rounded border !bg-cover !bg-center transition-all'
               style={{ backgroundColor: currentColour }}
             />
-            <div className='truncate flex-1'>{currentColour}</div>
+            <div className='flex-1 truncate'>{currentColour}</div>
           </div>
         </Button>
       </PopoverTrigger>
@@ -166,7 +166,7 @@ export function ColourPicker({
         <div className='grid gap-4'>
           <div
             ref={colourPlaneRef}
-            className='relative w-full h-48 rounded-lg cursor-crosshair touch-none'
+            className='relative h-48 w-full cursor-crosshair touch-none rounded-lg'
             style={{
               background: `
                 linear-gradient(
@@ -191,7 +191,7 @@ export function ColourPicker({
             onTouchEnd={handleMouseUp}
           >
             <div
-              className='absolute w-4 h-4 border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none shadow-md'
+              className='pointer-events-none absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-md'
               style={{
                 left: `${hsl.s}%`,
                 top: `${100 - hsl.l}%`,
@@ -207,7 +207,7 @@ export function ColourPicker({
                 value={[hsl.h]}
                 max={360}
                 step={1}
-                className='[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_.bg-primary]:bg-transparent [&_.bg-secondary]:bg-transparent'
+                className='[&_.bg-primary]:bg-transparent [&_.bg-secondary]:bg-transparent [&_[role=slider]]:h-4 [&_[role=slider]]:w-4'
                 onValueChange={([h]) => updateHSL(h!, hsl.s, hsl.l)}
                 style={{
                   backgroundImage: `linear-gradient(to right, 

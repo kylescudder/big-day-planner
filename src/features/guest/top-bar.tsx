@@ -24,7 +24,7 @@ const TopBar = (props: { guestData: Guest[]; details: Detail }) => {
   }, [currentSection])
 
   return (
-    <div className='flex justify-between bg-pink py-6 px-6 h-24 w-full'>
+    <div className='bg-pink flex h-24 w-full justify-between px-6 py-6'>
       <div>
         <img alt='K&R Logo' src='/logo.svg' height={60} width={60} />
       </div>
@@ -52,7 +52,7 @@ const TopBar = (props: { guestData: Guest[]; details: Detail }) => {
                             onClick={() => {
                               setCurrentSection(page.id)
                             }}
-                            className={`flex items-center w-full h-3/4 text-5xl p-3 hover:bg-secondary/[.5] transition-colors ease-in-out duration-500 rounded-3xl ${currentSection === page.id ? `bg-secondary text-white` : ``}`}
+                            className={`hover:bg-secondary/[.5] flex h-3/4 w-full items-center rounded-3xl p-3 text-5xl transition-colors duration-500 ease-in-out ${currentSection === page.id ? `bg-secondary text-white` : ``}`}
                           >
                             {page.text}
                           </div>

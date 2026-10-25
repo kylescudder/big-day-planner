@@ -5,7 +5,7 @@ const ListItem = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('w-full h-28 text-primary', className)} {...props} />
+  <div className={cn('text-primary h-28 w-full', className)} {...props} />
 )
 
 export default ListItem

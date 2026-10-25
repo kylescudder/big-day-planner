@@ -96,7 +96,7 @@ export function EditMealsForm(props: {
   const renderMenuItem = (meal: Starter | Main | Pudding, type: MealType) => (
     <li
       key={meal.id}
-      className='flex items-center justify-between py-2 px-4 hover:bg-muted/50 rounded-md'
+      className='hover:bg-muted/50 flex items-center justify-between rounded-md px-4 py-2'
     >
       <span>{meal.text}</span>
       <Button
@@ -160,7 +160,7 @@ export function EditMealsForm(props: {
             )}
           </ul>
         ) : (
-          <div className='text-center py-4 text-muted-foreground'>
+          <div className='text-muted-foreground py-4 text-center'>
             No starters added yet. Add your first starter below.
           </div>
         )}
@@ -176,7 +176,7 @@ export function EditMealsForm(props: {
             )}
           </ul>
         ) : (
-          <div className='text-center py-4 text-muted-foreground'>
+          <div className='text-muted-foreground py-4 text-center'>
             No mains added yet. Add your first main below.
           </div>
         )}
@@ -192,7 +192,7 @@ export function EditMealsForm(props: {
             )}
           </ul>
         ) : (
-          <div className='text-center py-4 text-muted-foreground'>
+          <div className='text-muted-foreground py-4 text-center'>
             No puddings added yet. Add your first pudding below.
           </div>
         )}

@@ -101,7 +101,7 @@ export function TimePicker({
             ))}
           </SelectContent>
         </Select>
-        <span className='text-xs text-muted-foreground'>Hour</span>
+        <span className='text-muted-foreground text-xs'>Hour</span>
       </div>
       <div className='grid gap-1 text-center'>
         <Select onValueChange={handleMinuteChange}>
@@ -122,10 +122,10 @@ export function TimePicker({
             ))}
           </SelectContent>
         </Select>
-        <span className='text-xs text-muted-foreground'>Minute</span>
+        <span className='text-muted-foreground text-xs'>Minute</span>
       </div>
       <div className='flex h-10 items-center'>
-        <IconClock className='ml-2 h-4 w-4 text-muted-foreground' />
+        <IconClock className='text-muted-foreground ml-2 h-4 w-4' />
       </div>
     </div>
   )

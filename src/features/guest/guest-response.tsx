@@ -66,7 +66,7 @@ export function GuestResponse(props: {
   return (
     <>
       <Section id='rsvp' className={`bg-pink pb-10`}>
-        <section className='z-10 relative'>
+        <section className='relative z-10'>
           <RSVP
             guestData={props.guestData}
             onRsvpAnswer={onRsvpAnswer}
@@ -79,7 +79,7 @@ export function GuestResponse(props: {
           src='/assets-venue.svg'
           width={300}
           height={200}
-          className='float-end w-full relative h-auto pt-10'
+          className='relative float-end h-auto w-full pt-10'
         />
       </Section>
       {(() => {
@@ -92,7 +92,7 @@ export function GuestResponse(props: {
             src={uploadUrl(rsvpImage.key)}
             width={300}
             height={200}
-            className='float-end w-full relative h-auto'
+            className='relative float-end h-auto w-full'
           />
         ) : null
       })()}
@@ -113,7 +113,7 @@ export function GuestResponse(props: {
           </Section>
           <Section
             id='song-request'
-            className={`${props.details.songRequest ? '' : 'hidden'} justify-center h-screen`}
+            className={`${props.details.songRequest ? '' : 'hidden'} h-screen justify-center`}
           >
             <SongRequest
               guestData={props.guestData}
@@ -125,7 +125,7 @@ export function GuestResponse(props: {
             src='/assest-timing-top-dividers.svg'
             width='0'
             height='0'
-            className='float-end w-full relative h-auto'
+            className='relative float-end h-auto w-full'
           />
           <Section id='timings' className='bg-pink'>
             <Timings timings={props.timings} />
@@ -135,7 +135,7 @@ export function GuestResponse(props: {
             src='/assest-timing-bottom-dividers.svg'
             width='0'
             height='0'
-            className='float-end w-full relative -top-[1px] h-auto'
+            className='relative -top-[1px] float-end h-auto w-full'
           />
           <Section id='details' className='pb-12'>
             <Details details={props.details} colours={props.colours} />
@@ -156,7 +156,7 @@ export function GuestResponse(props: {
                 src={uploadUrl(footerImage.key)}
                 width={300}
                 height={200}
-                className='float-end w-full relative h-auto'
+                className='relative float-end h-auto w-full'
               />
             ) : null
           })()}

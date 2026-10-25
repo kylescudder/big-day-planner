@@ -68,10 +68,10 @@ export function RSVPAnswer(props: {
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl'>
+            <div className='border-primary mt-10 grid gap-4 rounded-2xl border-4 p-2'>
               {props.guestData.map((guest, index) => (
-                <div key={index} className='text-lg pb-10'>
-                  <p className='text-lg text-primary'>
+                <div key={index} className='pb-10 text-lg'>
+                  <p className='text-primary text-lg'>
                     {guest.forename.toLowerCase()}
                   </p>
                   <FormField
@@ -84,25 +84,25 @@ export function RSVPAnswer(props: {
                             onValueChange={field.onChange}
                             className='flex flex-col space-y-1'
                           >
-                            <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>
-                              <FormLabel className='font-normal text-lg'>
+                            <FormItem className='flex items-center justify-between space-y-0 space-x-3'>
+                              <FormLabel className='text-lg font-normal'>
                                 wouldn&apos;t miss it for the world
                               </FormLabel>
                               <FormControl>
                                 <RadioGroupItem
                                   value={'true'}
-                                  className='bg-primary border-background border-2 text-secondary rounded-4xl ml-auto hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500'
+                                  className='bg-primary border-background text-secondary hover:border-secondary ml-auto rounded-4xl border-2 transition-colors duration-500 ease-in-out hover:border-2'
                                 />
                               </FormControl>
                             </FormItem>
-                            <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>
-                              <FormLabel className='font-normal text-lg'>
+                            <FormItem className='flex items-center justify-between space-y-0 space-x-3'>
+                              <FormLabel className='text-lg font-normal'>
                                 will be there in spirit
                               </FormLabel>
                               <FormControl>
                                 <RadioGroupItem
                                   value={'false'}
-                                  className='bg-primary border-background border-2 text-secondary rounded-4xl ml-auto hover:border-secondary hover:border-2 transition-colors ease-in-out duration-500'
+                                  className='bg-primary border-background text-secondary hover:border-secondary ml-auto rounded-4xl border-2 transition-colors duration-500 ease-in-out hover:border-2'
                                 />
                               </FormControl>
                             </FormItem>
@@ -115,7 +115,7 @@ export function RSVPAnswer(props: {
                 </div>
               ))}
             </div>
-            <div className='flex justify-between items-center py-10'>
+            <div className='flex items-center justify-between py-10'>
               {props.details.rsvpDeadlineDateTime ? (
                 <p className='text-xs'>
                   we kindly ask you let us know by{' '}

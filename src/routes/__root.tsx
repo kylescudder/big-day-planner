@@ -28,7 +28,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <ClerkProvider>
-      <main className='justify-center h-screen'>
+      <main className='h-screen justify-center'>
         <Outlet />
         <Toaster />
       </main>

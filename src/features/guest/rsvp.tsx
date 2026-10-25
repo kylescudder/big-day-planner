@@ -44,7 +44,7 @@ export function RSVP(props: {
             {props.details.startDateTime && props.details.endDateTime ? (
               <div>
                 <p
-                  className={`${props.details.startDateTime ? '' : 'hidden'} pt-4 text-primary text-lg`}
+                  className={`${props.details.startDateTime ? '' : 'hidden'} text-primary pt-4 text-lg`}
                 >
                   {format(props.details.startDateTime, 'MMMM dd, yyyy')}
                 </p>
@@ -58,7 +58,7 @@ export function RSVP(props: {
             ) : null}
             <div>
               <p
-                className={`${props.details.address1 ? '' : 'hidden'} pt-4 text-primary text-lg`}
+                className={`${props.details.address1 ? '' : 'hidden'} text-primary pt-4 text-lg`}
               >
                 {props.details.address1}
               </p>
@@ -118,9 +118,9 @@ export function RSVP(props: {
         </section>
       ) : null}
       {rsvp && !rsvpAnswer && (
-        <div className='text-lg pb-16'>
+        <div className='pb-16 text-lg'>
           <p className='text-5xl'>you will be missed!</p>
-          <p className='text-3xl text-primary pt-10'>
+          <p className='text-primary pt-10 text-3xl'>
             thanks you for your rsvp
           </p>
         </div>

@@ -10,7 +10,7 @@ export function Hotels(props: { hotels: Hotel[] | null }) {
   if (props.hotels != null) {
     return (
       <div
-        className={`grid gap-4 mt-10 p-2 border-primary border-4 rounded-2xl`}
+        className={`border-primary mt-10 grid gap-4 rounded-2xl border-4 p-2`}
       >
         <p className='text-lg'>
           for those that want to stay overnight, here are a list of local hotels
@@ -22,15 +22,15 @@ export function Hotels(props: { hotels: Hotel[] | null }) {
               hotel
             </Button>
           </CollapsibleTrigger>
-          <CollapsibleContent className='overflow-hidden transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down'>
+          <CollapsibleContent className='data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden transition-all'>
             <div className='relative z-10'>
-              <div className='text-lg mx-auto text-center pt-7'>
+              <div className='mx-auto pt-7 text-center text-lg'>
                 {props.hotels.map((hotel, index) => (
                   <div key={index} className='pb-5'>
                     <div className='flex flex-col items-center'>
                       <p>{hotel.name}</p>
                       <a
-                        className='hover:underline text-primary'
+                        className='text-primary hover:underline'
                         target='_blank'
                         href={hotel.url}
                       >

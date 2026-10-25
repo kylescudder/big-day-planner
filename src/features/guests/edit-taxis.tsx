@@ -63,12 +63,12 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
   const TaxiItem = (taxi: Taxi) => (
     <li
       key={taxi.id}
-      className='flex flex-col space-y-2 p-4 hover:bg-muted/50 rounded-md'
+      className='hover:bg-muted/50 flex flex-col space-y-2 rounded-md p-4'
     >
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <p className='font-medium'>{taxi.name}</p>
-          <p className='text-sm text-muted-foreground'>{taxi.phone}</p>
+          <p className='text-muted-foreground text-sm'>{taxi.phone}</p>
         </div>
         <Button
           variant='ghost'
@@ -80,7 +80,7 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
         </Button>
       </div>
       {taxi.description && (
-        <p className='text-sm text-muted-foreground'>{taxi.description}</p>
+        <p className='text-muted-foreground text-sm'>{taxi.description}</p>
       )}
     </li>
   )
@@ -88,11 +88,11 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
   const TaxisList = () => (
     <div className='py-4'>
       {currentTaxis.length > 0 ? (
-        <ul className='space-y-2 max-h-[400px] overflow-y-auto'>
+        <ul className='max-h-[400px] space-y-2 overflow-y-auto'>
           {currentTaxis.map(TaxiItem)}
         </ul>
       ) : (
-        <div className='text-center py-4 text-muted-foreground'>
+        <div className='text-muted-foreground py-4 text-center'>
           No taxis added yet. Add your first taxi below.
         </div>
       )}

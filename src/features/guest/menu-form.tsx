@@ -74,7 +74,7 @@ export function MenuForm(props: {
                   (guest) => guest.rsvpAnswer === true && guest.rsvp === true
                 )
                 .map((guest, index) => (
-                  <div key={index} className='text-lg pt-4'>
+                  <div key={index} className='pt-4 text-lg'>
                     <p className='text-lg'>{guest.forename.toLowerCase()}</p>
                     {props.starters.length > 0 && (
                       <article className='pt-4'>
@@ -92,7 +92,7 @@ export function MenuForm(props: {
                                 >
                                   {props.starters.map((starter, index) => (
                                     <div key={index}>
-                                      <FormItem className='flex items-center space-x-3 space-y-0 justify-between'>
+                                      <FormItem className='flex items-center justify-between space-y-0 space-x-3'>
                                         <FormLabel className='font-normal'>
                                           {starter.text}
                                         </FormLabel>
@@ -134,7 +134,7 @@ export function MenuForm(props: {
                                     <div key={index}>
                                       <FormItem
                                         key={index}
-                                        className='flex items-center space-x-3 space-y-0 justify-between'
+                                        className='flex items-center justify-between space-y-0 space-x-3'
                                       >
                                         <FormLabel className='font-normal'>
                                           {main.text}
@@ -177,7 +177,7 @@ export function MenuForm(props: {
                                     <div key={index}>
                                       <FormItem
                                         key={index}
-                                        className='flex items-center space-x-3 space-y-0 justify-between'
+                                        className='flex items-center justify-between space-y-0 space-x-3'
                                       >
                                         <FormLabel className='font-normal'>
                                           {pudding.text}

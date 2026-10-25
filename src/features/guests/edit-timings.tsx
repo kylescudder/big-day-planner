@@ -71,7 +71,7 @@ export function EditTimings(props: {
   const TimingItem = (timing: Timing) => (
     <li
       key={timing.id}
-      className='flex flex-col space-y-2 p-4 hover:bg-muted/50 rounded-md'
+      className='hover:bg-muted/50 flex flex-col space-y-2 rounded-md p-4'
     >
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
@@ -82,7 +82,7 @@ export function EditTimings(props: {
             <img
               src={uploadUrl(timing.imageUrl)}
               alt='Logo'
-              className='w-24 h-24 object-contain'
+              className='h-24 w-24 object-contain'
             />
           )}
         </div>
@@ -101,11 +101,11 @@ export function EditTimings(props: {
   const TimingsList = () => (
     <div className='py-4'>
       {currentTimings.length > 0 ? (
-        <ul className='space-y-2 max-h-[400px] overflow-y-auto'>
+        <ul className='max-h-[400px] space-y-2 overflow-y-auto'>
           {currentTimings.map(TimingItem)}
         </ul>
       ) : (
-        <div className='text-center py-4 text-muted-foreground'>
+        <div className='text-muted-foreground py-4 text-center'>
           No timings added yet. Add your first timing below.
         </div>
       )}
