@@ -1,5 +1,3 @@
-import { sql } from 'drizzle-orm'
-import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
 import { databaseUrl } from '@/server/db/connection'
@@ -14,14 +12,20 @@ async function probeDatabase() {
     connect_timeout: 3,
     connection: { statement_timeout: 3000 }
   })
+  const query = client`SELECT id FROM guest LIMIT 0`
   let timer: ReturnType<typeof setTimeout> | undefined
   try {
     await Promise.race([
-      drizzle(client).execute(sql`SELECT id FROM guest LIMIT 0`),
+      query,
       new Promise<never>((_, reject) => {
         timer = setTimeout(() => reject(new Error('timeout')), 3000)
       })
     ])
+  } catch (error) {
+    // Closing the socket doesn't stop a backend waiting on a lock, so cancel it.
+    // The cancel request uses its own connection, so bound it too.
+    await Promise.race([query.cancel(), Bun.sleep(500)]).catch(() => {})
+    throw error
   } finally {
     clearTimeout(timer)
     await client.end({ timeout: 0 })
