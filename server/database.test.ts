@@ -6,12 +6,18 @@ import postgres from 'postgres'
 import { sql as query } from 'drizzle-orm'
 
 import { databaseUrl } from '../src/server/db/connection'
+import { stallHealthQueries } from './postgres-proxy'
 
 const testUrl = process.env.TEST_DATABASE_URL
 if (!testUrl) throw new Error('TEST_DATABASE_URL is required')
 
 // The repository reads its connection from the environment on import.
-process.env.DATABASE_URL = testUrl
+const healthProxy = await stallHealthQueries(
+  testUrl,
+  /^SELECT id FROM guest LIMIT 0$/i
+)
+healthProxy.allowNewConnections()
+process.env.DATABASE_URL = healthProxy.url
 process.env.SKIP_ENV_VALIDATION = '1'
 
 const sql = postgres(testUrl, { max: 1, onnotice: () => {} })
@@ -35,6 +41,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await sql.end()
+  await healthProxy.close()
 })
 
 describe('migrations', () => {
@@ -183,3 +190,26 @@ test('timed-out health probes stop SQL and preserve shared pool availability', a
   }
   expect((await healthResponse()).status).toBe(200)
 }, 15000)
+
+test('health recovers on a new connection while the old socket stays stalled', async () => {
+  const { healthResponse } = await import('../src/server/health')
+  const proxy = healthProxy
+  proxy.stall()
+  try {
+    const responses = await Promise.all(
+      Array.from({ length: 8 }, () => healthResponse())
+    )
+    for (const response of responses) {
+      expect(response.status).toBe(503)
+      expect(await response.json()).toEqual({ ok: false })
+    }
+    proxy.allowNewConnections()
+    expect((await healthResponse()).status).toBe(200)
+    const deadline = Date.now() + 1000
+    while (proxy.stalledConnections && Date.now() < deadline)
+      await Bun.sleep(10)
+    expect(proxy.stalledConnections).toBe(0)
+  } finally {
+    proxy.allowNewConnections()
+  }
+}, 10000)

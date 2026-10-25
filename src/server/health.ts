@@ -1,33 +1,42 @@
 import { sql } from 'drizzle-orm'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import postgres from 'postgres'
 
-import { db } from '@/server/db'
+import { databaseUrl } from '@/server/db/connection'
 
 const revision = process.env.BIG_DAY_PLANNER_REVISION || 'development'
-let healthProbe: Promise<unknown> | undefined
+let healthProbe: Promise<void> | undefined
 
-export async function healthResponse() {
-  const headers = { 'Cache-Control': 'no-store' }
-  healthProbe ??= db
-    .transaction(async (probe) => {
-      await probe.execute(sql`SET LOCAL statement_timeout = '3s'`)
-      await probe.execute(sql`SELECT id FROM guest LIMIT 0`)
-    })
-    .finally(() => {
-      healthProbe = undefined
-    })
+async function probeDatabase() {
+  // Own the connection so a stalled probe can be retired without touching app SQL.
+  const client = postgres(databaseUrl(), {
+    max: 1,
+    connect_timeout: 3,
+    connection: { statement_timeout: 3000 }
+  })
   let timer: ReturnType<typeof setTimeout> | undefined
   try {
-    // Fail before the server's idle timeout drops the request.
     await Promise.race([
-      healthProbe,
+      drizzle(client).execute(sql`SELECT id FROM guest LIMIT 0`),
       new Promise<never>((_, reject) => {
         timer = setTimeout(() => reject(new Error('timeout')), 3000)
       })
     ])
+  } finally {
+    clearTimeout(timer)
+    await client.end({ timeout: 0 })
+  }
+}
+
+export async function healthResponse() {
+  const headers = { 'Cache-Control': 'no-store' }
+  healthProbe ??= probeDatabase().finally(() => {
+    healthProbe = undefined
+  })
+  try {
+    await healthProbe
     return Response.json({ ok: true, revision }, { headers })
   } catch {
     return Response.json({ ok: false }, { status: 503, headers })
-  } finally {
-    clearTimeout(timer)
   }
 }
