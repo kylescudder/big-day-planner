@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu'
-import { IconAdjustmentsHorizontal } from '@tabler/icons-react'
+import { SlidersHorizontalIcon } from 'lucide-react'
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
@@ -26,7 +26,7 @@ export function DataTableViewOptions<TData>({
           size='sm'
           className='ml-auto hidden h-8 lg:flex'
         >
-          <IconAdjustmentsHorizontal className='mr-2 h-4 w-4' />
+          <SlidersHorizontalIcon className='mr-2 h-4 w-4' />
           View
         </Button>
       </DropdownMenuPrimitive.Trigger>

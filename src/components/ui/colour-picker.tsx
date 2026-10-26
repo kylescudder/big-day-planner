@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IconCopy, IconCheck } from '@tabler/icons-react'
+import { CopyIcon, CheckIcon } from 'lucide-react'
 import * as ColourUtils from '@/lib/colour-utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -261,9 +261,9 @@ export function ColourPicker({
                   onClick={() => copyToClipboard(currentColour, 'hex')}
                 >
                   {copied.hex ? (
-                    <IconCheck className='h-4 w-4' />
+                    <CheckIcon className='h-4 w-4' />
                   ) : (
-                    <IconCopy className='h-4 w-4' />
+                    <CopyIcon className='h-4 w-4' />
                   )}
                 </Button>
               </div>
@@ -280,9 +280,9 @@ export function ColourPicker({
                     onClick={() => copyToClipboard(rgbaString, 'rgba')}
                   >
                     {copied.rgba ? (
-                      <IconCheck className='h-4 w-4' />
+                      <CheckIcon className='h-4 w-4' />
                     ) : (
-                      <IconCopy className='h-4 w-4' />
+                      <CopyIcon className='h-4 w-4' />
                     )}
                   </Button>
                 </div>
@@ -330,9 +330,9 @@ export function ColourPicker({
                     onClick={() => copyToClipboard(hslaString, 'hsla')}
                   >
                     {copied.hsla ? (
-                      <IconCheck className='h-4 w-4' />
+                      <CheckIcon className='h-4 w-4' />
                     ) : (
-                      <IconCopy className='h-4 w-4' />
+                      <CopyIcon className='h-4 w-4' />
                     )}
                   </Button>
                 </div>

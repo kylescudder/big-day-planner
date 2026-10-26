@@ -22,7 +22,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconClock, IconTrash } from '@tabler/icons-react'
+import { ClockIcon, TrashIcon } from 'lucide-react'
 import { EditTimingsForm } from './form/edit-timings-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -92,7 +92,7 @@ export function EditTimings(props: {
           onClick={() => handleTimingDelete(timing)}
           aria-label='Delete timing'
         >
-          <IconTrash className='h-4 w-4' />
+          <TrashIcon className='h-4 w-4' />
         </Button>
       </div>
     </li>
@@ -144,7 +144,7 @@ export function EditTimings(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconClock className='pr-2' />
+            <ClockIcon className='pr-2' />
             Edit Timings
           </Button>
         </DialogTrigger>
@@ -164,7 +164,7 @@ export function EditTimings(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconClock className='pr-2' />
+          <ClockIcon className='pr-2' />
           Edit Timings
         </Button>
       </DrawerTrigger>

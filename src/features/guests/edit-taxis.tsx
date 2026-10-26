@@ -22,7 +22,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconCar, IconTrash } from '@tabler/icons-react'
+import { CarIcon, TrashIcon } from 'lucide-react'
 import { EditTaxisForm } from './form/edit-taxis-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -76,7 +76,7 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
           onClick={() => handleTaxiDelete(taxi)}
           aria-label='Delete taxi'
         >
-          <IconTrash className='h-4 w-4' />
+          <TrashIcon className='h-4 w-4' />
         </Button>
       </div>
       {taxi.description && (
@@ -127,7 +127,7 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconCar className='mr-2 h-4 w-4' />
+            <CarIcon className='mr-2 h-4 w-4' />
             Edit Taxis
           </Button>
         </DialogTrigger>
@@ -147,7 +147,7 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconCar className='mr-2 h-4 w-4' />
+          <CarIcon className='mr-2 h-4 w-4' />
           Edit Taxis
         </Button>
       </DrawerTrigger>

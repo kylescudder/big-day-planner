@@ -4,7 +4,7 @@ import { Meals } from '@/types/meals'
 import { uuidv4 } from '@/lib/utils'
 import { Main, Pudding, Starter } from '@/server/db/schema'
 import { Button } from '@/components/ui/button'
-import { IconTrash } from '@tabler/icons-react'
+import { TrashIcon } from 'lucide-react'
 import { MealType } from '@/consts/meals'
 
 export function EditMealsForm(props: {
@@ -105,7 +105,7 @@ export function EditMealsForm(props: {
         onClick={() => handleDeleteMealItem(meal.id, type)}
         aria-label='Delete taxi'
       >
-        <IconTrash className='h-4 w-4' />
+        <TrashIcon className='h-4 w-4' />
       </Button>
     </li>
   )

@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { IconSearch } from '@tabler/icons-react'
+import { SearchIcon } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -216,7 +216,7 @@ export function GuestFormFields({
                       className='col-span-1'
                       onClick={handlePostcodeLookup}
                     >
-                      <IconSearch />
+                      <SearchIcon />
                     </Button>
                   </div>
                 </FormControl>

@@ -22,7 +22,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconColorFilter, IconTrash } from '@tabler/icons-react'
+import { PaletteIcon, TrashIcon } from 'lucide-react'
 import { EditColoursForm } from './form/edit-colours-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -85,7 +85,7 @@ export function EditColours(props: {
           onClick={() => handleColourDelete(colour)}
           aria-label='Delete colour'
         >
-          <IconTrash className='h-4 w-4' />
+          <TrashIcon className='h-4 w-4' />
         </Button>
       </div>
     </li>
@@ -124,7 +124,7 @@ export function EditColours(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconColorFilter className='mr-2 h-4 w-4' />
+            <PaletteIcon className='mr-2 h-4 w-4' />
             Edit Colours
           </Button>
         </DialogTrigger>
@@ -146,7 +146,7 @@ export function EditColours(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconColorFilter className='mr-2 h-4 w-4' />
+          <PaletteIcon className='mr-2 h-4 w-4' />
           Edit Colours
         </Button>
       </DrawerTrigger>

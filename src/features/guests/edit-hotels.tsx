@@ -22,7 +22,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useState } from 'react'
-import { IconBed, IconTrash } from '@tabler/icons-react'
+import { BedIcon, TrashIcon } from 'lucide-react'
 import { EditHotelsForm } from './form/edit-hotels-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
@@ -80,7 +80,7 @@ export function EditHotels(props: {
           onClick={() => handleHotelDelete(hotel)}
           aria-label='Delete hotel'
         >
-          <IconTrash className='h-4 w-4' />
+          <TrashIcon className='h-4 w-4' />
         </Button>
       </div>
     </li>
@@ -128,7 +128,7 @@ export function EditHotels(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconBed className='mr-2 h-4 w-4' />
+            <BedIcon className='mr-2 h-4 w-4' />
             Edit Hotels
           </Button>
         </DialogTrigger>
@@ -148,7 +148,7 @@ export function EditHotels(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconBed className='mr-2 h-4 w-4' />
+          <BedIcon className='mr-2 h-4 w-4' />
           Edit Hotels
         </Button>
       </DrawerTrigger>

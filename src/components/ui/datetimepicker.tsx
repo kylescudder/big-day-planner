@@ -21,11 +21,11 @@ import {
 } from '@/components/ui/select'
 import { DayPicker } from 'react-day-picker'
 import {
-  IconCalendar,
-  IconChevronLeft,
-  IconChevronRight,
-  IconClock
-} from '@tabler/icons-react'
+  CalendarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ClockIcon
+} from 'lucide-react'
 
 // ---------- utils start ----------
 /**
@@ -337,9 +337,9 @@ function Calendar({
       components={{
         Chevron: ({ ...props }) =>
           props.orientation === 'left' ? (
-            <IconChevronLeft className='h-4 w-4' />
+            <ChevronLeftIcon className='h-4 w-4' />
           ) : (
-            <IconChevronRight className='h-4 w-4' />
+            <ChevronRightIcon className='h-4 w-4' />
           ),
         MonthCaption: ({ calendarMonth }) => {
           return (
@@ -620,7 +620,7 @@ const TimePicker = React.forwardRef<TimePickerRef, TimePickerProps>(
     return (
       <div className='flex items-center justify-center gap-2'>
         <label htmlFor='datetime-picker-hour-input' className='cursor-pointer'>
-          <IconClock className='mr-2 h-4 w-4' />
+          <ClockIcon className='mr-2 h-4 w-4' />
         </label>
         <TimePickerInput
           picker={hourCycle === 24 ? 'hours' : '12hours'}
@@ -830,7 +830,7 @@ const DateTimePicker = React.forwardRef<
             )}
             ref={buttonRef}
           >
-            <IconCalendar className='mr-2 h-4 w-4' />
+            <CalendarIcon className='mr-2 h-4 w-4' />
             {displayDate ? (
               format(
                 displayDate,
