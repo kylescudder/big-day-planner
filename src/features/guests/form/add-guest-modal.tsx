@@ -16,7 +16,7 @@ import { createGuestRecord } from '@/server/service'
 import { Guest } from '@/server/db/schema'
 import { GuestFormFields } from './guest-form-fields'
 import { Address } from '@/types/address'
-import { IconUserPlus } from '@tabler/icons-react'
+import { UserPlusIcon } from 'lucide-react'
 import {
   Drawer,
   DrawerClose,
@@ -89,7 +89,7 @@ export function AddGuestModal({ guests, onNewGuest }: AddGuestModalProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mr-1'>
-            <IconUserPlus className='pr-2' />
+            <UserPlusIcon className='pr-2' />
             Add Guest
           </Button>
         </DialogTrigger>
@@ -126,7 +126,7 @@ export function AddGuestModal({ guests, onNewGuest }: AddGuestModalProps) {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mr-1'>
-          <IconUserPlus className='pr-2' />
+          <UserPlusIcon className='pr-2' />
           Add Guest
         </Button>
       </DrawerTrigger>

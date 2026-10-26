@@ -23,7 +23,7 @@ import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Detail } from '@/server/db/schema'
 import { updateDetailRecord } from '@/server/service'
-import { IconEdit } from '@tabler/icons-react'
+import { SquarePenIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { EditDetailsForm } from './form/edit-details-form'
@@ -73,7 +73,7 @@ export function EditDetails(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconEdit className='pr-2' />
+            <SquarePenIcon className='pr-2' />
             Edit Details
           </Button>
         </DialogTrigger>
@@ -104,7 +104,7 @@ export function EditDetails(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconEdit className='pr-2' />
+          <SquarePenIcon className='pr-2' />
           Edit Details
         </Button>
       </DrawerTrigger>

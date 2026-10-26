@@ -20,7 +20,7 @@ import {
   DrawerTrigger
 } from '@/components/ui/drawer'
 import { useMediaQuery } from '@/hooks/use-media-query'
-import { IconLibraryPhoto } from '@tabler/icons-react'
+import { ImagesIcon } from 'lucide-react'
 import { useState } from 'react'
 import { EditImagesForm } from './form/edit-images-form'
 import { Images } from '@/server/db/schema'
@@ -52,7 +52,7 @@ export function EditImages(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconLibraryPhoto className='pr-2' />
+            <ImagesIcon className='pr-2' />
             Edit Images
           </Button>
         </DialogTrigger>
@@ -84,7 +84,7 @@ export function EditImages(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconLibraryPhoto className='pr-2' />
+          <ImagesIcon className='pr-2' />
           Edit Images
         </Button>
       </DrawerTrigger>

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { IconChevronUp } from '@tabler/icons-react'
+import { ChevronUpIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export function Fab() {
@@ -32,7 +32,7 @@ export function Fab() {
       onClick={scrollToTop}
       className={`fixed right-3 bottom-3 transition-opacity duration-1000 ease-in-out ${!showButton ? 'opacity-0' : 'opacity-100'}`}
     >
-      <IconChevronUp className='h-4 w-4' />
+      <ChevronUpIcon className='h-4 w-4' />
     </Button>
   )
 }

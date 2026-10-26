@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Dialog as SheetPrimitive } from 'radix-ui'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { IconX } from '@tabler/icons-react'
+import { XIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -65,7 +65,7 @@ const SheetContent = React.forwardRef<
     >
       {children}
       <SheetPrimitive.Close className='ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-6 right-6 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none'>
-        <IconX className='text-primary' width={30} height={30} />
+        <XIcon className='text-primary' width={30} height={30} />
         <span className='sr-only'>Close</span>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>

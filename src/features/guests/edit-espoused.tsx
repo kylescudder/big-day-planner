@@ -24,7 +24,7 @@ import { useMediaQuery } from '@/hooks/use-media-query'
 import { uuidv4 } from '@/lib/utils'
 import { Espoused } from '@/server/db/schema'
 import { updateEspousedRecord } from '@/server/service'
-import { IconFriends } from '@tabler/icons-react'
+import { UsersIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { EditEspousedForm } from './form/edit-espoused-form'
@@ -61,7 +61,7 @@ export function EditEspoused(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconFriends className='pr-2' />
+            <UsersIcon className='pr-2' />
             Edit Espoused
           </Button>
         </DialogTrigger>
@@ -94,7 +94,7 @@ export function EditEspoused(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconFriends className='pr-2' />
+          <UsersIcon className='pr-2' />
           Edit Espoused
         </Button>
       </DrawerTrigger>

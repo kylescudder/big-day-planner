@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import ListItem from '@/components/ui/list-item'
 import { PAGES } from '@/consts/pages'
-import { IconMenu2 } from '@tabler/icons-react'
+import { MenuIcon } from 'lucide-react'
 import { Dialog as SheetPrimitive } from 'radix-ui'
 import { Detail, type Guest } from '@/server/db/schema'
 
@@ -32,7 +32,7 @@ const TopBar = (props: { guestData: Guest[]; details: Detail }) => {
         <div>
           <Sheet key='right'>
             <SheetTrigger asChild>
-              <IconMenu2 className='text-primary' width={30} height={30} />
+              <MenuIcon className='text-primary' width={30} height={30} />
             </SheetTrigger>
             <SheetContent side='right'>
               <div className='flex h-full'>

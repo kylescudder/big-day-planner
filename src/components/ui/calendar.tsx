@@ -3,7 +3,7 @@ import { DayPicker } from 'react-day-picker'
 
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -31,9 +31,9 @@ function Calendar({
       components={{
         Chevron: ({ ...props }) =>
           props.orientation === 'left' ? (
-            <IconChevronLeft className='h-4 w-4' />
+            <ChevronLeftIcon className='h-4 w-4' />
           ) : (
-            <IconChevronRight className='h-4 w-4' />
+            <ChevronRightIcon className='h-4 w-4' />
           )
       }}
       {...props}

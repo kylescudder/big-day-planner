@@ -1,5 +1,5 @@
 import { Show, SignOutButton } from '@clerk/tanstack-react-start'
-import { IconLogout } from '@tabler/icons-react'
+import { LogOutIcon } from 'lucide-react'
 
 export default function Logout() {
   return (
@@ -7,10 +7,10 @@ export default function Logout() {
       <Show when='signed-in'>
         <SignOutButton redirectUrl='/sign-in'>
           <div className='flex cursor-pointer align-middle'>
-            <IconLogout
+            <LogOutIcon
               size={24}
               className='text-foreground'
-              stroke={2}
+              strokeWidth={2}
               strokeLinejoin='miter'
             />
             <p className='text-foreground pl-3 font-black max-lg:hidden'>

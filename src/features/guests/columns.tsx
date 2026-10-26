@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Checkbox } from '@/components/ui/checkbox'
-import { IconDots } from '@tabler/icons-react'
+import { EllipsisIcon } from 'lucide-react'
 import { type ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
 import type { Guest } from '@/server/db/schema'
@@ -93,7 +93,7 @@ export const getGuestColumns = ({
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' className='h-8 w-8 p-0'>
                 <span className='sr-only'>Open menu</span>
-                <IconDots className='h-4 w-4' />
+                <EllipsisIcon className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>

@@ -5,7 +5,7 @@ import { ImageType } from '@/consts/image-types'
 import { uploadUrl } from '@/lib/uploads'
 import { Images } from '@/server/db/schema'
 import { deleteImageRecord } from '@/server/service'
-import { IconTrash } from '@tabler/icons-react'
+import { TrashIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export function EditImagesForm(props: {
@@ -114,7 +114,7 @@ export function EditImagesForm(props: {
         onClick={() => deleteImage(image, type)}
         aria-label={`Delete ${type.toLowerCase()} image`}
       >
-        <IconTrash />
+        <TrashIcon />
       </Button>
     </div>
   )

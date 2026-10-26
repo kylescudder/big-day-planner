@@ -26,7 +26,7 @@ import {
   updatePuddingRecords,
   updateStarterRecords
 } from '@/server/service'
-import { IconToolsKitchen2 } from '@tabler/icons-react'
+import { UtensilsIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { EditMealsForm } from './form/edit-meals-form'
@@ -82,7 +82,7 @@ export function EditMeals(props: {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant='outline' className='mx-2'>
-            <IconToolsKitchen2 className='pr-2' />
+            <UtensilsIcon className='pr-2' />
             Edit Meals
           </Button>
         </DialogTrigger>
@@ -109,7 +109,7 @@ export function EditMeals(props: {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='outline' className='mx-2'>
-          <IconToolsKitchen2 className='pr-2' />
+          <UtensilsIcon className='pr-2' />
           Edit Meals
         </Button>
       </DrawerTrigger>

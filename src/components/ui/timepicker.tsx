@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IconClock } from '@tabler/icons-react'
+import { ClockIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import {
@@ -125,7 +125,7 @@ export function TimePicker({
         <span className='text-muted-foreground text-xs'>Minute</span>
       </div>
       <div className='flex h-10 items-center'>
-        <IconClock className='text-muted-foreground ml-2 h-4 w-4' />
+        <ClockIcon className='text-muted-foreground ml-2 h-4 w-4' />
       </div>
     </div>
   )
