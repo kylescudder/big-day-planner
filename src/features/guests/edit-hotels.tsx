@@ -26,7 +26,7 @@ import { BedIcon, TrashIcon } from 'lucide-react'
 import { EditHotelsForm } from './form/edit-hotels-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
-import { deleteHotelRecord, updateHotelRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { Hotel } from '@/server/db/schema'
 
 export function EditHotels(props: {
@@ -52,13 +52,13 @@ export function EditHotels(props: {
     }
     const updatedHotels = [...currentHotels, newHotel]
     setCurrentHotels(updatedHotels)
-    await updateHotelRecord({ data: newHotel })
+    await trpc.hotel.update.mutate(newHotel)
     props.onHotelsSave()
     form.reset()
   }
 
   function handleHotelDelete(hotel: Hotel) {
-    deleteHotelRecord({ data: hotel })
+    trpc.hotel.delete.mutate(hotel)
     setCurrentHotels((prevHotels) =>
       prevHotels.filter((t) => t.id !== hotel.id)
     )

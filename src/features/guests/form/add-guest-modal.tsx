@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { createGuestRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { Guest } from '@/server/db/schema'
 import { GuestFormFields } from './guest-form-fields'
 import { Address } from '@/types/address'
@@ -76,7 +76,7 @@ export function AddGuestModal({ guests, onNewGuest }: AddGuestModalProps) {
       createdAt: new Date(),
       updatedAt: new Date()
     }
-    await createGuestRecord({ data: newGuest })
+    await trpc.guest.create.mutate(newGuest)
     onNewGuest(newGuest)
     form.reset()
     setAddressList([])

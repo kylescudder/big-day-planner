@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { getGuestByKeyRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { useNavigate } from '@tanstack/react-router'
 import LoadingPage from '@/components/ui/loading/loading-page'
 
@@ -39,9 +39,7 @@ export function GuestKeyScreen({
 
   async function onSubmit(values: { guestKey: string }) {
     setLoading(true)
-    const guest = await getGuestByKeyRecord({
-      data: { guestKey: values.guestKey }
-    })
+    const guest = await trpc.guestByKey.mutate({ guestKey: values.guestKey })
 
     if (guest) {
       await navigate({ to: '/guest/$id', params: { id: guest.id } })

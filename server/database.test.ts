@@ -241,3 +241,98 @@ test('health recovers on a new connection while the old socket stays stalled', a
     proxy.allowNewConnections()
   }
 }, 10000)
+
+describe('API procedures', () => {
+  test('public pages load, admin procedures need a session, and admin input is validated', async () => {
+    const { appRouter } = await import('../src/server/trpc')
+    const anonymous = appRouter.createCaller({ userId: null })
+    const admin = appRouter.createCaller({ userId: 'user_admin' })
+
+    expect((await anonymous.session()).userId).toBeNull()
+    expect(Array.isArray((await anonymous.home()).images)).toBe(true)
+    const page = await anonymous.guestPage({ id: guestId })
+    expect(page.guestData.map(({ id }) => id).sort()).toEqual(
+      [guestId, partnerId].sort()
+    )
+    expect(await anonymous.guestByKey({ guestKey: ' TestKey ' })).toEqual({
+      id: guestId
+    })
+    await expect(
+      anonymous.guestPage({ id: 'not-a-uuid' })
+    ).rejects.toMatchObject({
+      code: 'BAD_REQUEST'
+    })
+
+    for (const call of [
+      () => anonymous.guestsPage(),
+      () => anonymous.guest.get(guestId),
+      () => anonymous.guest.delete(guestId),
+      () => anonymous.address.lookupEnabled()
+    ])
+      await expect(call()).rejects.toMatchObject({ code: 'UNAUTHORIZED' })
+
+    const id = '99999999-9999-4999-8999-999999999999'
+    const created = new Date('2027-01-02T03:04:05.000Z')
+    const newGuest = {
+      id,
+      forename: 'New',
+      surname: 'Guest',
+      email: 'new@example.com',
+      phone: '0',
+      address1: '2 Road',
+      address2: null,
+      address3: null,
+      town: null,
+      county: null,
+      postcode: null,
+      starterId: null,
+      mainId: null,
+      puddingId: null,
+      song: '',
+      artist: '',
+      rsvp: false,
+      rsvpAnswer: false,
+      parentId: null,
+      dietaryRequirements: '',
+      guestKey: 'newkey',
+      createdAt: created,
+      updatedAt: created
+    }
+    await expect(anonymous.guest.create(newGuest)).rejects.toMatchObject({
+      code: 'UNAUTHORIZED'
+    })
+    await admin.guest.create(newGuest)
+    expect(await admin.guest.get(id)).toMatchObject({
+      forename: 'New',
+      createdAt: created
+    })
+    await admin.guest.update({ ...newGuest, forename: 'Renamed' })
+    expect((await admin.guest.get(id))?.forename).toBe('Renamed')
+    // Input that the old unchecked validator let through is now rejected.
+    for (const invalid of [
+      { ...newGuest, id: 'not-a-uuid' },
+      { ...newGuest, rsvp: 'yes' },
+      { ...newGuest, address2: 'x'.repeat(300) }
+    ])
+      await expect(
+        admin.guest.update(invalid as unknown as typeof newGuest)
+      ).rejects.toMatchObject({ code: 'BAD_REQUEST' })
+    // Dates sent as strings are coerced, as JSON would carry them.
+    const timing = {
+      id: '66666666-6666-4666-8666-666666666666',
+      time: '2027-06-12T13:00:00.000Z' as unknown as Date,
+      event: 'Ceremony',
+      altText: null,
+      imageUrl: null
+    }
+    await admin.timing.update(timing)
+    const [stored] = await sql`SELECT time FROM timing WHERE id = ${timing.id}`
+    expect(stored!.time).toBeInstanceOf(Date)
+    await admin.timing.delete(timing)
+    await admin.guest.delete(id)
+    expect(await admin.guest.get(id)).toBeNull()
+    expect(
+      (await admin.guestsPage()).data.some((guest) => guest.id === id)
+    ).toBe(false)
+  })
+})

@@ -21,11 +21,7 @@ import {
 } from '@/components/ui/drawer'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Main, Pudding, Starter, starters } from '@/server/db/schema'
-import {
-  updateMainRecords,
-  updatePuddingRecords,
-  updateStarterRecords
-} from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { UtensilsIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -59,20 +55,20 @@ export function EditMeals(props: {
       JSON.stringify(form.getValues('starters'))
     ) {
       form.setValue('starters', meals.starters)
-      await updateStarterRecords({ data: meals.starters })
+      await trpc.starters.mutate(meals.starters)
     }
     if (
       JSON.stringify(meals.mains) != JSON.stringify(form.getValues('mains'))
     ) {
       form.setValue('mains', meals.mains)
-      await updateMainRecords({ data: meals.mains })
+      await trpc.mains.mutate(meals.mains)
     }
     if (
       JSON.stringify(meals.puddings) !=
       JSON.stringify(form.getValues('puddings'))
     ) {
       form.setValue('puddings', meals.puddings)
-      await updatePuddingRecords({ data: meals.puddings })
+      await trpc.puddings.mutate(meals.puddings)
     }
     props.onMealsSave()
   }

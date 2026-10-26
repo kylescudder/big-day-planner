@@ -23,7 +23,7 @@ import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { uuidv4 } from '@/lib/utils'
 import { Espoused } from '@/server/db/schema'
-import { updateEspousedRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { UsersIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -51,7 +51,7 @@ export function EditEspoused(props: {
     const espoused = {
       ...values
     }
-    await updateEspousedRecord({ data: espoused })
+    await trpc.espoused.mutate(espoused)
     setOpen(false)
     props.onEspousedSave()
   }

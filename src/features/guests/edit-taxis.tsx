@@ -26,7 +26,7 @@ import { CarIcon, TrashIcon } from 'lucide-react'
 import { EditTaxisForm } from './form/edit-taxis-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
-import { deleteTaxiRecord, updateTaxiRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { Taxi } from '@/server/db/schema'
 
 export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
@@ -50,13 +50,13 @@ export function EditTaxis(props: { taxis: Taxi[]; onTaxisSave: () => void }) {
     }
     const updatedTaxis = [...currentTaxis, newTaxi]
     setCurrentTaxis(updatedTaxis)
-    await updateTaxiRecord({ data: newTaxi })
+    await trpc.taxi.update.mutate(newTaxi)
     props.onTaxisSave()
     form.reset()
   }
 
   function handleTaxiDelete(taxi: Taxi) {
-    deleteTaxiRecord({ data: taxi })
+    trpc.taxi.delete.mutate(taxi)
     setCurrentTaxis((prevTaxis) => prevTaxis.filter((t) => t.id !== taxi.id))
   }
 

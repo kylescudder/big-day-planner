@@ -26,7 +26,7 @@ import { PaletteIcon, TrashIcon } from 'lucide-react'
 import { EditColoursForm } from './form/edit-colours-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
-import { deleteColourRecord, updateColourRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import type { Colour } from '@/server/db/schema'
 
 export function EditColours(props: {
@@ -51,7 +51,7 @@ export function EditColours(props: {
     }
     const updatedColours = [...currentColours, newColour]
     setCurrentColours(updatedColours)
-    await updateColourRecord({ data: newColour })
+    await trpc.colour.update.mutate(newColour)
     props.onColoursSave()
     form.reset({
       id: uuidv4(),
@@ -60,7 +60,7 @@ export function EditColours(props: {
   }
 
   function handleColourDelete(colour: Colour) {
-    deleteColourRecord({ data: colour })
+    trpc.colour.delete.mutate(colour)
     setCurrentColours((prevColours) =>
       prevColours.filter((t) => t.id !== colour.id)
     )

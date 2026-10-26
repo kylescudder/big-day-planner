@@ -15,7 +15,7 @@ import {
   type Guest,
   Espoused
 } from '@/server/db/schema'
-import { updateMenuChoice } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Textarea } from '@/components/ui/textarea'
@@ -54,7 +54,7 @@ export function MenuForm(props: {
         ...value,
         updatedAt: new Date()
       }
-      await updateMenuChoice({ data: guest })
+      await trpc.menuChoice.mutate(guest)
     }
     setAllMenuChosen(true)
     setLoading(false)
