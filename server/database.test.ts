@@ -34,6 +34,7 @@ async function migrate() {
 }
 
 beforeAll(async () => {
+  await sql`DROP SCHEMA IF EXISTS drizzle CASCADE`
   await sql`DROP SCHEMA public CASCADE`
   await sql`CREATE SCHEMA public`
   await migrate()
@@ -52,7 +53,6 @@ describe('migrations', () => {
       WHERE table_schema = 'public' ORDER BY table_name
     `
     expect(tables.map(({ table_name }) => table_name)).toEqual([
-      '__drizzle_migrations',
       'colours',
       'detail',
       'espoused',
@@ -65,6 +65,34 @@ describe('migrations', () => {
       'taxi',
       'timing'
     ])
+    const [journal] =
+      await sql`SELECT count(*)::int AS applied FROM drizzle.__drizzle_migrations`
+    expect(journal!.applied).toBe(1)
+  })
+
+  test('move a journal left in public by earlier releases, keeping its history', async () => {
+    await sql`ALTER TABLE drizzle.__drizzle_migrations SET SCHEMA public`
+    const [before] = await sql`SELECT hash FROM public.__drizzle_migrations`
+    // The baseline isn't idempotent, so rerunning it here would fail.
+    await migrate()
+    expect(
+      (await sql`SELECT to_regclass('public.__drizzle_migrations') AS name`)[0]!
+        .name
+    ).toBeNull()
+    const after = await sql`SELECT hash FROM drizzle.__drizzle_migrations`
+    expect(after.map(({ hash }) => hash)).toEqual([before!.hash])
+  })
+
+  test('drop the empty journal an older release leaves in public', async () => {
+    await sql`CREATE TABLE public.__drizzle_migrations (id serial PRIMARY KEY, hash text NOT NULL, created_at bigint)`
+    await migrate()
+    expect(
+      (await sql`SELECT to_regclass('public.__drizzle_migrations') AS name`)[0]!
+        .name
+    ).toBeNull()
+    const [journal] =
+      await sql`SELECT count(*)::int AS applied FROM drizzle.__drizzle_migrations`
+    expect(journal!.applied).toBe(1)
   })
 })
 

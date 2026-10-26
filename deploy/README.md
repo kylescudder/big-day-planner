@@ -91,7 +91,9 @@ receiver or webhook.
 
 Migrations are Drizzle SQL files in `drizzle/`, generated with
 `bun run db:generate` and applied by `server/migrate.ts`. Drizzle records
-applied migrations in `public.__drizzle_migrations`. `0000_baseline.sql`
+applied migrations in `drizzle.__drizzle_migrations`, a schema the runtime role
+cannot read or change; `server/migrate.ts` moves the journal there once from
+`public`, where earlier releases kept it. `0000_baseline.sql`
 creates the current schema; the earlier migration history had drifted from
 the schema and was replaced.
 

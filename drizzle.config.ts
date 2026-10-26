@@ -6,7 +6,7 @@ export default defineConfig({
   dialect: 'postgresql',
   schema: './src/server/db/schema.ts',
   migrations: {
-    schema: 'public',
+    schema: 'drizzle',
     table: '__drizzle_migrations'
   },
   dbCredentials: {
