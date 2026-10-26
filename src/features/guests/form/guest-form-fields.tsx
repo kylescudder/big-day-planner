@@ -19,12 +19,7 @@ import {
 import { type FieldValues, UseFormReturn } from 'react-hook-form'
 import { type Address } from '@/types/address'
 import { type Guest } from '@/server/db/schema'
-import {
-  getAddressLookupEnabled,
-  getAddressRecords,
-  getAddressListRecords,
-  getGuestRecord
-} from '@/server/service'
+import { trpc } from '@/lib/trpc'
 
 export interface GuestFormFieldsProps {
   form: UseFormReturn<Guest>
@@ -46,16 +41,14 @@ export function GuestFormFields({
 
   const handlePostcodeLookup = async () => {
     const postcode = form.getValues('postcode')
-    const addressListData = await getAddressListRecords({
-      data: postcode ?? ''
-    })
+    const addressListData = await trpc.address.list.mutate(postcode ?? '')
     const suggestions = addressListData?.suggestions ?? []
     setAddressList(suggestions)
     setAddressSearched(true)
   }
 
   const handleAddressSelection = async (addressUrl: string) => {
-    const addressData = await getAddressRecords({ data: addressUrl })
+    const addressData = await trpc.address.get.mutate(addressUrl)
     form.setValue('address1', addressData?.line_1 ?? '')
     form.setValue('address2', addressData?.line_2 ?? '')
     form.setValue('address3', addressData?.line_3 ?? '')
@@ -64,14 +57,14 @@ export function GuestFormFields({
   }
 
   const handleLinkSelection = async (id: string) => {
-    const guestData = await getGuestRecord({ data: id })
+    const guestData = await trpc.guest.get.query(id)
     setLinkedGuestId(id)
     form.setValue('guestKey', guestData?.guestKey ?? '')
     form.setValue('parentId', guestData?.id ?? null)
   }
 
   useEffect(() => {
-    void getAddressLookupEnabled().then(setLookupEnabled)
+    void trpc.address.lookupEnabled.query().then(setLookupEnabled)
   }, [])
 
   useEffect(() => {

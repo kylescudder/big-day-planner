@@ -11,7 +11,7 @@ import {
 import { Detail, Espoused, type Guest } from '@/server/db/schema'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useForm } from 'react-hook-form'
-import { updateRSVP } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { format } from 'date-fns'
 import LoadingPage from '@/components/ui/loading/loading-page'
 
@@ -50,7 +50,7 @@ export function RSVPAnswer(props: {
         updatedAt: new Date()
       }
 
-      await updateRSVP({ data: guest })
+      await trpc.rsvp.mutate(guest)
       updatedGuests.push(guest)
     }
 

@@ -1,13 +1,11 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 import { ClientGuestPage } from '@/features/guest/client-guest'
-import { getGuestPageData } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 
 export const Route = createFileRoute('/guest/$id')({
   loader: async ({ params }) => {
-    const data = await getGuestPageData({ data: { id: params.id } }).catch(
-      () => null
-    )
+    const data = await trpc.guestPage.query({ id: params.id }).catch(() => null)
     const { details, espoused } = data ?? {}
     if (!data || !details || !espoused || data.guestData.length === 0) {
       throw redirect({ to: '/' })

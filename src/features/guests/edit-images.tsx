@@ -24,7 +24,7 @@ import { ImagesIcon } from 'lucide-react'
 import { useState } from 'react'
 import { EditImagesForm } from './form/edit-images-form'
 import { Images } from '@/server/db/schema'
-import { updateImageRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 
 export function EditImages(props: {
   images: Images[]
@@ -37,7 +37,7 @@ export function EditImages(props: {
 
   const handleSave = async () => {
     uploadedImages.forEach((image) => {
-      updateImageRecord({ data: image })
+      trpc.image.update.mutate(image)
     })
     try {
       props.onImagesSave()

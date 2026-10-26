@@ -26,7 +26,7 @@ import { ClockIcon, TrashIcon } from 'lucide-react'
 import { EditTimingsForm } from './form/edit-timings-form'
 import { uuidv4 } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
-import { deleteTimingRecord, updateTimingRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { Timing } from '@/server/db/schema'
 import { format } from 'date-fns'
 import { uploadUrl } from '@/lib/uploads'
@@ -56,13 +56,13 @@ export function EditTimings(props: {
     }
     const updatedTimings = [...currentTimings, newTiming]
     setCurrentTimings(updatedTimings)
-    await updateTimingRecord({ data: newTiming })
+    await trpc.timing.update.mutate(newTiming)
     props.onTimingsSave()
     form.reset()
   }
 
   function handleTimingDelete(timing: Timing) {
-    deleteTimingRecord({ data: timing })
+    trpc.timing.delete.mutate(timing)
     setCurrentTimings((prevTimings) =>
       prevTimings.filter((t) => t.id !== timing.id)
     )

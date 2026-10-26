@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { getGuestColumns } from './columns'
 import { EditDetails } from './edit-details'
-import { deleteGuestRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { EditEspoused } from './edit-espoused'
 import { EditImages } from './edit-images'
 import { EditTimings } from './edit-timings'
@@ -43,7 +43,7 @@ export default function Guests(props: {
   const [guests, setGuests] = useState<Guest[]>([])
 
   const onDelete = async (guest: Guest) => {
-    await deleteGuestRecord({ data: guest.id })
+    await trpc.guest.delete.mutate(guest.id)
     toast('Guest deleted!', {
       duration: 2000,
       id: guest.id

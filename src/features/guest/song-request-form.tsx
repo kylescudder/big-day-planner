@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Espoused, type Guest } from '@/server/db/schema'
-import { updateSongChoice } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { useState } from 'react'
 import { useForm, type FieldValues } from 'react-hook-form'
 
@@ -26,7 +26,7 @@ export function SongRequestForm(props: { guest: Guest; espoused: Espoused }) {
       ...values,
       updatedAt: new Date()
     }
-    await updateSongChoice({ data: guest })
+    await trpc.songChoice.mutate(guest)
     setSong(guest.song)
   }
 

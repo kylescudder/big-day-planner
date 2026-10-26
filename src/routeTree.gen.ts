@@ -15,6 +15,7 @@ import { Route as HealthzRouteImport } from './routes/healthz'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
 import { Route as GuestIdRouteImport } from './routes/guest.$id'
+import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const GuestIdRoute = GuestIdRouteImport.update({
   path: '/guest/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
+  id: '/api/trpc/$',
+  path: '/api/trpc/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/guest/$id': typeof GuestIdRoute
+  '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/guest/$id': typeof GuestIdRoute
+  '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
   '/guest/$id': typeof GuestIdRoute
+  '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/api/uploadthing'
     | '/guest/$id'
+    | '/api/trpc/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/api/uploadthing'
     | '/guest/$id'
+    | '/api/trpc/$'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/api/uploadthing'
     | '/guest/$id'
+    | '/api/trpc/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   SignInRoute: typeof SignInRoute
   ApiUploadthingRoute: typeof ApiUploadthingRoute
   GuestIdRoute: typeof GuestIdRoute
+  ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/trpc/$': {
+      id: '/api/trpc/$'
+      path: '/api/trpc/$'
+      fullPath: '/api/trpc/$'
+      preLoaderRoute: typeof ApiTrpcSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignInRoute: SignInRoute,
   ApiUploadthingRoute: ApiUploadthingRoute,
   GuestIdRoute: GuestIdRoute,
+  ApiTrpcSplatRoute: ApiTrpcSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -22,7 +22,7 @@ import {
 import { Form } from '@/components/ui/form'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Detail } from '@/server/db/schema'
-import { updateDetailRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { SquarePenIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -63,7 +63,7 @@ export function EditDetails(props: {
     const details = {
       ...values
     }
-    await updateDetailRecord({ data: details })
+    await trpc.details.mutate(details)
     setOpen(false)
     props.onDetailsSave()
   }

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { updateGuestRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { Guest } from '@/server/db/schema'
 import { GuestFormFields } from './guest-form-fields'
 import { Address } from '@/types/address'
@@ -61,7 +61,7 @@ export function EditGuestModal({
       ...values,
       updatedAt: new Date()
     }
-    await updateGuestRecord({ data: updated })
+    await trpc.guest.update.mutate(updated)
     onGuestUpdate(updated)
     onOpenChange(false)
   }

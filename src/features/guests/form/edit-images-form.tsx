@@ -4,7 +4,7 @@ import UploadThingImage from '@/components/ui/upload-thing'
 import { ImageType } from '@/consts/image-types'
 import { uploadUrl } from '@/lib/uploads'
 import { Images } from '@/server/db/schema'
-import { deleteImageRecord } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 import { TrashIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -78,7 +78,7 @@ export function EditImagesForm(props: {
       } else if (type === ImageType.LANDING) {
         setUploadedLandingImage(undefined)
       }
-      deleteImageRecord({ data: image })
+      trpc.image.delete.mutate(image)
     }
   }
 

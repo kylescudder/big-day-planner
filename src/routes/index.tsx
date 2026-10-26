@@ -2,10 +2,10 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { ImageType } from '@/consts/image-types'
 import { GuestKeyScreen } from '@/features/home/guest-key-screen'
-import { getHomePageData } from '@/server/service'
+import { trpc } from '@/lib/trpc'
 
 export const Route = createFileRoute('/')({
-  loader: () => getHomePageData(),
+  loader: () => trpc.home.query(),
   component: HomePage
 })
 
