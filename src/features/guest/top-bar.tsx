@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import ListItem from '@/components/ui/list-item'
 import { PAGES } from '@/consts/pages'
 import { IconMenu2 } from '@tabler/icons-react'
-import * as SheetPrimitive from '@radix-ui/react-dialog'
+import { Dialog as SheetPrimitive } from 'radix-ui'
 import { Detail, type Guest } from '@/server/db/schema'
 
 const TopBar = (props: { guestData: Guest[]; details: Detail }) => {
