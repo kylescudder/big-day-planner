@@ -19,7 +19,7 @@
     "test:connections": "bun deploy/test-connection-budget.ts"
   },
   "dependencies": {
-    "@clerk/tanstack-react-start": "1.7.3",
+    "@clerk/tanstack-react-start": "1.7.9",
     "@hookform/resolvers": "6.0.0",
     "@react-email/render": "1.3.2",
     "@sentry/tanstackstart-react": "11.8.0",
