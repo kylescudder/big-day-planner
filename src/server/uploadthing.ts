@@ -1,14 +1,17 @@
-import { auth } from '@clerk/tanstack-react-start/server'
 import {
   createUploadthing,
   UploadThingError,
   type FileRouter
 } from 'uploadthing/server'
 
+import { sessionUserId } from './auth-session'
+
 const f = createUploadthing()
 
-async function requireUploader() {
-  const { userId } = await auth()
+// Uploads need a signed-in planner from the selected provider. uploadedBy is
+// the Clerk user ID under Clerk and the Better Auth user ID under Better Auth.
+export async function requireUploader({ req }: { req: Request }) {
+  const userId = await sessionUserId(req.headers)
   if (!userId)
     throw new UploadThingError({ code: 'FORBIDDEN', message: 'Unauthorized' })
   return { userId }

@@ -152,3 +152,6 @@ export const colours = createTable('colours', {
 })
 
 export type Colour = typeof colours.$inferSelect
+
+// Better Auth tables (used only with AUTH_PROVIDER=better-auth).
+export * from './auth-schema'

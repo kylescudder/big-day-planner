@@ -12,9 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuestsRouteImport } from './routes/guests'
 import { Route as HealthzRouteImport } from './routes/healthz'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
+import { Route as AuthPathRouteImport } from './routes/auth.$path'
 import { Route as GuestIdRouteImport } from './routes/guest.$id'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -32,6 +35,11 @@ const HealthzRoute = HealthzRouteImport.update({
   path: '/healthz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
@@ -42,9 +50,19 @@ const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
   path: '/api/uploadthing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthPathRoute = AuthPathRouteImport.update({
+  id: '/auth/$path',
+  path: '/auth/$path',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuestIdRoute = GuestIdRouteImport.update({
   id: '/guest/$id',
   path: '/guest/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
@@ -57,18 +75,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/guests': typeof GuestsRoute
   '/healthz': typeof HealthzRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/auth/$path': typeof AuthPathRoute
   '/guest/$id': typeof GuestIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/guests': typeof GuestsRoute
   '/healthz': typeof HealthzRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/auth/$path': typeof AuthPathRoute
   '/guest/$id': typeof GuestIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesById {
@@ -76,9 +100,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/guests': typeof GuestsRoute
   '/healthz': typeof HealthzRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/api/uploadthing': typeof ApiUploadthingRoute
+  '/auth/$path': typeof AuthPathRoute
   '/guest/$id': typeof GuestIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRouteTypes {
@@ -87,27 +114,36 @@ export interface FileRouteTypes {
     | '/'
     | '/guests'
     | '/healthz'
+    | '/profile'
     | '/sign-in'
     | '/api/uploadthing'
+    | '/auth/$path'
     | '/guest/$id'
+    | '/api/auth/$'
     | '/api/trpc/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/guests'
     | '/healthz'
+    | '/profile'
     | '/sign-in'
     | '/api/uploadthing'
+    | '/auth/$path'
     | '/guest/$id'
+    | '/api/auth/$'
     | '/api/trpc/$'
   id:
     | '__root__'
     | '/'
     | '/guests'
     | '/healthz'
+    | '/profile'
     | '/sign-in'
     | '/api/uploadthing'
+    | '/auth/$path'
     | '/guest/$id'
+    | '/api/auth/$'
     | '/api/trpc/$'
   fileRoutesById: FileRoutesById
 }
@@ -115,9 +151,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GuestsRoute: typeof GuestsRoute
   HealthzRoute: typeof HealthzRoute
+  ProfileRoute: typeof ProfileRoute
   SignInRoute: typeof SignInRoute
   ApiUploadthingRoute: typeof ApiUploadthingRoute
+  AuthPathRoute: typeof AuthPathRoute
   GuestIdRoute: typeof GuestIdRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
 }
 
@@ -144,6 +183,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HealthzRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sign-in': {
       id: '/sign-in'
       path: '/sign-in'
@@ -158,11 +204,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUploadthingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/$path': {
+      id: '/auth/$path'
+      path: '/auth/$path'
+      fullPath: '/auth/$path'
+      preLoaderRoute: typeof AuthPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guest/$id': {
       id: '/guest/$id'
       path: '/guest/$id'
       fullPath: '/guest/$id'
       preLoaderRoute: typeof GuestIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/trpc/$': {
@@ -179,9 +239,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GuestsRoute: GuestsRoute,
   HealthzRoute: HealthzRoute,
+  ProfileRoute: ProfileRoute,
   SignInRoute: SignInRoute,
   ApiUploadthingRoute: ApiUploadthingRoute,
+  AuthPathRoute: AuthPathRoute,
   GuestIdRoute: GuestIdRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
 }
 export const routeTree = rootRouteImport
