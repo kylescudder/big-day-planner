@@ -552,12 +552,14 @@ describe('Better Auth', () => {
         .digest('hex') + ':0'
     )
 
-    // One email a minute per recipient keeps the code already sent usable.
+    // One email a minute per recipient keeps the code already sent usable, and
+    // the refusal looks exactly like the answer for an address with no mail.
     const tooSoon = await fixture.request('/email-otp/send-verification-otp', {
       email: 'groom@example.com',
       type: 'sign-in'
     })
-    expect(tooSoon.status).toBe(429)
+    expect(tooSoon.status).toBe(200)
+    expect(await tooSoon.json()).toEqual({ success: true })
     expect(fixture.sent.size).toBe(1)
 
     const wrong = otp === '000000' ? '111111' : '000000'
@@ -592,6 +594,44 @@ describe('Better Auth', () => {
     expect(
       (await sql`SELECT email FROM auth_user`).map(({ email }) => email)
     ).toEqual(['groom@example.com'])
+  })
+
+  test('a throttled allowlisted address gets the same answer as an unlisted one', async () => {
+    const fixture = await authFixture()
+    const endpoints: [string, object][] = [
+      ['/email-otp/send-verification-otp', { type: 'sign-in' }],
+      ['/sign-in/magic-link', { callbackURL: '/admin' }],
+      ['/request-password-reset', { redirectTo: '/auth/reset-password' }]
+    ]
+    const answer = async (path: string, extra: object, email: string) => {
+      const response = await fixture.request(path, { email, ...extra })
+      return { status: response.status, body: await response.text() }
+    }
+    expect(
+      (await answer(endpoints[0]![0], endpoints[0]![1], 'groom@example.com'))
+        .status
+    ).toBe(200)
+    const code = fixture.sent.get('groom@example.com')
+    for (const [path, extra] of endpoints) {
+      const throttled = await answer(path, extra, 'groom@example.com')
+      const unlisted = await answer(path, extra, 'stranger@example.com')
+      expect(throttled, path).toEqual(unlisted)
+      expect(throttled.status, path).toBe(200)
+    }
+    // Nothing more was sent or charged, and the first code still works.
+    expect(fixture.links.length).toBe(0)
+    expect(fixture.sent.get('groom@example.com')).toBe(code)
+    const [global] =
+      await sql`SELECT count FROM auth_email_limit WHERE key = 'global:day'`
+    expect(global!.count).toBe(1)
+    expect(
+      (
+        await fixture.request('/sign-in/email-otp', {
+          email: 'groom@example.com',
+          otp: code
+        })
+      ).status
+    ).toBe(200)
   })
 
   test('the app email budget is shared and cross-site requests are refused', async () => {
