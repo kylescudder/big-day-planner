@@ -74,13 +74,14 @@ import {
   type Timing
 } from './db/schema'
 
-// userId comes only from Clerk's verified session, never from request input.
+// userId comes only from the selected sign-in provider's verified session
+// (see auth-session.ts), never from request input.
 export type Context = { userId: string | null }
 
 const t = initTRPC.context<Context>().create({ transformer: superjson })
 
 const publicProcedure = t.procedure
-// Admin. Every procedure below requires a signed-in Clerk user.
+// Admin. Every procedure below requires a signed-in planner.
 const adminProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.userId) throw new TRPCError({ code: 'UNAUTHORIZED' })
   return next()

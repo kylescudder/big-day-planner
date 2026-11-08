@@ -14,7 +14,7 @@ services:
     mem_limit: 384m
     cpus: 1
     pids_limit: 128
-    # Protected (0600) file with Clerk, Resend, getAddress and UploadThing keys.
+    # Protected (0600) file with sign-in, Resend, getAddress and UploadThing keys.
     env_file: app.env
     environment:
       NODE_ENV: production

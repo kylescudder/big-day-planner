@@ -47,5 +47,10 @@ export default tseslint.config(
         { allowConstantExport: true }
       ]
     }
+  },
+  {
+    // Better Auth UI registry components co-export form hooks and variants.
+    files: ['src/components/auth/**/*.tsx'],
+    rules: { 'react-refresh/only-export-components': 'off' }
   }
 )
