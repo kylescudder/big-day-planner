@@ -24,7 +24,7 @@
     "@better-auth-ui/react": "1.7.33",
     "@better-auth/drizzle-adapter": "1.7.18",
     "@better-auth/passkey": "1.7.18",
-    "@clerk/tanstack-react-start": "1.7.3",
+    "@clerk/tanstack-react-start": "1.7.11",
     "@hookform/resolvers": "6.0.0",
     "@react-email/render": "1.3.2",
     "@sentry/tanstackstart-react": "11.8.0",
