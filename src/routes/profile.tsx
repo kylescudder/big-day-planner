@@ -1,3 +1,4 @@
+import { useSession } from '@better-auth-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   createFileRoute,
@@ -41,7 +42,10 @@ function ProfilePage() {
 }
 
 function BetterAuthProfile() {
-  const { data: session, isPending } = authClient.useSession()
+  // Better Auth UI's session query, not the client's nanostore: sign-in awaits
+  // this query before navigating here, while the nanostore can still hold the
+  // signed-out value from a "Sign in again" round trip and bounce to sign-in.
+  const { data: session, isPending } = useSession(authClient)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [error, setError] = useState('')
