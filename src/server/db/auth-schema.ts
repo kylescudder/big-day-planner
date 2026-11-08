@@ -9,8 +9,7 @@ import {
   uniqueIndex
 } from 'drizzle-orm/pg-core'
 
-// Separate, additive tables: Clerk rollback never requires removing auth data
-// or touching guest and wedding records.
+// Separate, additive tables: auth data never touches guest and wedding records.
 export const authUser = pgTable('auth_user', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),

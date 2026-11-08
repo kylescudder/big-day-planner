@@ -9,8 +9,6 @@ let instance: ReturnType<typeof createBigDayPlannerAuth> | undefined
 export function getBetterAuth() {
   if (instance) return instance
   const env = readAuthEnv()
-  if (env.AUTH_PROVIDER !== 'better-auth')
-    throw new Error('Better Auth is not enabled')
   const origin = new URL(env.BETTER_AUTH_URL!).origin
   const mail = { apiKey: env.BREVO_API_KEY!, from: env.AUTH_EMAIL_FROM! }
   instance = createBigDayPlannerAuth(

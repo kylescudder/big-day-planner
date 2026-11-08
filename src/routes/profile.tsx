@@ -1,12 +1,6 @@
 import { useSession } from '@better-auth-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
-import {
-  createFileRoute,
-  Link,
-  Navigate,
-  useLoaderData,
-  useNavigate
-} from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
 import { Passkeys } from '@/components/auth/passkey/passkeys'
@@ -20,9 +14,6 @@ import { clearPendingSignIn } from '@/lib/pending-sign-in'
 export const Route = createFileRoute('/profile')({ component: ProfilePage })
 
 function ProfilePage() {
-  const { provider } = useLoaderData({ from: '__root__' })
-  // Clerk manages its own account settings; this page is Better Auth only.
-  if (provider !== 'better-auth') return <Navigate to='/guests' replace />
   return (
     <div className='bg-pink min-h-screen px-4 py-8 sm:px-8'>
       <div className='mx-auto w-full max-w-3xl'>

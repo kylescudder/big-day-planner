@@ -409,7 +409,6 @@ describe('Better Auth', () => {
   const authOrigin = 'https://rsvp.auth.test'
   const allowedEmails = ['groom@example.com', 'bride@example.com']
   const authEnv = {
-    AUTH_PROVIDER: 'better-auth',
     BETTER_AUTH_URL: authOrigin,
     BETTER_AUTH_SECRET: crypto.randomUUID() + crypto.randomUUID(),
     BREVO_API_KEY: 'fixture-never-used-to-send',
@@ -422,12 +421,8 @@ describe('Better Auth', () => {
   const originalFetch = globalThis.fetch
   let fixtureNumber = 0
 
-  function useProvider(provider: 'clerk' | 'better-auth') {
-    Object.assign(process.env, authEnv, { AUTH_PROVIDER: provider })
-  }
-
   beforeAll(() => {
-    useProvider('better-auth')
+    Object.assign(process.env, authEnv)
     // No test may reach the real mail provider.
     globalThis.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
       if (
@@ -859,14 +854,6 @@ describe('Better Auth', () => {
       ['/passkey/generate-authenticate-options', 'GET']
     ] as const)
       expect((await call(path, method)).status).not.toBe(404)
-
-    useProvider('clerk')
-    try {
-      for (const path of ['/get-session', '/sign-in/email'])
-        expect((await call(path)).status).toBe(404)
-    } finally {
-      useProvider('better-auth')
-    }
   })
 
   test('admin data, uploads and passkeys need a verified allowlisted session; guest pages stay public', async () => {
@@ -1098,7 +1085,7 @@ describe('Better Auth', () => {
       (await fixture.request('/update-user', { image: null }, cookie)).status
     ).toBe(200)
 
-    // The app route: signed out is 401 under Better Auth, 404 under Clerk.
+    // The app route: signed out is 401.
     const { handleProfileRequest } = await import('../src/server/profile')
     const routed = await handleProfileRequest(
       new Request(authOrigin + '/api/profile/avatar', {
@@ -1119,32 +1106,5 @@ describe('Better Auth', () => {
         )
       ).status
     ).toBe(401)
-    useProvider('clerk')
-    try {
-      for (const method of ['GET', 'PUT', 'DELETE'])
-        expect(
-          (
-            await handleProfileRequest(
-              new Request(authOrigin + '/api/profile/avatar', {
-                method,
-                headers: { Origin: authOrigin, Cookie: cookie }
-              })
-            )
-          ).status
-        ).toBe(404)
-    } finally {
-      useProvider('better-auth')
-    }
-  })
-
-  test('Clerk mode keeps Clerk middleware and needs no Better Auth settings', async () => {
-    const { requestOptions } = await import('../src/server/request-options')
-    useProvider('clerk')
-    try {
-      expect(requestOptions().requestMiddleware.length).toBe(2)
-    } finally {
-      useProvider('better-auth')
-    }
-    expect(requestOptions().requestMiddleware.length).toBe(1)
   })
 })

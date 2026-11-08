@@ -7,9 +7,8 @@ import { appRouter } from './trpc'
 
 export function trpcHandler(request: Request) {
   const env = readAuthEnv()
-  // Better Auth sessions arrive as cookies, so refuse cross-site writes. Clerk
-  // mode is unchanged.
-  if (env.AUTH_PROVIDER === 'better-auth' && request.method !== 'GET') {
+  // Better Auth sessions arrive as cookies, so refuse cross-site writes.
+  if (request.method !== 'GET') {
     const origin = request.headers.get('origin')
     if (
       request.headers.get('sec-fetch-site') === 'cross-site' ||

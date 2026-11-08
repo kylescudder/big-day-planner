@@ -74,7 +74,7 @@ import {
   type Timing
 } from './db/schema'
 
-// userId comes only from the selected sign-in provider's verified session
+// userId comes only from the verified Better Auth session
 // (see auth-session.ts), never from request input.
 export type Context = { userId: string | null }
 

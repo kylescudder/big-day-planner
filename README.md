@@ -4,7 +4,7 @@ Plan your big day with this site! Guests open their invitation with a unique
 code to RSVP, choose their menu and request a song; the couple manage guests
 and wedding details at `/guests`.
 
-Built with TanStack Start, React, a tRPC API, Clerk or Better Auth (see `deploy/README.md`), Drizzle and PostgreSQL, using Bun.
+Built with TanStack Start, React, a tRPC API, Better Auth (see `deploy/README.md`), Drizzle and PostgreSQL, using Bun.
 
 ## Development
 

@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-import { ClerkProvider } from '@clerk/tanstack-react-start'
 import {
   HeadContent,
   Outlet,
@@ -9,13 +8,9 @@ import {
 import type { ReactNode } from 'react'
 
 import { Toaster } from '@/components/ui/sonner'
-import { getAuthConfig } from '@/lib/auth-config'
 import '@/styles/globals.css'
 
 export const Route = createRootRoute({
-  // The sign-in provider only changes when the container restarts.
-  loader: () => getAuthConfig(),
-  staleTime: Infinity,
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
@@ -30,14 +25,12 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
-  const { provider } = Route.useLoaderData()
-  const page = (
+  return (
     <main className='h-screen justify-center'>
       <Outlet />
       <Toaster />
     </main>
   )
-  return provider === 'clerk' ? <ClerkProvider>{page}</ClerkProvider> : page
 }
 
 function RootDocument({ children }: { children: ReactNode }) {
