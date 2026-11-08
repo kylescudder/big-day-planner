@@ -1,5 +1,6 @@
+import { avatarRequest, prepareAvatar } from './profile'
+
 // Optional name fields shown on the profile, plus the read-only verified email.
-// There is no avatar: the app has no private storage for profile photos.
 const nameField = (name: string, label: string) => ({
   name,
   type: 'string' as const,
@@ -23,3 +24,25 @@ export const profileFields = [
     copyable: true
   }
 ]
+
+// The profile photo is stored privately in the app's database through
+// /api/profile/avatar, never in UploadThing.
+export const profileAvatar = {
+  enabled: true,
+  size: 512,
+  extension: 'jpg' as const,
+  resize: async (file: File) =>
+    new File([await prepareAvatar(file)], 'avatar.jpg', { type: 'image/jpeg' }),
+  upload: async (file: File) => {
+    const { image } = await avatarRequest({
+      method: 'PUT',
+      headers: { 'Content-Type': 'image/jpeg' },
+      body: file
+    })
+    if (!image) throw new Error('The photo could not be uploaded.')
+    return image
+  },
+  delete: async () => {
+    await avatarRequest({ method: 'DELETE' })
+  }
+}

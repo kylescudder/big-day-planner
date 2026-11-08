@@ -158,7 +158,15 @@ Signed-in planners get an avatar menu (Better Auth UI `UserButton`) in the
 guest list header with Profile and Sign out. Sign-out returns to the homepage.
 `/profile` edits the display name and optional first/last names, shows the
 verified email read-only, sets or changes the password and manages passkeys.
-There is no profile photo. Email codes remain the recovery method. For mobile
+It also sets a profile photo, shown in the header menu. The photo goes to
+`/api/profile/avatar` (Better Auth only; 404 under Clerk), which needs a
+verified, still-allowlisted session and works only on that user's own photo.
+Uploads are limited to 2 MB of JPEG, PNG or WebP, checked by signature,
+re-encoded with `sharp` to a 256 px JPEG without metadata, and stored in the
+`user_profile` table, so the photo is private and covered by the database
+backups. It is served with `no-store`, `nosniff` and same-origin CORP. It never
+goes to UploadThing, which stays for wedding images. Email codes remain the
+recovery method. For mobile
 reloads while waiting for a code, tab-scoped session storage keeps only the
 pending email and request time for ten minutes; it never stores the code.
 

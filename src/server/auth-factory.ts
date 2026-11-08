@@ -1,4 +1,5 @@
 import { createHmac } from 'node:crypto'
+import { eq } from 'drizzle-orm'
 import { betterAuth } from 'better-auth'
 import {
   APIError,
@@ -10,9 +11,10 @@ import { drizzleAdapter } from '@better-auth/drizzle-adapter'
 import { passkey } from '@better-auth/passkey'
 import type { db } from './db'
 import * as schema from './db/auth-schema'
+import { userProfile } from './db/profile-schema'
 import { reserveEmailDelivery, type LinkEmailKind } from './auth-email'
 import { isAllowedEmail, isVerifiedAllowedUser } from './auth-policy'
-import { profileUpdateSchema } from './profile-validation'
+import { avatarUrl, profileUpdateSchema } from './profile-validation'
 
 const hasUnsafeCharacters = (value: string) =>
   [...value].some((character) => {
@@ -159,6 +161,19 @@ export function createBigDayPlannerAuth(
             throw new APIError('BAD_REQUEST', {
               message: 'Invalid profile update'
             })
+          // The photo is uploaded to /api/profile/avatar first; update-user
+          // may only confirm the URL of the photo now stored for this user.
+          if (parsed.data.image !== undefined) {
+            const [photo] = await database
+              .select({ version: userProfile.avatarVersion })
+              .from(userProfile)
+              .where(eq(userProfile.userId, session!.user.id))
+            const expected = photo?.version ? avatarUrl(photo.version) : null
+            if (parsed.data.image !== expected)
+              throw new APIError('BAD_REQUEST', {
+                message: 'Upload or remove your profile photo first'
+              })
+          }
           Object.assign(ctx.body, parsed.data)
         }
         if (ctx.path === '/email-otp/send-verification-otp') {

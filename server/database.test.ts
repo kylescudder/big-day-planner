@@ -3,6 +3,7 @@ import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import postgres from 'postgres'
+import sharp from 'sharp'
 import { sql as query } from 'drizzle-orm'
 
 import { databaseUrl } from '../src/server/db/connection'
@@ -70,11 +71,12 @@ describe('migrations', () => {
       'pudding',
       'starter',
       'taxi',
-      'timing'
+      'timing',
+      'user_profile'
     ])
     const [journal] =
       await sql`SELECT count(*)::int AS applied FROM drizzle.__drizzle_migrations`
-    expect(journal!.applied).toBe(2)
+    expect(journal!.applied).toBe(3)
   })
 
   test('move a journal left in public by earlier releases, keeping its history', async () => {
@@ -103,12 +105,12 @@ describe('migrations', () => {
     ).toBeNull()
     const [journal] =
       await sql`SELECT count(*)::int AS applied FROM drizzle.__drizzle_migrations`
-    expect(journal!.applied).toBe(2)
+    expect(journal!.applied).toBe(3)
   })
 })
 
 describe('Better Auth migration', () => {
-  test('adds only auth tables and keeps existing wedding data unchanged', async () => {
+  test('adds only auth and profile tables and keeps existing wedding data unchanged', async () => {
     // Recreate a database that has only the baseline, as production does now.
     const baseline = await Bun.file(
       new URL('../drizzle/0000_baseline.sql', import.meta.url)
@@ -119,6 +121,15 @@ describe('Better Auth migration', () => {
     await sql`DROP SCHEMA IF EXISTS drizzle CASCADE`
     await sql`DROP SCHEMA public CASCADE`
     await sql`CREATE SCHEMA public`
+    // The platform gives the runtime role access to new tables through the
+    // owner's default privileges; mirror that so new tables are covered.
+    await sql`DO $$ BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'bdp_test_runtime') THEN
+        CREATE ROLE bdp_test_runtime NOLOGIN;
+      END IF;
+    END $$`
+    await sql`GRANT USAGE ON SCHEMA public TO bdp_test_runtime`
+    await sql`ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO bdp_test_runtime`
     await sql`CREATE SCHEMA drizzle`
     await sql`CREATE TABLE drizzle.__drizzle_migrations (id serial PRIMARY KEY, hash text NOT NULL, created_at bigint)`
     await sql.unsafe(baseline.replaceAll('--> statement-breakpoint', ''))
@@ -138,6 +149,16 @@ describe('Better Auth migration', () => {
       SELECT count(*)::int AS tables FROM information_schema.tables
       WHERE table_schema = 'public' AND table_name LIKE 'auth\_%'`
     expect(auth!.tables).toBe(7)
+    // The runtime role can manage profile photos, which go with their user.
+    await sql.begin(async (tx) => {
+      await tx`SET LOCAL ROLE bdp_test_runtime`
+      await tx`INSERT INTO auth_user (id, name, email) VALUES ('runtime-user', 'Runtime', 'runtime@example.com')`
+      await tx`INSERT INTO user_profile (user_id, avatar, avatar_version) VALUES ('runtime-user', '\\xffd8ff', 'v1')`
+      await tx`DELETE FROM auth_user WHERE id = 'runtime-user'`
+      expect(
+        (await tx`SELECT count(*)::int AS rows FROM user_profile`)[0]!.rows
+      ).toBe(0)
+    })
     await sql`DELETE FROM guest`
     await sql`DELETE FROM espoused`
   })
@@ -873,6 +894,207 @@ describe('Better Auth', () => {
         )
       ).status
     ).toBe(401)
+  })
+
+  test('profile photos are bounded, re-encoded, private to their owner and removable', async () => {
+    const fixture = await authFixture()
+    const { cookie, user } = await signIn(fixture)
+    const other = await signIn(fixture, 'bride@example.com')
+    const { db } = await import('../src/server/db')
+    const { createProfileHandler } =
+      await import('../src/server/profile-handler')
+    const handler = createProfileHandler(db, {
+      origin: authOrigin,
+      allowedEmails,
+      getSession: (headers) => fixture.auth.api.getSession({ headers })
+    })
+    const image = await sharp({
+      create: { width: 64, height: 32, channels: 3, background: '#8844ff' }
+    })
+      .png()
+      .withMetadata({ exif: { IFD0: { Artist: 'Test metadata to strip' } } })
+      .toBuffer()
+    expect((await sharp(image).metadata()).exif).toBeDefined()
+    const request = (
+      method = 'GET',
+      body?: BodyInit,
+      type = 'image/png',
+      session = cookie,
+      extra: Record<string, string> = {}
+    ) =>
+      handler(
+        new Request(authOrigin + '/api/profile/avatar', {
+          method,
+          body,
+          headers: {
+            Origin: authOrigin,
+            Cookie: session,
+            'Content-Type': type,
+            ...extra
+          }
+        })
+      )
+
+    // Signed out, cross-site, wrong type, not an image, too large.
+    expect(
+      (await request('PUT', new Uint8Array(image), 'image/png', '')).status
+    ).toBe(401)
+    expect((await request('GET', undefined, 'image/png', '')).status).toBe(401)
+    expect(
+      (
+        await request('PUT', new Uint8Array(image), 'image/png', cookie, {
+          Origin: 'https://evil.example'
+        })
+      ).status
+    ).toBe(403)
+    expect(
+      (await request('PUT', '<svg onload="alert(1)"/>', 'image/svg+xml')).status
+    ).toBe(415)
+    expect(
+      (await request('PUT', '<svg onload="alert(1)"/>', 'image/png')).status
+    ).toBe(400)
+    expect(
+      (await request('PUT', 'GIF89a not really', 'image/jpeg')).status
+    ).toBe(400)
+    expect(
+      (await request('PUT', new Uint8Array(2 * 1024 * 1024 + 1))).status
+    ).toBe(413)
+    expect((await request()).status).toBe(404)
+
+    // Upload.
+    const first = await request('PUT', new Uint8Array(image))
+    expect(first.status).toBe(200)
+    const initial = (await first.json()) as { image: string }
+    expect(initial.image).toMatch(/^\/api\/profile\/avatar\?v=[\w-]+$/)
+    const [stored] =
+      await sql`SELECT image FROM auth_user WHERE id = ${user.id}`
+    expect(stored!.image).toBe(initial.image)
+
+    // update-user only confirms the photo stored for that user.
+    expect(
+      (await fixture.request('/update-user', { image: initial.image }, cookie))
+        .status
+    ).toBe(200)
+    expect(
+      (
+        await fixture.request(
+          '/update-user',
+          { image: initial.image },
+          other.cookie
+        )
+      ).status
+    ).toBe(400)
+    expect(
+      (
+        await fixture.request(
+          '/update-user',
+          { image: 'https://evil.example/a.jpg' },
+          cookie
+        )
+      ).status
+    ).toBe(400)
+    expect(
+      (await fixture.request('/update-user', { image: null }, cookie)).status
+    ).toBe(400)
+
+    // Served privately as a 256 px JPEG with no metadata.
+    const picture = await request()
+    expect(picture.status).toBe(200)
+    expect(picture.headers.get('Content-Type')).toBe('image/jpeg')
+    expect(picture.headers.get('Cache-Control')).toBe('no-store')
+    expect(picture.headers.get('X-Content-Type-Options')).toBe('nosniff')
+    expect(picture.headers.get('Cross-Origin-Resource-Policy')).toBe(
+      'same-origin'
+    )
+    const metadata = await sharp(
+      Buffer.from(await picture.arrayBuffer())
+    ).metadata()
+    expect(metadata.format).toBe('jpeg')
+    expect(metadata.width).toBe(256)
+    expect(metadata.height).toBe(256)
+    expect(metadata.exif).toBeUndefined()
+
+    // Another planner never gets this photo; they only see their own.
+    expect(
+      (await request('GET', undefined, 'image/png', other.cookie)).status
+    ).toBe(404)
+
+    // Replace: a new version every time.
+    const replaced = await request(
+      'PUT',
+      new Uint8Array(
+        await sharp({
+          create: { width: 40, height: 40, channels: 3, background: '#ff0000' }
+        })
+          .webp()
+          .toBuffer()
+      ),
+      'image/webp'
+    )
+    expect(replaced.status).toBe(200)
+    const next = (await replaced.json()) as { image: string }
+    expect(next.image).not.toBe(initial.image)
+    const [rows] =
+      await sql`SELECT count(*)::int AS rows FROM user_profile WHERE user_id = ${user.id}`
+    expect(rows!.rows).toBe(1)
+
+    // Access is lost straight away when the email is unverified or removed.
+    await sql`UPDATE auth_user SET email_verified = false WHERE id = ${user.id}`
+    expect((await request()).status).toBe(403)
+    await sql`UPDATE auth_user SET email_verified = true, email = 'former@example.com' WHERE id = ${user.id}`
+    expect((await request()).status).toBe(403)
+    expect((await request('DELETE')).status).toBe(403)
+    await sql`UPDATE auth_user SET email = 'groom@example.com' WHERE id = ${user.id}`
+
+    // Delete.
+    const removed = await request('DELETE')
+    expect(removed.status).toBe(200)
+    expect(await removed.json()).toEqual({ image: null })
+    expect((await request()).status).toBe(404)
+    const [cleared] =
+      await sql`SELECT image FROM auth_user WHERE id = ${user.id}`
+    expect(cleared!.image).toBeNull()
+    expect(
+      (await fixture.request('/update-user', { image: null }, cookie)).status
+    ).toBe(200)
+
+    // The app route: signed out is 401 under Better Auth, 404 under Clerk.
+    const { handleProfileRequest } = await import('../src/server/profile')
+    const routed = await handleProfileRequest(
+      new Request(authOrigin + '/api/profile/avatar', {
+        method: 'PUT',
+        headers: {
+          Origin: authOrigin,
+          Cookie: cookie,
+          'Content-Type': 'image/png'
+        },
+        body: new Uint8Array(image)
+      })
+    )
+    expect(routed.status).toBe(200)
+    expect(
+      (
+        await handleProfileRequest(
+          new Request(authOrigin + '/api/profile/avatar')
+        )
+      ).status
+    ).toBe(401)
+    useProvider('clerk')
+    try {
+      for (const method of ['GET', 'PUT', 'DELETE'])
+        expect(
+          (
+            await handleProfileRequest(
+              new Request(authOrigin + '/api/profile/avatar', {
+                method,
+                headers: { Origin: authOrigin, Cookie: cookie }
+              })
+            )
+          ).status
+        ).toBe(404)
+    } finally {
+      useProvider('better-auth')
+    }
   })
 
   test('Clerk mode keeps Clerk middleware and needs no Better Auth settings', async () => {

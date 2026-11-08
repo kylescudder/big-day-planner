@@ -8,7 +8,7 @@ import { emailOtpPlugin } from '@/lib/auth/email-otp-plugin'
 import { magicLinkPlugin } from '@/lib/auth/magic-link-plugin'
 import { passkeyPlugin } from '@/lib/auth/passkey-plugin'
 import { plannerHome, safeAppPath } from '@/lib/auth/safe-path'
-import { profileFields } from '@/lib/profile-ui'
+import { profileAvatar, profileFields } from '@/lib/profile-ui'
 
 export function BetterAuthUIProvider({
   children,
@@ -38,7 +38,7 @@ export function BetterAuthUIProvider({
         requireEmailVerification: true
       }}
       additionalFields={profileFields}
-      avatar={{ enabled: false }}
+      avatar={profileAvatar}
       localization={{ auth: { name: 'Display name' } }}
       plugins={[emailOtpPlugin(), magicLinkPlugin(), passkeyPlugin()]}
     >
