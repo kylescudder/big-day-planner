@@ -8,7 +8,8 @@ import { trpc } from '@/lib/trpc'
 
 export const Route = createFileRoute('/guests')({
   beforeLoad: async () => {
-    if (!(await trpc.session.query()).userId) throw redirect({ to: '/sign-in' })
+    if (!(await trpc.session.query()).userId)
+      throw redirect({ to: '/auth/$path', params: { path: 'sign-in' } })
   },
   loader: () => trpc.guestsPage.query(),
   component: GuestsPage

@@ -9,7 +9,8 @@ export default defineConfig({
   },
   resolve: {
     tsconfigPaths: true,
-    // Clerk's React SDK needs the React 18+ built-in instead of the shim.
+    // Libraries that import the use-sync-external-store shim (Base UI,
+    // TanStack Store) get React 18+'s built-in instead.
     // See https://github.com/TanStack/router/issues/5738
     alias: [
       { find: 'use-sync-external-store/shim/index.js', replacement: 'react' }

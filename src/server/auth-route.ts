@@ -1,5 +1,4 @@
 import '@tanstack/react-start/server-only'
-import { readAuthEnv } from './auth-env'
 import { getBetterAuth } from './auth'
 
 // Only the endpoints the sign-in, profile and passkey screens use. Sign-up,
@@ -30,7 +29,6 @@ export async function authRouteHandler(request: Request) {
   const path = new URL(request.url).pathname.slice('/api/auth'.length)
   // The emailed reset link lands on /reset-password/<token> before redirecting.
   const allowed = paths.has(path) || /^\/reset-password\/[\w-]+$/.test(path)
-  if (readAuthEnv().AUTH_PROVIDER !== 'better-auth' || !allowed)
-    return new Response('Not found', { status: 404 })
+  if (!allowed) return new Response('Not found', { status: 404 })
   return getBetterAuth().handler(request)
 }

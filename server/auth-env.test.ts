@@ -3,7 +3,6 @@ import { expect, test } from 'bun:test'
 import { readAuthEnv } from '../src/server/auth-env'
 
 const betterAuth = {
-  AUTH_PROVIDER: 'better-auth',
   BETTER_AUTH_URL: 'https://rsvp.example.com/',
   BETTER_AUTH_SECRET: 'x'.repeat(32),
   BREVO_API_KEY: 'brevo-fixture',
@@ -11,11 +10,18 @@ const betterAuth = {
   AUTH_ALLOWED_EMAILS: ' Groom@Example.com, bride@example.com ,'
 }
 
-test('Clerk stays the default and needs no Better Auth settings', () => {
-  const env = readAuthEnv({})
-  expect(env.AUTH_PROVIDER).toBe('clerk')
-  expect(env.AUTH_ALLOWED_EMAILS).toEqual([])
+test('Better Auth settings are required; leftover sign-in settings are ignored', () => {
+  expect(() => readAuthEnv({})).toThrow('BETTER_AUTH_URL')
+  const env = readAuthEnv({
+    ...betterAuth,
+    AUTH_PROVIDER: 'clerk',
+    CLERK_SECRET_KEY: 'sk_test_retired',
+    CLERK_PUBLISHABLE_KEY: 'pk_test_retired'
+  })
   expect(env.AUTH_EMAIL_DAILY_LIMIT).toBe(40)
+  expect(Object.keys(env).filter((key) => /CLERK|PROVIDER/.test(key))).toEqual(
+    []
+  )
 })
 
 test('Better Auth settings are normalised', () => {

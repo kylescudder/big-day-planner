@@ -63,8 +63,6 @@ Unlike the Office Tracker, the app needs third-party keys. Create `app.env`
 in the checkout with mode 0600, using unquoted single-line values:
 
 ```dotenv
-CLERK_PUBLISHABLE_KEY=<production Clerk publishable key>
-CLERK_SECRET_KEY=<matching Clerk secret key>
 RESEND_API_KEY=<Resend sending key>
 EMAIL_FROM_ADDRESS=<sender address on a domain verified in Resend>
 SONG_REQUEST_EMAIL=<address that receives song requests>
@@ -72,35 +70,6 @@ SONG_REQUEST_EMAIL=<address that receives song requests>
 GETADDRESS_URL=https://api.getaddress.io
 GETADDRESS_API_KEY=<getAddress.io key>
 UPLOADTHING_TOKEN=<UploadThing token>
-```
-
-Clerk's publishable key is read at runtime and sent to the browser during SSR,
-so it is not baked into the image. Add the public origin to the Clerk
-production instance. The previous keys lived in a Vercel project that has
-since been deleted; collect or reissue them from each provider.
-`app.env` is ignored by Git and Docker; never print it or resolved Compose output.
-
-## Better Auth rollout and Clerk rollback
-
-`AUTH_PROVIDER` selects exactly one sign-in provider for both the server and
-the rendered client. It defaults to `clerk`, so this release can be deployed
-before changing the production sign-in flow, and Clerk stays the rollback.
-Runtime provider changes require recreating the app container; do not try to
-hot-swap its process environment. With `clerk`, the Clerk middleware, `/sign-in`
-page and sign-out button behave as before and `/api/auth/*` returns 404. With
-`better-auth`, Clerk's middleware is not installed and needs no Clerk requests.
-
-The `0001_better_auth` migration adds `auth_user`, `auth_session`,
-`auth_account`, `auth_verification`, `auth_passkey`, `auth_rate_limit` and
-`auth_email_limit`. It does not touch guests, details or any other wedding
-data. The app has no per-user data: Clerk user IDs are only used to decide that
-a request is signed in, so no Clerk user linking is needed. Access is the
-allowlist below.
-
-Add these settings to `app.env`, retaining the Clerk keys:
-
-```dotenv
-AUTH_PROVIDER=clerk
 BETTER_AUTH_URL=https://<public planner hostname>
 BETTER_AUTH_SECRET=<stable, cryptographically random app-specific secret>
 BREVO_API_KEY=<Big Day Planner transactional API key>
@@ -109,25 +78,34 @@ AUTH_EMAIL_DAILY_LIMIT=40
 AUTH_ALLOWED_EMAILS=<couple's email>,<partner's email>
 ```
 
-These are required only when `AUTH_PROVIDER=better-auth`; startup errors name
-missing settings without printing values. `BETTER_AUTH_URL` must be `https://`
-in production. Generate a secret of at least 32 characters and keep it stable
+The previous keys lived in a Vercel project that has since been deleted;
+collect or reissue them from each provider. Unknown variables in `app.env` are
+ignored. `app.env` is ignored by Git and Docker; never print it or resolved
+Compose output.
+
+## Sign-in (Better Auth)
+
+Planners sign in with Better Auth. The `0001_better_auth` migration adds
+`auth_user`, `auth_session`, `auth_account`, `auth_verification`,
+`auth_passkey`, `auth_rate_limit` and `auth_email_limit`; `0002_profile` adds
+`user_profile`. They do not touch guests, details or any other wedding data.
+The app has no per-user data: a session only decides that a request is signed
+in. Access is the allowlist below.
+
+The Better Auth settings above are required. Startup errors name missing
+settings without printing values. `BETTER_AUTH_URL` must be `https://` in
+production. Generate a secret of at least 32 characters and keep it stable
 across releases. Keep it and the sending API key out of Git, image layers and
 CI. `AUTH_ALLOWED_EMAILS` is the server-side allowlist: only these addresses
 can get an account, receive sign-in mail or reach the guest list, uploads and
 admin procedures. Access also needs a verified email, and removing an address
 revokes access for existing sessions. The passkey RP ID is the exact hostname in
-`BETTER_AUTH_URL`, with that same trusted origin.
+`BETTER_AUTH_URL`, with that same trusted origin. Changing these settings
+requires recreating the app container.
 
-Cutover:
-
-1. Deploy the image through the central service with `AUTH_PROVIDER=clerk` and
-   the settings above. Owner migrations add the auth tables.
-2. After the existing acceptance checks pass, set `AUTH_PROVIDER=better-auth`
-   and recreate only the app service using the current image.
-3. Verify the homepage and guest pages without signing in, the signed-out
-   `/guests` redirect, email-code sign-in for each allowlisted address, the
-   guest list, then optionally set a password and add a passkey from Profile.
+After a deploy, check the homepage and guest pages without signing in, the
+signed-out `/guests` redirect to `/auth/sign-in`, and sign-in for an
+allowlisted address.
 
 Planner sign-in lives at `/auth/<view>` and offers four methods, each linking
 to the others: password (`/auth/sign-in`), email code (`/auth/email-otp`),
@@ -159,7 +137,7 @@ guest list header with Profile and Sign out. Sign-out returns to the homepage.
 `/profile` edits the display name and optional first/last names, shows the
 verified email read-only, sets or changes the password and manages passkeys.
 It also sets a profile photo, shown in the header menu. The photo goes to
-`/api/profile/avatar` (Better Auth only; 404 under Clerk), which needs a
+`/api/profile/avatar`, which needs a
 verified, still-allowlisted session and works only on that user's own photo.
 Uploads are limited to 2 MB of JPEG, PNG or WebP, checked by signature,
 re-encoded with `sharp` to a 256 px JPEG without metadata, and stored in the
@@ -169,11 +147,6 @@ goes to UploadThing, which stays for wedding images. Email codes remain the
 recovery method. For mobile
 reloads while waiting for a code, tab-scoped session storage keeps only the
 pending email and request time for ten minutes; it never stores the code.
-
-To roll back, set `AUTH_PROVIDER=clerk` and recreate only the app service with
-the same image. Keep the Clerk keys and production instance available. Leave
-the additive auth tables in place; never restore an older database just to
-change providers, because that would discard newer RSVPs.
 
 Brevo's free plan adds a `List-Unsubscribe` header even to transactional email,
 which can show a mailing-list banner in some clients. See

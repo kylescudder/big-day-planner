@@ -20,14 +20,12 @@ const origin = z
   .transform((value) => new URL(value).origin)
 
 /**
- * Sign-in provider settings, read at runtime rather than during the
- * secret-free production build. Clerk stays the default and the rollback;
- * Better Auth settings are required only when it is selected.
+ * Better Auth settings, read at runtime rather than during the secret-free
+ * production build. Unknown variables are ignored.
  */
 export function readAuthEnv(runtimeEnv: RuntimeEnv = process.env) {
   const env = createEnv({
     server: {
-      AUTH_PROVIDER: z.enum(['clerk', 'better-auth']).default('clerk'),
       BETTER_AUTH_URL: origin.optional(),
       BETTER_AUTH_SECRET: z.string().min(32).optional(),
       BREVO_API_KEY: z.string().min(1).optional(),
@@ -62,23 +60,21 @@ export function readAuthEnv(runtimeEnv: RuntimeEnv = process.env) {
       )
     }
   })
-  if (env.AUTH_PROVIDER === 'better-auth') {
-    const missing: string[] = (
-      [
-        'BETTER_AUTH_URL',
-        'BETTER_AUTH_SECRET',
-        'BREVO_API_KEY',
-        'AUTH_EMAIL_FROM'
-      ] as const
-    ).filter((key) => !env[key])
-    if (!env.AUTH_ALLOWED_EMAILS.length) missing.push('AUTH_ALLOWED_EMAILS')
-    if (missing.length)
-      throw new Error('Invalid environment variables: ' + missing.join(', '))
-    if (
-      env.NODE_ENV === 'production' &&
-      !env.BETTER_AUTH_URL!.startsWith('https://')
-    )
-      throw new Error('Invalid environment variables: BETTER_AUTH_URL')
-  }
+  const missing: string[] = (
+    [
+      'BETTER_AUTH_URL',
+      'BETTER_AUTH_SECRET',
+      'BREVO_API_KEY',
+      'AUTH_EMAIL_FROM'
+    ] as const
+  ).filter((key) => !env[key])
+  if (!env.AUTH_ALLOWED_EMAILS.length) missing.push('AUTH_ALLOWED_EMAILS')
+  if (missing.length)
+    throw new Error('Invalid environment variables: ' + missing.join(', '))
+  if (
+    env.NODE_ENV === 'production' &&
+    !env.BETTER_AUTH_URL!.startsWith('https://')
+  )
+    throw new Error('Invalid environment variables: BETTER_AUTH_URL')
   return env
 }

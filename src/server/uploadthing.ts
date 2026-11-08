@@ -8,8 +8,7 @@ import { sessionUserId } from './auth-session'
 
 const f = createUploadthing()
 
-// Uploads need a signed-in planner from the selected provider. uploadedBy is
-// the Clerk user ID under Clerk and the Better Auth user ID under Better Auth.
+// Uploads need a signed-in planner. uploadedBy is the Better Auth user ID.
 export async function requireUploader({ req }: { req: Request }) {
   const userId = await sessionUserId(req.headers)
   if (!userId)

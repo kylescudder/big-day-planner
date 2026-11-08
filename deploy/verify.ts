@@ -67,7 +67,7 @@ try {
   )
     throw new Error('Health revision/cache headers are incorrect')
 
-  // Admin pages and uploads require Clerk sign-in.
+  // Admin pages and uploads require sign-in.
   const guests = await request('/guests', 307)
   if (!guests.headers.get('Location')?.endsWith('/sign-in'))
     throw new Error('Signed-out admin request was not sent to sign-in')
