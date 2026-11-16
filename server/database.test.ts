@@ -21,7 +21,11 @@ healthProxy.allowNewConnections()
 process.env.DATABASE_URL = healthProxy.url
 process.env.SKIP_ENV_VALIDATION = '1'
 
-const sql = postgres(testUrl, { max: 1, onnotice: () => {} })
+const sql = postgres(testUrl, {
+  max: 1,
+  connect_timeout: 2,
+  onnotice: () => {}
+})
 const guestId = '77777777-7777-4777-8777-777777777777'
 const partnerId = '88888888-8888-4888-8888-888888888888'
 
@@ -285,6 +289,61 @@ test('timed-out health probes stop SQL and preserve shared pool availability', a
     await sql`ROLLBACK`
   }
   expect((await healthResponse()).status).toBe(200)
+}, 15000)
+
+test('the app pool rejects a connection refused by the role limit within a few seconds', async () => {
+  // postgres.js v4 retries 53300 until connect_timeout passes; the app keeps
+  // that short so pages fail fast instead of hanging during a limit blip.
+  const role = 'bdp_test_limited_' + crypto.randomUUID().slice(0, 8)
+  const [database] = await sql`SELECT current_database() AS name`
+  await sql.unsafe(`CREATE ROLE "${role}" LOGIN NOSUPERUSER CONNECTION LIMIT 1`)
+  const url = new URL(testUrl)
+  url.username = role
+  url.password = ''
+  const holder = postgres(url.toString(), {
+    max: 1,
+    connect_timeout: 2,
+    onnotice: () => {}
+  })
+  try {
+    await sql.unsafe(
+      `GRANT CONNECT ON DATABASE "${String(database!.name).replaceAll('"', '""')}" TO "${role}"`
+    )
+    // Take the role's only slot, so the app's first connection is refused.
+    await holder`SELECT 1`
+    // A fresh process imports the real app pool with this role's URL.
+    const child = Bun.spawn(
+      [
+        'bun',
+        '-e',
+        `import { sql } from 'drizzle-orm'
+        import { db } from './src/server/db'
+        const started = performance.now()
+        let code = 'none'
+        try { await db.execute(sql\`SELECT 1\`) }
+        catch (error) { code = error.cause?.code ?? error.code }
+        console.log(JSON.stringify({ code, ms: performance.now() - started }))
+        process.exit(0)`
+      ],
+      {
+        cwd: new URL('..', import.meta.url).pathname,
+        env: { ...process.env, DATABASE_URL: url.toString() },
+        stdout: 'pipe',
+        stderr: 'pipe'
+      }
+    )
+    expect(await child.exited).toBe(0)
+    const result = JSON.parse(await new Response(child.stdout).text()) as {
+      code: string
+      ms: number
+    }
+    expect(result.code).toBe('53300')
+    expect(result.ms).toBeLessThan(5000)
+  } finally {
+    await holder.end()
+    await sql.unsafe(`DROP OWNED BY "${role}"`)
+    await sql.unsafe(`DROP ROLE "${role}"`)
+  }
 }, 15000)
 
 test('health recovers on a new connection while the old socket stays stalled', async () => {
