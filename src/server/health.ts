@@ -9,7 +9,7 @@ async function probeDatabase() {
   // Own the connection so a stalled probe can be retired without touching app SQL.
   const client = postgres(databaseUrl(), {
     max: 1,
-    connect_timeout: 3,
+    connect_timeout: 2,
     connection: { statement_timeout: 3000 }
   })
   const query = client`SELECT id FROM guest LIMIT 0`

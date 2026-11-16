@@ -248,3 +248,11 @@ CI exercises the real deployment client against an eight-connection test role,
 with all four application slots held open. Concurrent deployment queries must
 share one backend, health must still connect, two spare slots must remain usable,
 and a ninth connection must be rejected by PostgreSQL.
+
+Every client sets `connect_timeout: 2`. From postgres.js v4, a connection the
+server refuses for too many connections (SQLSTATE `53300`) is retried with
+backoff until `connect_timeout` has passed, rather than rejected at once (the
+library default is 30 seconds). With 2 seconds, a request that cannot get a
+connection fails in about 3 seconds instead of hanging while others pile up.
+`server/database.test.ts` checks that the application pool rejects with `53300`
+within five seconds when its role is at its limit.

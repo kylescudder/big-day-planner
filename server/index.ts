@@ -21,7 +21,7 @@ const { default: app } = (await import(serverEntry)) as {
 }
 
 // Fail before accepting traffic if the database or migrations are unavailable.
-const sql = postgres(databaseUrl(), { max: 1 })
+const sql = postgres(databaseUrl(), { max: 1, connect_timeout: 2 })
 await sql`SELECT id FROM guest LIMIT 0`
 await sql.end()
 

@@ -5,7 +5,11 @@ import { databaseUrl } from '../src/server/db/connection'
 
 // Runs with the owner role only; the app runtime role cannot create tables.
 // The journal lives in its own schema, where the runtime role has no access.
-const sql = postgres(databaseUrl(), { max: 1, onnotice: () => {} })
+const sql = postgres(databaseUrl(), {
+  max: 1,
+  connect_timeout: 2,
+  onnotice: () => {}
+})
 try {
   // Earlier releases kept the journal in public, where the runtime role's
   // default grants reach it. Move it once, keeping its history; recreating it
