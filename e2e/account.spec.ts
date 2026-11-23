@@ -10,20 +10,17 @@ test('a signed-in profile remains available after reload', async ({ page }) => {
     page.getByRole('button', { name: 'Sign out', exact: true })
   ).toBeVisible()
 })
-test('a signed-out visitor must sign in to open their profile', async ({
-  browser
-}) => {
-  const context = await browser.newContext({
-    storageState: { cookies: [], origins: [] }
-  })
-  try {
-    const page = await context.newPage()
-    await page.goto(process.env.E2E_BASE_URL + '/profile')
+test.describe('signed-out', () => {
+  // Fixture-managed page with empty storage, so evidence recording applies.
+  test.use({ storageState: { cookies: [], origins: [] } })
+
+  test('a signed-out visitor must sign in to open their profile', async ({
+    page
+  }) => {
+    await page.goto('/profile')
     await expect(page).toHaveURL(/\/auth\/sign-in/)
     await expect(page.locator('#password')).toBeVisible()
-  } finally {
-    await context.close()
-  }
+  })
 })
 
 test('a guest can be created and remains in the list after reload', async ({
