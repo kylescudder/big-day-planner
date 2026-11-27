@@ -21,6 +21,21 @@ test.describe('signed-out', () => {
     await expect(page).toHaveURL(/\/auth\/sign-in/)
     await expect(page.locator('#password')).toBeVisible()
   })
+
+  test('a wrong password is rejected and the visitor stays signed out', async ({
+    page
+  }) => {
+    await page.goto('/auth/sign-in?redirectTo=%2Fprofile')
+    await page.locator('#email').fill(process.env.E2E_USERNAME!)
+    await page.locator('#password').fill(`wrong-${randomUUID()}`)
+    await page.getByRole('button', { name: 'Sign In', exact: true }).click()
+    await expect(
+      page.getByText('Invalid email or password', { exact: true })
+    ).toBeVisible()
+    await expect(page.locator('#password')).toBeVisible()
+    await page.goto('/profile')
+    await expect(page).toHaveURL(/\/auth\/sign-in/)
+  })
 })
 
 test('a guest can be created and remains in the list after reload', async ({
